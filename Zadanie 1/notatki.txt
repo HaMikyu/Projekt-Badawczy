@@ -1,0 +1,9 @@
+wykonaj zadanie 1 
+Temat: Detekcja tekstu wygenerowanego AI
+Autorzy: Michał Dąbrowski, Dominik Zabielski
+Prowadzący: dr. hab. inż. Sławomir Zieliński
+znajdź se w internecie formatkę latexową magisterską dla PB i na jej podstawie zrób ten dokument
+porównaj w tabeli odpowiedzi dr hab. Piotra Hońko i odpowiedzi sztucznej inteligencji (wygeneruj)
+wymagania i zakres daj raczej niewielki koło - dokładność klasyfikacji na poziomie 51%+
+bo sami nie wiemy czy to wgl da się zrobić dlatego raczej nisko poprzeczkę lepiej zawiesić
+zastanawiamy się nad użyciem speaklesh oraz https://www.kaggle.com/datasets/sunilthite/llm-detect-ai-generated-text-dataset?resource=download ale możesz wrzucić inne propozycje datasetów
