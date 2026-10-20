@@ -5,10 +5,10 @@
 Detekcja tekstu generowanego przez modele językowe (LLM) jest aktywnie rozwijanym obszarem. Istnieją zarówno narzędzia komercyjne, jak i metody badawcze:
 
 \begin{itemize}
-	\item \textbf{GPTZero, Turnitin, Originality.ai} -- systemy komercyjne stosowane m.in.\ w edukacji; opierają się na cechach stylometrycznych i modelach klasyfikacji.
-	\item \textbf{DetectGPT / Fast-DetectGPT} -- metody oparte na zaburzeniach prawdopodobieństwa (perturbation) tekstu względem modelu językowego.
-	\item \textbf{Klasyfikatory nadzorowane} -- modele typu RoBERTa/BERT trenowane na parach tekstów ludzkich i sztucznych (np.\ HC3, M4).
-	\item \textbf{Watermarking} -- oznaczanie wyjścia LLM na etapie generacji (np.\ schemat Kirchenbauer i in.); wymaga współpracy po stronie generatora.
+	\item \textbf{GPTZero, Turnitin, Originality.ai} - systemy komercyjne stosowane m.in.\ w edukacji; opierają się na cechach stylometrycznych i modelach klasyfikacji.
+	\item \textbf{DetectGPT / Fast-DetectGPT} - metody oparte na zaburzeniach prawdopodobieństwa (perturbation) tekstu względem modelu językowego.
+	\item \textbf{Klasyfikatory nadzorowane} - modele typu RoBERTa/BERT trenowane na parach tekstów ludzkich i sztucznych (np.\ HC3, M4).
+	\item \textbf{Watermarking} - oznaczanie wyjścia LLM na etapie generacji (np.\ schemat Kirchenbauer i in.); wymaga współpracy po stronie generatora.
 \end{itemize}
 
 W praktyce dokładność detektorów spada przy krótkich tekstach, parafrazie oraz tekstach wielojęzycznych. Dla języka polskiego liczba gotowych narzędzi i zbiorów jest wyraźnie mniejsza niż dla angielskiego.
@@ -18,8 +18,8 @@ W praktyce dokładność detektorów spada przy krótkich tekstach, parafrazie o
 Problem sprowadza się zwykle do klasyfikacji binarnej: tekst ludzki vs tekst wygenerowany. Stosowane są dwa główne nurty:
 
 \begin{enumerate}
-	\item \textbf{Podejścia statystyczne / stylometryczne} -- entropia, perplexity, burstiness, rozkład długości zdań, częstości n-gramów. Działają bez dużego zbioru treningowego, ale bywają wrażliwe na domenę i długość tekstu.
-	\item \textbf{Uczenie maszynowe / głębokie} -- klasyfikatory na embeddingach lub fine-tuning transformerów. Wymagają danych treningowych; przy małej liczbie przykładów łatwo o przeuczenie.
+	\item \textbf{Podejścia statystyczne / stylometryczne} - entropia, perplexity, burstiness, rozkład długości zdań, częstości n-gramów. Działają bez dużego zbioru treningowego, ale bywają wrażliwe na domenę i długość tekstu.
+	\item \textbf{Uczenie maszynowe / głębokie} - klasyfikatory na embeddingach lub fine-tuning transformerów. Wymagają danych treningowych; przy małej liczbie przykładów łatwo o przeuczenie.
 \end{enumerate}
 
 W literaturze podkreśla się, że metryki oparte na perplexity zawodzą przy bardzo krótkich próbkach (kilka zdań). Różnorodność generatorów (GPT, Llama, Gemini itd.) utrudnia generalizację jednego modelu detekcji.
@@ -45,11 +45,11 @@ Konsultacje przeprowadzono z \textbf{dr.\ hab.\ Piotrem Hońko} (Wydział Inform
 	\item \textit{Czy teksty muszą być podobne tematycznie i czy w ogóle to jest możliwe?}\\
 	\textbf{Odpowiedź:} Dla statystyki nie; dla ML tak.
 
-	\item \textit{Jak podejść do problemu długości tekstu? Wiele metryk zawodzi na bardzo krótkich tekstach (np.\ 2--3 zdania).}\\
+	\item \textit{Jak podejść do problemu długości tekstu? Wiele metryk zawodzi na bardzo krótkich tekstach (np.\ 2-3 zdania).}\\
 	\textbf{Odpowiedź:} Dobrać odpowiednie podejście.
 
 	\item \textit{Czy warto nakładać minimalny limit długości tekstu w projekcie?}\\
-	\textbf{Odpowiedź:} To zależy od podejścia -- statystycznego albo ML.
+	\textbf{Odpowiedź:} To zależy od podejścia - statystycznego albo ML.
 \end{enumerate}
 
 \subsection{Wyniki konsultacji AI}
@@ -64,7 +64,7 @@ Te same pytania zadano modelowi językowemu (ChatGPT). Odpowiedzi AI:
 	\textbf{Odpowiedź AI:} Homogeniczność tematyczna pomaga modelom ML (mniej zmiennych zakłócających). Metody statystyczne są bardziej odporne na zmianę domeny, ale i tak warto kontrolować źródło tekstów. Pełna niezależność od tematu jest trudna do osiągnięcia.
 
 	\item \textit{Problem krótkich tekstów:}\\
-	\textbf{Odpowiedź AI:} Dla 2--3 zdań należy unikać metryk wymagających stabilnego oszacowania rozkładu tokenów. Lepiej agregować cechy na poziomie dokumentu o ustalonej minimalnej długości albo stosować modele specjalnie do krótkich sekwencji. Alternatywnie -- klasyfikować dłuższe fragmenty (akapity).
+	\textbf{Odpowiedź AI:} Dla 2-3 zdań należy unikać metryk wymagających stabilnego oszacowania rozkładu tokenów. Lepiej agregować cechy na poziomie dokumentu o ustalonej minimalnej długości albo stosować modele specjalnie do krótkich sekwencji. Alternatywnie - klasyfikować dłuższe fragmenty (akapity).
 
 	\item \textit{Minimalny limit długości:}\\
 	\textbf{Odpowiedź AI:} Tak, warto wprowadzić próg (np.\ liczba słów/tokenów), zwłaszcza przy metrykach statystycznych. Dla ML próg też pomaga, ale model może działać na krótszych próbkach kosztem pewności. Limit powinien wynikać z eksperymentów na wybranym zbiorze.
