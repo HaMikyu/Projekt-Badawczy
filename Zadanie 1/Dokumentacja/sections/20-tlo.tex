@@ -1,0 +1,102 @@
+\section{Tło projektu}
+
+\subsection{Przegląd podobnych rozwiązań}
+
+Detekcja tekstu generowanego przez modele językowe (LLM) jest aktywnie rozwijanym obszarem. Istnieją zarówno narzędzia komercyjne, jak i metody badawcze:
+
+\begin{itemize}
+	\item \textbf{GPTZero, Turnitin, Originality.ai} -- systemy komercyjne stosowane m.in.\ w edukacji; opierają się na cechach stylometrycznych i modelach klasyfikacji.
+	\item \textbf{DetectGPT / Fast-DetectGPT} -- metody oparte na zaburzeniach prawdopodobieństwa (perturbation) tekstu względem modelu językowego.
+	\item \textbf{Klasyfikatory nadzorowane} -- modele typu RoBERTa/BERT trenowane na parach tekstów ludzkich i sztucznych (np.\ HC3, M4).
+	\item \textbf{Watermarking} -- oznaczanie wyjścia LLM na etapie generacji (np.\ schemat Kirchenbauer i in.); wymaga współpracy po stronie generatora.
+\end{itemize}
+
+W praktyce dokładność detektorów spada przy krótkich tekstach, parafrazie oraz tekstach wielojęzycznych. Dla języka polskiego liczba gotowych narzędzi i zbiorów jest wyraźnie mniejsza niż dla angielskiego.
+
+\subsection{Stan wiedzy}
+
+Problem sprowadza się zwykle do klasyfikacji binarnej: tekst ludzki vs tekst wygenerowany. Stosowane są dwa główne nurty:
+
+\begin{enumerate}
+	\item \textbf{Podejścia statystyczne / stylometryczne} -- entropia, perplexity, burstiness, rozkład długości zdań, częstości n-gramów. Działają bez dużego zbioru treningowego, ale bywają wrażliwe na domenę i długość tekstu.
+	\item \textbf{Uczenie maszynowe / głębokie} -- klasyfikatory na embeddingach lub fine-tuning transformerów. Wymagają danych treningowych; przy małej liczbie przykładów łatwo o przeuczenie.
+\end{enumerate}
+
+W literaturze podkreśla się, że metryki oparte na perplexity zawodzą przy bardzo krótkich próbkach (kilka zdań). Różnorodność generatorów (GPT, Llama, Gemini itd.) utrudnia generalizację jednego modelu detekcji.
+
+\subsection{Uwarunkowania komercyjne}
+
+Rynek detekcji AI jest związany głównie z edukacją, wydawnictwami i moderacją treści. Dostawcy komercyjni rzadko publikują pełne wyniki i ograniczenia modeli. Dla projektu akademickiego istotne są:
+
+\begin{itemize}
+	\item dostępność otwartych zbiorów danych (Kaggle, Hugging Face),
+	\item koszty API generatorów przy tworzeniu własnych próbek,
+	\item brak gwarancji, że wynik detektora ma moc dowodową (ryzyko fałszywych oskarżeń).
+\end{itemize}
+
+\subsection{Wyniki konsultacji z ekspertem}
+
+Konsultacje przeprowadzono z \textbf{dr.\ hab.\ Piotrem Hońko} (Wydział Informatyki PB). Poniżej pytania i odpowiedzi eksperta.
+
+\begin{enumerate}
+	\item \textit{Czy lepiej używać podejść statystycznych czy uczenia maszynowego?}\\
+	\textbf{Odpowiedź:} Nie ma lepszego rozwiązania; dla małych zestawów danych podejście statystyczne może być lepsze.
+
+	\item \textit{Czy teksty muszą być podobne tematycznie i czy w ogóle to jest możliwe?}\\
+	\textbf{Odpowiedź:} Dla statystyki nie; dla ML tak.
+
+	\item \textit{Jak podejść do problemu długości tekstu? Wiele metryk zawodzi na bardzo krótkich tekstach (np.\ 2--3 zdania).}\\
+	\textbf{Odpowiedź:} Dobrać odpowiednie podejście.
+
+	\item \textit{Czy warto nakładać minimalny limit długości tekstu w projekcie?}\\
+	\textbf{Odpowiedź:} To zależy od podejścia -- statystycznego albo ML.
+\end{enumerate}
+
+\subsection{Wyniki konsultacji AI}
+
+Te same pytania zadano modelowi językowemu (ChatGPT). Odpowiedzi AI:
+
+\begin{enumerate}
+	\item \textit{Podejścia statystyczne vs ML:}\\
+	\textbf{Odpowiedź AI:} Przy ograniczonej liczbie przykładów warto zacząć od cech statystycznych (perplexity, burstiness, stylometria). ML/transformers mają potencjał wyższej dokładności, ale potrzebują większego, zróżnicowanego zbioru. Sensowna jest ścieżka hybrydowa: najpierw baseline statystyczny, potem klasyfikator ML.
+
+	\item \textit{Podobieństwo tematyczne tekstów:}\\
+	\textbf{Odpowiedź AI:} Homogeniczność tematyczna pomaga modelom ML (mniej zmiennych zakłócających). Metody statystyczne są bardziej odporne na zmianę domeny, ale i tak warto kontrolować źródło tekstów. Pełna niezależność od tematu jest trudna do osiągnięcia.
+
+	\item \textit{Problem krótkich tekstów:}\\
+	\textbf{Odpowiedź AI:} Dla 2--3 zdań należy unikać metryk wymagających stabilnego oszacowania rozkładu tokenów. Lepiej agregować cechy na poziomie dokumentu o ustalonej minimalnej długości albo stosować modele specjalnie do krótkich sekwencji. Alternatywnie -- klasyfikować dłuższe fragmenty (akapity).
+
+	\item \textit{Minimalny limit długości:}\\
+	\textbf{Odpowiedź AI:} Tak, warto wprowadzić próg (np.\ liczba słów/tokenów), zwłaszcza przy metrykach statystycznych. Dla ML próg też pomaga, ale model może działać na krótszych próbkach kosztem pewności. Limit powinien wynikać z eksperymentów na wybranym zbiorze.
+\end{enumerate}
+
+\subsection{Porównanie odpowiedzi eksperta i AI}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|p{2.6cm}|X|X|}
+\hline
+\textbf{Pytanie} & \textbf{dr hab.\ Piotr Hońko} & \textbf{Sztuczna inteligencja} \\
+\hline
+Statystyka vs ML &
+Brak jednego lepszego rozwiązania; przy małych danych statystyka może być lepsza. &
+Zacząć od baseline'u statystycznego; ML przy większych danych; możliwa hybryda. \\
+\hline
+Podobieństwo tematyczne &
+Dla statystyki nie jest konieczne; dla ML tak. &
+Homogeniczność pomaga ML; statystyka odporniejsza na domenę; pełna niezależność trudna. \\
+\hline
+Krótkie teksty &
+Dobrać odpowiednie podejście do problemu. &
+Unikać metryk niestabilnych na krótkich próbkach; agregować dłuższe fragmenty. \\
+\hline
+Limit długości &
+Zależy od wybranego podejścia (statystyka / ML). &
+Warto wprowadzić próg; dla statystyki szczególnie; próg ustalić eksperymentalnie. \\
+\hline
+\end{tabularx}
+\caption{Porównanie konsultacji eksperckiej i AI}
+\end{table}
+
+Wnioski z konsultacji: przy niepewności co do wielkości zbioru i realnej wykonalności zadania rozsądne jest rozpoczęcie od metod prostszych (statystycznych), z możliwością przejścia do ML, oraz świadome ograniczenie zakresu (m.in.\ długość tekstu).
