@@ -51,6 +51,63 @@ Najnowszy etap badań skupia się na odporności detektorów wobec modeli najnow
 
 Z kolei Wang i współpracownicy \cite{wang2023m4}, badając wielojęzyczny korpus M4, udowodnili, że metody tworzone z myślą o języku angielskim drastycznie tracą skuteczność po przeniesieniu na inne języki naturalne. W kontekście języka polskiego, charakteryzującego się bogatą fleksją i swobodnym szykiem zdania, luka badawcza jest szczególnie odczuwalna. Nowo powstające korpusy tekstowe, w tym SpeakLeash \cite{speakleash2024}, oraz polskie modele językowe, takie jak Bielik \cite{bielik2024}, otwierają możliwość systematycznego zbadania skuteczności znanych metod w polskim obszarze językowym, co stanowi bezpośrednią motywację dla niniejszego projektu.
 
+\subsubsection{Zestawienie problemów badawczych i ewolucji rozwiązań}
+
+Podsumowanie przedstawionej historii rozwoju, ze szczególnym uwzględnieniem koncepcji poszczególnych autorów, zidentyfikowanych przez nich problemów oraz odpowiedzi formułowanych przez kolejnych badaczy, zestawiono w tabeli~\ref{tab:ewolucja_problemow}.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabularx}{\textwidth}{|p{2.6cm}|X|X|X|}
+\hline
+\textbf{Rozwiązanie i autorzy} & \textbf{Główna koncepcja detekcji} & \textbf{Zidentyfikowane ograniczenia i problemy} & \textbf{Odpowiedź kolejnych badaczy} \\
+\hline
+\textbf{Klasyfikatory RoBERTa} \newline Solaiman i in. (2019) \cite{solaiman2019release} &
+Nadzorowany fine-tuning modeli koderowych na parach tekstów ludzkich i z GPT-2. &
+Wysoki koszt anotacji zbalansowanych korpusów; podatność na przeuczenie i zjawisko przesunięcia domeny (\textit{domain shift}). &
+Gehrmann i in. (2019) \cite{gehrmann2019gltr} zaproponowali odejście od uczenia klasyfikatorów na rzecz beznadzorowej analizy statystyk modelu. \\
+\hline
+\textbf{GLTR (analiza rang)} \newline Gehrmann, Strobelt, Rush (2019) \cite{gehrmann2019gltr} &
+Inspekcja pozycji słów w rankingu predykcji generatora (nadmiar słów z czołówki rozkładu -- tzw. ,,zielonych tokenów''). &
+Wprowadzenie próbkowania stochastycznego (\textit{nucleus / top-p sampling}) zatarło dyskretne rozkłady rangowe tokenów. &
+Tian (2023) \cite{gptzero2023} połączył pomiar zakłopotania z analizą dynamiki składniowej tekstu w narzędziu GPTZero. \\
+\hline
+\textbf{GPTZero (stylometria)} \newline Tian (2023) \cite{gptzero2023} &
+Równoległa analiza zakłopotania (\textit{perplexity}) oraz wariancji rytmu i długości zdań (\textit{burstiness}). &
+Zawodzi na krótkich tekstach; Guo i in. (2023) \cite{guo2023hc3} wykazali zacieranie się różnic stylometrycznych w domenach formalnych. &
+Mitchell i in. (2023) \cite{mitchell2023detectgpt} przeszli od cech powierzchniowych do badania wewnętrznej geometrii prawdopodobieństwa. \\
+\hline
+\textbf{DetectGPT} \newline Mitchell i in. (2023) \cite{mitchell2023detectgpt} &
+Wykrywanie ujemnej krzywizny logarytmu prawdopodobieństwa wokół próbek sztucznych po perturbacjach semantycznych (model T5). &
+Wysoka złożoność obliczeniowa -- konieczność generowania dziesiątek próbek perturbowanych dla każdego sprawdzanego tekstu. &
+Bao i in. (2024) \cite{bao2023fastdetectgpt} wyprowadzili analityczną postać warunkowej krzywizny bez konieczności generowania próbek. \\
+\hline
+\textbf{Fast-DetectGPT} \newline Bao i in. (2024) \cite{bao2023fastdetectgpt} &
+Analityczne wyznaczanie warunkowej krzywizny prawdopodobieństwa tokenów; 300-krotne skrócenie czasu detekcji. &
+Wymaga dostępu do logitów modelu bazowego (\textit{white-box}); podatność na ataki parafrazujące. &
+Kirchenbauer i in. (2023) \cite{kirchenbauer2023watermark} zaproponowali alternatywę w postaci prewencyjnego znakowania wodnego. \\
+\hline
+\textbf{Znakowanie wodne} \newline Kirchenbauer i in. (2023) \cite{kirchenbauer2023watermark} &
+Pseudolosowy podział słownika na listę zieloną i czerwoną w trakcie próbkowania w oparciu o skrót poprzedniego tokena. &
+Wymaga pełnej współpracy dostawcy generatora; brak zastosowania do otwartych modeli pobieranych lokalnie. &
+Badacze skupili się na empirycznej weryfikacji ograniczeń metod post-hoc (Liang i in. \cite{liang2023gptdetectors}, Sadasivan i in. \cite{sadasivan2023can}). \\
+\hline
+\textbf{Granice detekcji} \newline Liang i in. (2023) \cite{liang2023gptdetectors}, Sadasivan i in. (2024) \cite{sadasivan2023can} &
+Dowód dążenia AUC do 0,5 wraz z poprawą LLM; wykazanie dyskryminacji autorów obcojęzycznych (\textit{non-native}). &
+Pasywna detekcja gotowego tekstu jest wysoce zawodna w warunkach polowych i podatna na zacieranie śladów przez parafrazę. &
+Alshammari i Rao (2025) \cite{alshammari2025evaluating} zaproponowali wykorzystanie rozumowania samego modelu LLM (CoT / Few-Shot). \\
+\hline
+\textbf{Wnioskowanie CoT} \newline Alshammari, Rao (2025) \cite{alshammari2025evaluating} &
+Wykorzystanie zaawansowanego modelu LLM z technikami \textit{Few-Shot} oraz \textit{Chain-of-Thought} do logicznej weryfikacji tekstu. &
+Wysoki koszt obliczeniowy dużych modeli; zależność od konstrukcji promptu; spadek stabilności w językach o mniejszych zasobach. &
+Konieczność badań nad lżejszymi, specyficznymi metodami w językach narodowych (Wang i in. \cite{wang2023m4}, projekt SpeakLeash \cite{speakleash2024}). \\
+\hline
+\end{tabularx}
+\caption{Syntetyczne zestawienie ewolucji metod detekcji tekstu AI, ich problemów oraz odpowiedzi formułowanych przez kolejnych badaczy}
+\label{tab:ewolucja_problemow}
+\end{table}
+
+
 
 \subsection{Stan wiedzy}
 
