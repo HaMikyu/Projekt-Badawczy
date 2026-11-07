@@ -1,0 +1,7 @@
+torch
+lightning
+numpy
+scikit-learn
+pandas
+kagglehub
+tqdm
