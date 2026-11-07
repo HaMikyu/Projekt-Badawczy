@@ -4,10 +4,6 @@ Projekt badawczy: detekcja tekstu generowanego przez AI
 
 **Termin oddania: 13 listopada 2026 (piątek), 23:59**
 
-## Michał Dąbrowski
-
-Na ten etap bez nowych zadań.
-
 ## Michał Niechciałkowski — ścieżka statystyczna
 
 - cechy stylometryczne tekstu (m.in. długość zdań, burstiness, TTR, udział stop-words)
