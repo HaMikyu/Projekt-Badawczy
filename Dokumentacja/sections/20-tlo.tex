@@ -8,7 +8,7 @@ Detekcja tekstu generowanego przez modele językowe (LLM) jest aktywnie rozwijan
 	\item \textbf{GPTZero, Turnitin, Originality.ai} - systemy komercyjne stosowane m.in.\ w edukacji; opierają się na cechach stylometrycznych i modelach klasyfikacji.
 	\item \textbf{DetectGPT / Fast-DetectGPT} - metody oparte na zaburzeniach prawdopodobieństwa (perturbation) tekstu względem modelu językowego.
 	\item \textbf{Klasyfikatory nadzorowane} - modele typu RoBERTa/BERT trenowane na parach tekstów ludzkich i sztucznych (np.\ HC3, M4).
-	\item \textbf{Watermarking} - oznaczanie wyjścia LLM na etapie generacji (np.\ schemat Kirchenbauer i in.); wymaga współpracy po stronie generatora.
+	\item \textbf{Watermarking} - oznaczanie wyjścia LLM na etapie generacji (np.\ schemat Kirchenbauer i in., komercyjne textGrain OpenAI); wymaga współpracy po stronie generatora i nie obejmuje modeli zewnętrznych.
 \end{itemize}
 
 W praktyce dokładność detektorów spada przy krótkich tekstach, parafrazie oraz tekstach wielojęzycznych. Dla języka polskiego liczba gotowych narzędzi i zbiorów jest wyraźnie mniejsza niż dla angielskiego.
@@ -50,6 +50,18 @@ Problem ten znalazł odzwierciedlenie w decyzji samej firmy OpenAI \cite{openai2
 Najnowszy etap badań skupia się na odporności detektorów wobec modeli najnowszych generacji oraz celowych technik humanizacji wypowiedzi. W pracy Alshammari i Rao \cite{alshammari2025evaluating} poddano weryfikacji teksty generowane przez model DeepSeek-V3 oraz ich zniekształcenia uzyskiwane za pomocą parafrazatorów takich jak QuillBot. Autorzy wykazali wyraźną dysproporcję w odporności narzędzi: podczas gdy zaawansowane filtry komercyjne zachowywały akceptowalną czułość, tradycyjne klasyfikatory statystyczne gwałtownie traciły skuteczność. Kluczowym wnioskiem z badań Alshammari i Rao było również wykazanie, że sam model językowy wykorzystany w trybie wnioskowania z łańcuchem myśli (\textit{Chain-of-Thought}) oraz kilkoma przykładami referencyjnymi (\textit{Few-Shot Prompting}) może przewyższać dedykowane detektory statystyczne, analizując logiczną spójność wywodu i subtelne relacje semantyczne.
 
 Z kolei Wang i współpracownicy \cite{wang2023m4}, badając wielojęzyczny korpus M4, udowodnili, że metody tworzone z myślą o języku angielskim drastycznie tracą skuteczność po przeniesieniu na inne języki naturalne. W kontekście języka polskiego, charakteryzującego się bogatą fleksją i swobodnym szykiem zdania, luka badawcza jest szczególnie odczuwalna. Nowo powstające korpusy tekstowe, w tym SpeakLeash \cite{speakleash2024}, oraz polskie modele językowe, takie jak Bielik \cite{bielik2024}, otwierają możliwość systematycznego zbadania skuteczności znanych metod w polskim obszarze językowym, co stanowi bezpośrednią motywację dla niniejszego projektu.
+
+\subsubsection{Regulacje UE i komercyjne znakowanie wodne tekstu (2026)}
+
+Akt UE w sprawie sztucznej inteligencji (\textit{EU AI Act}) zobowiązuje dostawców generatywnej AI do zapewnienia możliwości maszynowego rozpoznania wygenerowanego tekstu. W odpowiedzi na te wymagania OpenAI przedstawiło w październiku 2026 roku etapowe podejście do ustalania pochodzenia tekstu (\textit{text provenance}) \cite{openai2026textprovenance}. Firma udostępniła technologię znakowania wodnego pod nazwą \textbf{textGrain}, która osadza niewidoczny sygnał statystyczny w doborze słów przez model. Detektor OpenAI poszukuje tego sygnału i ocenia, czy dany fragment zawiera znak wodny pochodzący z systemów tej firmy.
+
+Wdrożenie obejmuje trzy równoległe ścieżki. Po pierwsze, klienci API na całym świecie mogą dobrowolnie włączyć znakowanie wodne dla wybranych modeli (domyślnie funkcja pozostaje wyłączona). Po drugie, w Unii Europejskiej niewidoczny znak wodny ma być dodawany do kwalifikujących się odpowiedzi ChatGPT i Codex. Po trzecie, dostęp do detektora znaków wodnych jest początkowo ograniczony do zatwierdzonych badaczy i organizacji eksperckich, bez publicznego udostępnienia narzędzia przy premierze.
+
+OpenAI podkreśla ograniczenia tej technologii. Przy docelowym odsetku wyników fałszywie dodatnich wynoszącym 1\% detektor wykrywał znaki wodne w około 80\% fragmentów o długości 200 tokenów oraz w około 95\% fragmentów o długości 400 tokenów (dla treści z dziedziny psychologii). W dziedzinach o ograniczonym doborze słów, takich jak matematyka, wskaźniki wykrywalności były wyraźnie niższe. Edycja tekstu osłabia sygnał: w testach na fragmentach 400-tokenowych zastąpienie 10\% słów synonimami obniżyło wykrywalność z około 92\% do 66\%, a zastąpienie 25\% słów do około 17\%.
+
+Istotne są też granice interpretacyjne wyniku detekcji. Znak wodny nie mierzy udziału człowieka w redakcji tekstu, nie rozstrzyga o prawach autorskich ani odpowiedzialności, nie identyfikuje użytkownika ani polecenia i nie potwierdza prawdziwości treści. Brak wykrytego znaku wodnego nie dowodzi autorstwa człowieka: tekst mógł być zbyt krótki, zredagowany, przetłumaczony, pochodzić z nieobsługiwanego modelu albo z narzędzi innego dostawcy.
+
+Dla niniejszego projektu wdrożenie textGrain ma dwojakie znaczenie. Po pierwsze, potwierdza, że aktywne znakowanie wodne po stronie generatora staje się elementem praktyki przemysłowej, ale obejmuje wyłącznie ekosystem konkretnego dostawcy. Po drugie, ograniczenia skuteczności (krótkie teksty, edycja, brak detekcji dla modeli zewnętrznych) wzmacniają potrzebę niezależnych metod detekcji post-hoc, które nie zakładają współpracy generatora. Właśnie w tym obszarze mieści się zakres planowanych prac własnych.
 
 \subsubsection{Zestawienie problemów badawczych i ewolucji rozwiązań}
 
@@ -101,6 +113,11 @@ Alshammari i Rao (2025) \cite{alshammari2025evaluating} zaproponowali wykorzysta
 Wykorzystanie zaawansowanego modelu LLM z technikami \textit{Few-Shot} oraz \textit{Chain-of-Thought} do logicznej weryfikacji tekstu. &
 Wysoki koszt obliczeniowy dużych modeli; zależność od konstrukcji promptu; spadek stabilności w językach o mniejszych zasobach. &
 Konieczność badań nad lżejszymi, specyficznymi metodami w językach narodowych (Wang i in. \cite{wang2023m4}, projekt SpeakLeash \cite{speakleash2024}). \\
+\hline
+\textbf{textGrain (OpenAI)} \newline OpenAI (2026) \cite{openai2026textprovenance} &
+Komercyjne znakowanie wodne tekstu pod wymogi \textit{EU AI Act}; niewidoczny sygnał statystyczny w doborze słów; detektor dla badaczy. &
+Słaba odporność na edycję i tłumaczenie; spadek czułości na krótkich tekstach; brak pokrycia modeli innych firm; detektor niepubliczny. &
+Równoległa potrzeba niezależnej detekcji post-hoc (poza ekosystemem jednego dostawcy), zwłaszcza dla języka polskiego. \\
 \hline
 \end{tabularx}
 \caption{Syntetyczne zestawienie ewolucji metod detekcji tekstu AI, ich problemów oraz odpowiedzi formułowanych przez kolejnych badaczy}
