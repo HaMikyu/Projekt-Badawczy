@@ -14,8 +14,10 @@ Projekt badawczy: detekcja tekstu generowanego przez AI
 
 ## Dominik Zabielski — ścieżka machine learning
 
-- model ML (MLP w Lightning albo inny wariant, np. TF-IDF + SVM)
-- trening, walidacja i strojenie hiperparametrów
+- model transformerowy do klasyfikacji human vs AI (preferowane: DistilBERT / BERT, albo własny mały transformer)
+- implementacja w PyTorch Lightning (fine-tuning albo trening od zera przy własnym transformerze)
+- trening, walidacja i strojenie hiperparametrów (lr, batch size, liczba epok, max długość sekwencji)
 - metryki: accuracy, precision, recall, F1
-- porównanie wyniku ML z wynikiem ścieżki statystycznej
-- krótki opis ograniczeń metody ML
+- porównanie wyniku ML z wynikiem ścieżki statystycznej (ten sam seed i podział danych)
+- krótki opis ograniczeń metody ML (koszt, overfitting, zależność od domeny / długości tekstu)
+- bez SVM / klasycznego TF-IDF jako głównego modelu
