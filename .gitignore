@@ -1,6 +1,10 @@
 .vscode/settings.json
 /.venv/
 /data/
+/docs/
 __pycache__/
 *.pyc
 .idea/
+/train/runs/
+/train/checkpoints/
+*.ckpt

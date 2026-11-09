@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transformer Training Dashboard</title>
+  <style>
+    :root { --bg:#101820; --panel:#182632; --line:#2c4050; --text:#e8f0f5; --muted:#91a5b3; --accent:#45d0a6; --accent2:#55a9ff; --warn:#f0a35b; }
+    * { box-sizing:border-box; } body { margin:0; background:linear-gradient(135deg,#101820,#203342); color:var(--text); font:14px system-ui,sans-serif; }
+    main { width:min(1400px,calc(100% - 32px)); margin:auto; padding:28px 0 42px; } h1 { margin:0; font-size:clamp(28px,5vw,54px); } p { color:var(--muted); }
+    .summary,.layout,.metrics { display:grid; gap:12px; } .summary { grid-template-columns:repeat(4,1fr); margin:24px 0; } .layout { grid-template-columns:1fr 1.4fr; }
+    .panel,.card { background:rgba(24,38,50,.92); border:1px solid var(--line); border-radius:12px; } .card { padding:16px; } .card b { display:block; font-size:25px; color:var(--accent); } .card span { color:var(--muted); }
+    h2 { font-size:16px; margin:0; padding:16px; border-bottom:1px solid var(--line); } #jobs { padding:8px; } .job { padding:14px; border-bottom:1px solid var(--line); cursor:pointer; } .job:last-child { border-bottom:0; } .job:hover,.selected { background:#203746; }
+    .row { display:flex; justify-content:space-between; gap:10px; align-items:center; } .sub { color:var(--muted); margin:5px 0 10px; font-size:12px; }
+    .badge { border:1px solid currentColor; border-radius:99px; padding:3px 8px; font-size:11px; } .done { color:var(--accent); } .training { color:var(--warn); } .queued,.stalled { color:var(--muted); }
+    .bar { height:7px; border-radius:9px; background:#0d151c; overflow:hidden; } .bar i { display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+    .meta { display:flex; gap:14px; flex-wrap:wrap; color:var(--muted); font-size:12px; margin-top:9px; } .detail { padding:18px; } .metrics { grid-template-columns:repeat(4,1fr); margin:14px 0; } .metric { padding:12px; border:1px solid var(--line); border-radius:8px; } .metric small { color:var(--muted); display:block; } .metric strong { font-size:22px; }
+    #chart { width:100%; height:280px; background:#111c24; border-radius:8px; } code { color:var(--accent); }
+    .legend { display:flex; gap:18px; color:var(--muted); font-size:12px; margin:10px 0 0; } .legend i { display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+    @media(max-width:850px) { .layout,.summary,.metrics { grid-template-columns:1fr 1fr; } .layout { grid-template-columns:1fr; } } @media(max-width:500px) { .summary,.metrics { grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body><main>
+  <h1>Transformer Training Dashboard</h1>
+  <p>Detekcja tekstu AI · odświeżanie co 2 sekundy · <span id="subtitle">model: —</span></p>
+  <section class="summary" id="summary"></section>
+  <section class="layout"><div class="panel"><h2>Eksperymenty</h2><div id="jobs"></div></div><div class="panel"><h2 id="title">Szczegóły</h2><div class="detail"><div class="metrics" id="metrics"></div><div id="details" class="meta"></div><canvas id="chart" width="900" height="280"></canvas><div class="legend"><span><i style="background:#55a9ff"></i>F1 — lewa oś</span><span><i style="background:#45d0a6"></i>val_loss — prawa oś</span></div><p id="hint">Wybierz eksperyment.</p></div></div></section>
+  <p>API: <code>/api/status</code> · ostatnia aktualizacja: <span id="clock">—</span></p>
+  <script>
+    let selected = null;
+    let lastData = null;
+    const history = {};
+    const loaded = {};
+    const labels = {done:"zakończony",training:"trening",queued:"w kolejce",stalled:"zatrzymany"};
+    const metricsKeys = [["accuracy","accuracy"],["precision","precision"],["recall","recall"],["f1","F1"]];
+    const fmt = (v, d=4) => v == null || Number.isNaN(Number(v)) ? "—" : Number(v).toFixed(d);
+    const eta = s => s == null ? "—" : s < 60 ? `${Math.round(s)} s` : `${Math.floor(s/60)} min ${Math.round(s%60)} s`;
+    function remember(job) {
+      if (!job || !job.epoch) return;
+      const bucket = history[job.id] || (history[job.id] = {});
+      bucket[job.epoch] = {
+        epoch: job.epoch,
+        val_loss: job.metrics.val_loss,
+        f1: job.metrics.val_f1 ?? job.metrics.f1,
+        accuracy: job.metrics.val_accuracy ?? job.metrics.accuracy,
+      };
+    }
+    async function loadHistory(id) {
+      loaded[id] = true;
+      try {
+        const response = await fetch(`/api/history?run=${encodeURIComponent(id)}`, {cache:"no-store"});
+        if (!response.ok) return;
+        const data = await response.json();
+        const bucket = history[id] || (history[id] = {});
+        for (const record of (data.records || [])) {
+          const metrics = record.metrics || {};
+          if (!record.epoch || metrics.val_loss == null) continue;
+          bucket[record.epoch] = {
+            epoch: record.epoch,
+            val_loss: metrics.val_loss,
+            f1: metrics.val_f1,
+            accuracy: metrics.val_accuracy,
+          };
+        }
+        if (lastData) render(lastData);
+      } catch (error) { /* historii nie da się wczytać — zostaje live */ }
+    }
+    function render(data) {
+      document.querySelector("#summary").innerHTML = [
+        [`${data.done}/${data.total}`, "ukończone"],
+        [data.training, "trenuje"],
+        [data.queued, "w kolejce"],
+        [data.total ? `${Math.round(data.done / data.total * 100)}%` : "0%", "postęp"],
+      ].map(([value, label]) => `<div class="card"><b>${value}</b><span>${label}</span></div>`).join("");
+      document.querySelector("#jobs").innerHTML = data.jobs.map(j => `<div class="job ${j.id===selected?"selected":""}" onclick="selected='${j.id}'; refresh()"><div class="row"><strong>${j.title}</strong><span class="badge ${j.status}">${labels[j.status]||j.status}</span></div><div class="sub">epoka ${j.epoch}/${j.max_epochs} · ETA ${eta(j.eta_seconds)}</div><div class="bar"><i style="width:${Math.round((j.progress||0)*100)}%"></i></div><div class="meta"><span>val_loss ${fmt(j.metrics.val_loss)}</span><span>accuracy ${fmt(j.metrics.accuracy)}</span><span>precision ${fmt(j.metrics.precision)}</span><span>recall ${fmt(j.metrics.recall)}</span><span>F1 ${fmt(j.metrics.f1)}</span></div></div>`).join("") || '<p>Uruchom trening, aby pojawił się eksperyment.</p>';
+      data.jobs.forEach(remember);
+      if (!selected && data.jobs.length) {
+        const newest = [...data.jobs].sort((a,b) => (b.updated_at||0) - (a.updated_at||0))[0];
+        selected = newest.id;
+      }
+      const job = data.jobs.find(j=>j.id===selected); if (!job) return;
+      if (!loaded[job.id]) loadHistory(job.id);
+      document.querySelector("#title").textContent = job.title;
+      document.querySelector("#subtitle").innerHTML = `model: <code>${job.config.model_name || "—"}</code> · precision: <code>${job.config.mixed_precision || "—"}</code>`;
+      document.querySelector("#metrics").innerHTML = metricsKeys.map(([k,t])=>`<div class="metric"><small>${t}</small><strong>${fmt(job.metrics[k])}</strong></div>`).join("");
+      const source = job.status === "done" ? "test" : "walidacja";
+      document.querySelector("#details").innerHTML = [
+        ["val_loss", fmt(job.metrics.val_loss)],["lr", job.config.learning_rate ?? "—"],["max_length", job.config.max_length ?? "—"],
+        ["epochs", `${job.epoch}/${job.max_epochs}`],["metrics", source],
+      ].map(([k,v])=>`<span>${k}: ${v}</span>`).join("");
+      document.querySelector("#hint").textContent = `status: ${labels[job.status]||job.status} · seed: ${job.config.seed ?? "—"} · train_loss: ${fmt(job.metrics.train_loss)}`;
+      draw(job);
+    }
+    function draw(job) {
+      const c = document.querySelector("#chart");
+      const rect = c.getBoundingClientRect();
+      const cssW = Math.max(Math.round(rect.width) || 900, 320);
+      const cssH = 280;
+      const dpr = window.devicePixelRatio || 1;
+      if (c.width !== Math.round(cssW * dpr) || c.height !== Math.round(cssH * dpr)) {
+        c.width = Math.round(cssW * dpr);
+        c.height = Math.round(cssH * dpr);
+      }
+      const x = c.getContext("2d");
+      x.setTransform(dpr, 0, 0, dpr, 0, 0);
+      x.clearRect(0, 0, cssW, cssH);
+      const points = Object.values(history[job.id] || {}).filter(p => p.val_loss != null).sort((a,b)=>a.epoch-b.epoch);
+      if (!points.length) { x.fillStyle="#91a5b3"; x.font="14px system-ui"; x.fillText("Brak jeszcze punktów historii", 24, 40); return; }
+      const padL = 64, padR = 72, padT = 22, padB = 48;
+      const w = cssW - padL - padR, h = cssH - padT - padB;
+      const xAt = i => padL + (points.length === 1 ? w / 2 : i * w / (points.length - 1));
+      const yAt = (v, range) => padT + (range.max - v) / (range.max - range.min || 1) * h;
+      function rangeOf(key, padRatio = 0.15) {
+        const vals = points.map(p => p[key]).filter(v => v != null);
+        const min = Math.min(...vals), max = Math.max(...vals);
+        const span = (max - min) || Math.abs(max) || 1;
+        return { min: min - span * padRatio, max: max + span * padRatio };
+      }
+      const f1Range = rangeOf("f1");
+      const lossRange = rangeOf("val_loss");
+      x.font = "12px system-ui";
+      x.textBaseline = "middle";
+      // lewa oś: F1
+      x.textAlign = "right";
+      for (let t = 0; t <= 4; t++) {
+        const y = padT + h * t / 4;
+        x.strokeStyle = "#243542"; x.lineWidth = 1;
+        x.beginPath(); x.moveTo(padL, y); x.lineTo(padL + w, y); x.stroke();
+        const value = f1Range.max - (f1Range.max - f1Range.min) * t / 4;
+        x.fillStyle = "#8fb8e8";
+        x.fillText(fmt(value, 3), padL - 8, y);
+      }
+      // prawa oś: val_loss
+      x.textAlign = "left";
+      for (let t = 0; t <= 4; t++) {
+        const y = padT + h * t / 4;
+        const value = lossRange.max - (lossRange.max - lossRange.min) * t / 4;
+        x.fillStyle = "#7fd6b8";
+        x.fillText(fmt(value, 4), padL + w + 8, y);
+      }
+      // os x: epoki
+      x.textAlign = "center";
+      x.textBaseline = "top";
+      x.fillStyle = "#a9bccb";
+      const step = points.length <= 12 ? 1 : Math.ceil(points.length / 10);
+      points.forEach((p, i) => {
+        if (i % step !== 0 && i !== points.length - 1) return;
+        const px = xAt(i);
+        x.strokeStyle = "#243542"; x.lineWidth = 1;
+        x.beginPath(); x.moveTo(px, padT + h); x.lineTo(px, padT + h + 5); x.stroke();
+        x.fillText(String(p.epoch), px, padT + h + 9);
+      });
+      x.fillStyle = "#7f95a5";
+      x.fillText("epoka", padL + w / 2, cssH - 16);
+      function line(key, color, range) {
+        x.strokeStyle = color; x.lineWidth = 2.5; x.lineJoin = "round"; x.lineCap = "round";
+        x.beginPath();
+        let started = false;
+        points.forEach((p, i) => {
+          const v = p[key]; if (v == null) return;
+          const px = xAt(i), py = yAt(v, range);
+          started ? x.lineTo(px, py) : x.moveTo(px, py); started = true;
+        });
+        x.stroke();
+        x.fillStyle = color;
+        points.forEach((p, i) => {
+          const v = p[key]; if (v == null) return;
+          x.beginPath(); x.arc(xAt(i), yAt(v, range), 3, 0, Math.PI * 2); x.fill();
+        });
+      }
+      line("val_loss", "#45d0a6", lossRange);
+      line("f1", "#55a9ff", f1Range);
+    }
+    async function refresh(){ const r=await fetch("/api/status",{cache:"no-store"}); const d=await r.json(); lastData=d; render(d); document.querySelector("#clock").textContent=new Date().toLocaleTimeString(); }
+    refresh(); setInterval(refresh,2000);
+  </script>
+</main></body></html>
