@@ -1,0 +1,9 @@
+{
+  "source_run": "train/runs/distilbert-v3",
+  "model_name": "distilbert-base-uncased",
+  "threshold": 0.5,
+  "labels": {
+    "0": "human",
+    "1": "ai"
+  }
+}

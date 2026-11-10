@@ -14,101 +14,41 @@ Na obecnym etapie wykonano:
 	\item wstępną listę zbiorów danych (Kaggle, SpeakLeash i inne).
 \end{itemize}
 
-Implementacja metod detekcji oraz pomiary dokładności będą przedmiotem kolejnych etapów projektu.
+Zaimplementowano ścieżkę ML i wykonano pomiary na teście IID oraz zewnętrznym OOD.
 
 \subsection{Ścieżka machine learning}
 
-Zaimplementowano pipeline fine-tuningu modelu \texttt{distilbert-base-uncased}
-(67 mln parametrów) w PyTorch Lightning. Klasyfikacja jest binarna:
-\texttt{human} = 0, \texttt{ai} = 1. Eksperyment używa jednego seeda
-(\texttt{42}) i jednego podziału danych.
+Zaimplementowano fine-tuning \texttt{distilbert-base-uncased} w PyTorch Lightning
+(klasyfikacja \texttt{human}/\texttt{ai}, seed 42).
 
-\paragraph{Czyszczenie danych i przeciek.}
-Przed podziałem usunięto dokładne duplikaty oraz teksty krótsze niż 5 słów.
-Z 29\,145 wierszy pozostało 27\,296. Podział train/validation/test wynosi
-21\,838 / 2\,729 / 2\,729, a liczba wspólnych tekstów między splitami wynosi
-\textbf{0}. Wcześniejsze wyniki były zawyżone przez duplikaty: przed poprawką
-10,4\% testu miało dokładny odpowiednik w zbiorze treningowym.
+\paragraph{Dlaczego wynik 99\% był mylący.}
+Model wytrenowany tylko na Kaggle osiągał ok. 0,997 accuracy na teście z tego
+samego zbioru, ale na Ghostbuster (Claude/GPT, poza domeną) spadał do
+ok. 0,516 accuracy i prawie zawsze przewidywał klasę AI.
 
-\paragraph{Strojenie hiperparametrów.}
-Uruchomiono jawną siatkę czterech konfiguracji. Zbiór testowy nie był używany
-podczas strojenia; wyboru dokonano na podstawie \texttt{val\_f1}.
+\paragraph{Nowy eksperyment.}
+Trening na mieszance: Kaggle essays + HC3 + sample AI Text Detection Pile,
+z length-matchingiem i usuwaniem dokładnych duplikatów. Zewnętrzny test OOD to
+Ghostbuster (nigdy nieobecny w treningu). Konfiguracja: lr \(2 \cdot 10^{-5}\),
+batch 32, max\_length 256, early stopping, AMP na RTX 3070 Ti (ok. 18 min).
 
+\paragraph{Wyniki.}
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|l|c|c|c|c|}
 \hline
-learning rate & batch size & max\_length & best val F1 & czas \\
+test & accuracy & precision & recall & F1 \\
 \hline
-2e-5 & 32 & 256 & \textbf{0,99821} & 186 s \\
-3e-5 & 32 & 256 & 0,99821 & 195 s \\
-4e-5 & 64 & 256 & 0,99821 & 212 s \\
-2e-5 & 32 & 128 & 0,99599 & 157 s \\
+IID (mieszanka źródeł) & 0,986 & 0,985 & 0,987 & 0,986 \\
+OOD Ghostbuster (model nowy) & \textbf{0,838} & 0,767 & 0,970 & \textbf{0,857} \\
+OOD Ghostbuster (baseline Kaggle) & 0,516 & 0,508 & 0,997 & 0,673 \\
 \hline
 \end{tabular}
 \end{center}
 
-Wybrano konfigurację \textbf{lr = 2e-5, batch size = 32, max\_length = 256}.
-Liczba epok jest kontrolowana przez early stopping: próby mają limit 4 epok,
-a finalny trening — 20 epok z \texttt{patience = 5} na \texttt{val\_f1}.
-
-\paragraph{Wynik finalny.}
-Po 12 epokach (najlepszy checkpoint z epoki 7) uzyskano na odłożonym zbiorze
-testowym:
-
-\begin{center}
-\begin{tabular}{|l|c|}
-\hline
-metryka & wartość \\
-\hline
-accuracy & \textbf{0,99707} \\
-precision & \textbf{1,00000} \\
-recall & \textbf{0,99284} \\
-F1 & \textbf{0,99641} \\
-\hline
-\end{tabular}
-\end{center}
-
-Macierz pomyłek: \texttt{[[1611, 0], [8, 1110]]}, czyli 8 błędów na 2\,729
-próbek, wszystkie w stronę \texttt{ai} \(\rightarrow\) \texttt{human}.
-Cały finalny trening zajął 8,4 min.
-
-\paragraph{Stabilność i koszt.}
-Krzywa uczenia jest stabilna: najgorszy epizod to epoka 3
-(\texttt{val\_f1} = 0,9933, \texttt{val\_loss} = 0,0172). Fine-tuning wymaga
-GPU; na karcie RX 9070 XT (ROCm, bf16) jedna epoka zajmuje ok. 40 s, a pełny
-trening 8,4 min. Starszy wariant BERT-base we fp32 potrzebował ok. 9 min na
-epokę.
-
-\paragraph{Zależność od długości tekstu.}
-Średnia długość tekstu human to ok. 430 słów, a AI — ok. 312 słów. Sam
-klasyfikator oparty wyłącznie na liczbie słów osiąga AUC = 0,691, co oznacza,
-że długość jest istotnym confoundem. Dlatego metryki uzupełniono rozbiciem na
-kwartyle długości:
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-kwartyl (słowa) & próbki & accuracy & precision & recall & F1 \\
-\hline
-Q1 (61--251) & 692 & 0,99855 & 1,00000 & 0,99746 & 0,99873 \\
-Q2 (251--345) & 678 & 0,99410 & 1,00000 & 0,98892 & 0,99443 \\
-Q3 (345--464) & 677 & 0,99557 & 1,00000 & 0,98790 & 0,99391 \\
-Q4 (464--1436) & 682 & 1,00000 & 1,00000 & 1,00000 & 1,00000 \\
-\hline
-\end{tabular}
-\end{center}
-
-\paragraph{Ograniczenia metody ML.}
-Najważniejsze ograniczenia to: koszt obliczeniowy fine-tuningu (wymagany GPU),
-overfitting (\texttt{train\_loss} ok. \(1{,}3 \cdot 10^{-6}\) przy
-\texttt{val\_loss} ok. 0,006), zależność od domeny (tylko angielskie eseje
-z jednego zbioru, brak zewnętrznego testu), zależność od długości tekstu,
-pozostałe near-duplikaty oraz nierównowaga klas. Model nie był kalibrowany,
-a etykiety nie były weryfikowane ręcznie. Pełny opis znajduje się w
-dokumencie \path{train/ml-ograniczenia.md}.
+\paragraph{Ograniczenia.}
+Detekcja AI nie jest rozwiązana uniwersalnie: nowe modele LLM, parafrazy i
+zmiana domeny nadal obniżają jakość. Na OOD model ma bias w stronę AI
+(więcej fałszywych alarmów niż przeoczeń). Szczegóły: \path{train/WYNIKI.md}.
 
 \paragraph{Porównanie ze ścieżką statystyczną.}
-Porównanie wymaga wyników ścieżki statystycznej przeliczonych na tym samym
-oczyszczonym zbiorze i tym samym podziale danych. Na moment przygotowania
-opisu takie zestawienie nie było jeszcze dostępne; bez wspólnego podziału
-porównanie nie byłoby metodologicznie poprawne.
+Wymaga wspólnego podziału danych ze ścieżką Michała; zestawienie do uzupełnienia.

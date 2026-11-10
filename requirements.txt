@@ -7,3 +7,6 @@ kagglehub
 tqdm
 transformers
 safetensors
+datasets
+huggingface_hub
+pyarrow

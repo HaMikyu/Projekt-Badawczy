@@ -55,11 +55,14 @@ class BertTextClassifier(L.LightningModule):
     def on_validation_epoch_end(self) -> None:
         if not self._val_labels:
             return
-        from .evaluate import calculate_metrics
+        try:
+            from .helpers import metrics_dict
+        except ImportError:
+            from train.helpers import metrics_dict
 
         labels = torch.cat(self._val_labels).cpu().tolist()
         predictions = torch.cat(self._val_predictions).cpu().tolist()
-        metrics = calculate_metrics(labels, predictions)
+        metrics = metrics_dict(labels, predictions)
         for key in ("accuracy", "precision", "recall", "f1"):
             self.log(
                 f"val_{key}",
