@@ -18,10 +18,10 @@ Implementacja metod detekcji oraz pomiary dokładności będą przedmiotem kolej
 
 \subsection{Ścieżka machine learning}
 
-Zaimplementowano pipeline fine-tuningu modelu \texttt{distilbert-base-uncased}
-(67 mln parametrów) w PyTorch Lightning. Klasyfikacja jest binarna:
-\texttt{human} = 0, \texttt{ai} = 1. Eksperyment używa jednego seeda
-(\texttt{42}) i jednego podziału danych.
+Zaimplementowano pipeline fine-tuningu modelu \path{distilbert-base-uncased}
+(67 mln parametrów) w~PyTorch Lightning. Klasyfikacja jest binarna:
+\texttt{human} = 0, \texttt{ai} = 1. Eksperyment używa jednego seeda (\texttt{42})
+i~jednego podziału danych.
 
 \paragraph{Czyszczenie danych i przeciek.}
 Przed podziałem usunięto dokładne duplikaty oraz teksty krótsze niż 5 słów.
@@ -99,16 +99,120 @@ Q4 (464--1436) & 682 & 1,00000 & 1,00000 & 1,00000 & 1,00000 \\
 \end{center}
 
 \paragraph{Ograniczenia metody ML.}
-Najważniejsze ograniczenia to: koszt obliczeniowy fine-tuningu (wymagany GPU),
+Do najważniejszych ograniczeń należą: koszt obliczeniowy fine-tuningu (wymagany GPU),
 overfitting (\texttt{train\_loss} ok. \(1{,}3 \cdot 10^{-6}\) przy
-\texttt{val\_loss} ok. 0,006), zależność od domeny (tylko angielskie eseje
-z jednego zbioru, brak zewnętrznego testu), zależność od długości tekstu,
+\texttt{val\_loss} ok. 0,006), zależność od domeny (angielskie eseje
+z~jednego zbioru, brak zewnętrznego testu), zależność od długości tekstu,
 pozostałe near-duplikaty oraz nierównowaga klas. Model nie był kalibrowany,
-a etykiety nie były weryfikowane ręcznie. Pełny opis znajduje się w
-dokumencie \path{train/ml-ograniczenia.md}.
+a~etykiety nie były weryfikowane ręcznie. Pełny opis znajduje się w~dokumencie \path{train/ml-ograniczenia.md}.
 
-\paragraph{Porównanie ze ścieżką statystyczną.}
-Porównanie wymaga wyników ścieżki statystycznej przeliczonych na tym samym
-oczyszczonym zbiorze i tym samym podziale danych. Na moment przygotowania
-opisu takie zestawienie nie było jeszcze dostępne; bez wspólnego podziału
-porównanie nie byłoby metodologicznie poprawne.
+\subsection{Ścieżka statystyczna}
+
+Zaimplementowano interpretowalny pipeline statystyczno-stylometryczny bazujący
+na wektorze 13 cech leksykalno-syntaktycznych. Ewaluację przeprowadzono na
+dokładnie tym samym oczyszczonym zbiorze (27\,280 tekstów) i identycznym
+podziale danych (\texttt{seed = 42}, 21\,824 / 2\,728 / 2\,728) co w ścieżce ML,
+co zapewnia pełną spójność metodologiczną.
+
+\paragraph{Ekstrakcja cech stylometrycznych.}
+Dla każdego tekstu obliczono 13 cech odzwierciedlających rytm i bogactwo językowe:
+\begin{itemize}
+	\item \textbf{Długość zdań} (\path{avg_sentence_len}, \path{std_sentence_len}) --
+	średnia liczba słów w~zdaniu oraz jej odchylenie standardowe. Teksty ludzkie charakteryzują się średnio dłuższymi zdaniami (25,9 vs 23,0 słów) oraz znacznie większą zmiennością (odchylenie 13,0 vs 8,4).
+	\item \textbf{Burstiness (zmienność rytmu)} --
+	cecha mierzona współczynnikiem zmienności $CV = \sigma / \mu$ (\path{burstiness_cv}: 0,491 dla ludzi vs 0,353 dla AI) oraz średnią bezwzględną różnicą długości kolejnych zdań (\path{burstiness_diff}: 15,33 vs 9,00). Tekst ludzki cechuje wyraźna dynamikę skokowa, podczas gdy modele LLM tworzą zdania o~wygładzonym rytmie.
+	\item \textbf{Bogactwo słownikowe} --
+	wskaźnik Type-Token Ratio $\text{TTR} = |V| / N$ (\path{ttr}) oraz indeks Guirauda (\path{root_ttr} = $|V| / \sqrt{N}$).
+	\item \textbf{Cechy leksykalne i interpunkcyjne} --
+	udział słów funkcyjnych (\path{stopword_ratio}), średnia długość słowa (\path{avg_word_len}: 4,42 dla ludzi vs 5,11 dla AI), gęstość przecinków na zdanie (\path{comma_per_sentence}: 0,83 vs 0,99) oraz proporcja wielkich liter i~cyfr.
+\end{itemize}
+
+\paragraph{Modele klasyfikacyjne.}
+Zbadano dwa warianty decyzyjne operujące na wyekstrahowanych cechach:
+\begin{enumerate}
+	\item \textbf{Model progowy (drzewo o głębokości 2):} jawne reguły decyzyjne oparte o średnią długość wyrazu i burstiness osiągnęły dokładność \textbf{85,34\%} oraz F1 = \textbf{0,8296}.
+	\item \textbf{Regresja logistyczna ze standaryzacją (\texttt{StandardScaler}):} model liniowy osiągnął wynik finalny na odłożonym zbiorze testowym:
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+metryka & wartość \\
+\hline
+accuracy & \textbf{0,90689} \\
+precision & \textbf{0,86986} \\
+recall & \textbf{0,90877} \\
+F1 & \textbf{0,88889} \\
+ROC-AUC & \textbf{0,96836} \\
+\hline
+\end{tabular}
+\end{center}
+
+Macierz pomyłek: \texttt{[[1458, 152], [102, 1016]]}. Na 2\,728 próbek testowych
+model popełnił 254 błędy (152 fałszywe alarmy $\text{human} \rightarrow \text{ai}$ oraz
+102 błędy $\text{ai} \rightarrow \text{human}$).
+
+\paragraph{Interpretowalność wag cech.}
+Analiza znormalizowanych współczynników regresji logistycznej wykazała, że
+najsilniejszymi predyktorami tekstu ludzkiego są: średnia długość zdań (waga $-2{,}74$),
+skokowość długości sąsiednich zdań \path{burstiness_diff} (waga $-2{,}56$),
+zmienność rytmu \path{burstiness_cv} (waga $-1{,}72$) oraz udział wielkich liter (waga $-1{,}45$).
+Z kolei za tekstem AI najsilniej przemawiają: średnia długość wyrazu (waga $+3{,}08$,
+sugerująca używanie bardziej wyszukanego leksykonu), odchylenie długości zdań (waga $+3{,}05$)
+oraz zagęszczenie przecinków (waga $+0{,}94$).
+
+\paragraph{Zależność od długości tekstu.}
+Podział odłożonego zbioru testowego na kwartyle długości słownej ujawnia wyraźną
+wrażliwość metody statystycznej na objętość materiału:
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+kwartyl (słowa) & próbki & accuracy & precision & recall & F1 \\
+\hline
+Q1 (50--256) & 685 & 0,84088 & 0,83846 & 0,87668 & 0,85714 \\
+Q2 (256--345) & 680 & 0,89559 & 0,90000 & 0,90736 & 0,90366 \\
+Q3 (345--453) & 681 & 0,93098 & 0,87755 & 0,95911 & 0,91652 \\
+Q4 (453--1650) & 682 & \textbf{0,96041} & 0,85965 & 0,89908 & 0,87892 \\
+\hline
+\end{tabular}
+\end{center}
+
+Na krótkich tekstach (Q1) dokładność wynosi 84,1\%, podczas gdy na długich esejach
+(Q4) wzrasta do 96,0\%. Wynika to z dużej wariancji estymatorów statystycznych
+(TTR, burstiness) przy małej liczbie zdań.
+
+\paragraph{Ograniczenia metody statystycznej.}
+Kluczowe ograniczenia to: wrażliwość na małą długość tekstu (poniżej 150 słów
+statystyki ulegają degradacji), podatność na celowy prompt engineering
+(instrukcja nakazująca zróżnicowanie zdań znosi sygnaturę stylu), brak analizy
+semantyki i logiki oraz konieczność rekalibracji przy zmianie języka (np. na język polski).
+Pełną analizę zawarto w dokumencie \path{statistical/stat-ograniczenia.md}.
+
+\subsection{Porównanie ścieżki statystycznej i machine learning}
+
+Dzięki zachowaniu identycznego podziału danych (\texttt{seed = 42}) możliwe
+było bezpośrednie zestawienie obu podejść na odłożonym zbiorze testowym:
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Cecha / Metryka & Ścieżka statystyczna & Ścieżka ML (DistilBERT) \\
+\hline
+accuracy & 0,90689 & \textbf{0,99707} \\
+precision & 0,86986 & \textbf{1,00000} \\
+recall & 0,90877 & \textbf{0,99284} \\
+F1-score & 0,88889 & \textbf{0,99641} \\
+liczba błędów (na 2\,728) & 254 & \textbf{8} \\
+czas trenowania & \textbf{ok. 25 s (CPU)} & ok. 8,4 min (GPU) \\
+liczba parametrów & \textbf{14} & 67 mln \\
+interpretowalność & \textbf{pełna (jawne wagi)} & niska (czarna skrzynka) \\
+\hline
+\end{tabular}
+\end{center}
+
+Model transformerowy osiąga niemal bezbłędną separację (F1 $\approx 0{,}996$,
+brak fałszywych alarmów), jednak wymaga kosztownego sprzętu obliczeniowego.
+Ścieżka statystyczna osiąga satysfakcjonującą jakość (dokładność $> 90\%$, F1 $\approx 0{,}89$,
+znacznie powyżej założonego w wymaganiach minimum 51\%), oferując natychmiastowy
+czas wnioskowania oraz pełną przejrzystość podjętej decyzji.

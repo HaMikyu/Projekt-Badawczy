@@ -5,9 +5,16 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
-import torch
-from torch.utils.data import DataLoader, Dataset
-from transformers import PreTrainedTokenizerBase
+
+try:
+    import torch
+    from torch.utils.data import DataLoader, Dataset
+    from transformers import PreTrainedTokenizerBase
+except ImportError:
+    torch = None
+    DataLoader = None
+    Dataset = object
+    PreTrainedTokenizerBase = Any
 
 
 LABEL_NAMES = ("human", "ai")
