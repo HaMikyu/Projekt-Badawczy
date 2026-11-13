@@ -11,15 +11,19 @@ Na obecnym etapie wykonano:
 	\item uszczegółowienie wymagań funkcjonalnych i niefunkcjonalnych,
 	\item doprecyzowanie zakresu, kamieni milowych i harmonogramu (diagram Gantta),
 	\item szczegółową specyfikację wejścia/wyjścia, przepływu przetwarzania i planu ewaluacji,
-	\item wstępną listę zbiorów danych (Kaggle, SpeakLeash i inne).
+	\item wstępną listę zbiorów danych (Kaggle, SpeakLeash i inne),
+	\item implementację i~ewaluację ścieżki ML (DistilBERT) oraz ścieżki statystycznej (13 cech stylometrycznych),
+	\item porównanie obu ścieżek na wspólnym podziale Kaggle i~na zbiorze spoza domeny (Ghostbuster).
 \end{itemize}
 
-Zaimplementowano ścieżkę ML i wykonano pomiary na teście IID oraz zewnętrznym OOD.
+Zaimplementowano obie ścieżki detekcji -- uczenia maszynowego (ML) i~statystyczną -- oraz
+wykonano pomiary na teście IID i~na zewnętrznym zbiorze OOD (Ghostbuster).
 
 \subsection{Ścieżka machine learning}
 
-Zaimplementowano fine-tuning \texttt{distilbert-base-uncased} w PyTorch Lightning
-(klasyfikacja \texttt{human}/\texttt{ai}, seed 42).
+Zaimplementowano fine-tuning modelu \path{distilbert-base-uncased}
+(67 mln parametrów) w~PyTorch Lightning. Klasyfikacja jest binarna:
+	exttt{human} = 0, 	exttt{ai} = 1 (seed 	exttt{42}).
 
 \paragraph{Dlaczego wynik 99\% był mylący.}
 Model wytrenowany tylko na Kaggle osiągał ok. 0,997 accuracy na teście z tego
@@ -45,10 +49,179 @@ OOD Ghostbuster (baseline Kaggle) & 0,516 & 0,508 & 0,997 & 0,673 \\
 \end{tabular}
 \end{center}
 
+\paragraph{Rozbicie na źródła.}
+Nowy model nie traci nic na danych Kaggle: na wycinku esejów Kaggle w~teście IID
+osiąga accuracy 0,9985 (3 błędy na 1\,978), czyli tyle co model bazowy, a~na
+Ghostbusterze jest o~32 p.p.\ lepszy. Na OOD wykrywa 97\% tekstów AI. Teksty
+GPT we wszystkich wariantach promptów rozpoznaje w~98--100\%, teksty Claude
+w~82,7\%. Prawie wszystkie błędy (279 z~307) to fałszywe alarmy na tekstach
+ludzkich, z~których poprawnie rozpoznano 70,5\%. Próg dobrany na walidacji
+(0,2) nie przenosi się na OOD (0,829 zamiast 0,838 przy progu 0,5), dlatego
+eksportowany model używa progu 0,5.
+
+\paragraph{Eksperyment pośredni: hold-out domen HC3.}
+Wcześniejszy wariant (\texttt{v2}) trenowano na Kaggle oraz HC3 finance
+i~reddit\_eli5, a~testowano na nieobecnych w~treningu domenach HC3. Ogólna
+accuracy wyniosła 0,821: medycyna 0,969, open QA 0,927, ale teksty
+encyklopedyczne (wiki\_csai) tylko 0,428, bo formalny styl ludzki był mylony
+z~AI. Dlatego w~\texttt{v3} do treningu włączono wszystkie domeny HC3,
+a~test generalizacji przeniesiono na zewnętrzny zbiór Ghostbuster.
+
 \paragraph{Ograniczenia.}
 Detekcja AI nie jest rozwiązana uniwersalnie: nowe modele LLM, parafrazy i
 zmiana domeny nadal obniżają jakość. Na OOD model ma bias w stronę AI
 (więcej fałszywych alarmów niż przeoczeń). Szczegóły: \path{train/WYNIKI.md}.
 
-\paragraph{Porównanie ze ścieżką statystyczną.}
-Wymaga wspólnego podziału danych ze ścieżką Michała; zestawienie do uzupełnienia.
+\subsection{Ścieżka statystyczna}
+
+Zaimplementowano interpretowalny pipeline statystyczno-stylometryczny bazujący
+na wektorze 13 cech leksykalno-syntaktycznych. Ewaluację przeprowadzono na
+dokładnie tym samym oczyszczonym zbiorze (27\,280 tekstów) i identycznym
+podziale danych (\texttt{seed = 42}, 21\,824 / 2\,728 / 2\,728) co w ścieżce ML,
+co zapewnia pełną spójność metodologiczną.
+
+\paragraph{Ekstrakcja cech stylometrycznych.}
+Dla każdego tekstu obliczono 13 cech odzwierciedlających rytm i bogactwo językowe:
+\begin{itemize}
+	\item \textbf{Długość zdań} (\path{avg_sentence_len}, \path{std_sentence_len}) --
+	średnia liczba słów w~zdaniu oraz jej odchylenie standardowe. Teksty ludzkie charakteryzują się średnio dłuższymi zdaniami (25,9 vs 23,0 słów) oraz znacznie większą zmiennością (odchylenie 13,0 vs 8,4).
+	\item \textbf{Burstiness (zmienność rytmu)} --
+	cecha mierzona współczynnikiem zmienności $CV = \sigma / \mu$ (\path{burstiness_cv}: 0,491 dla ludzi vs 0,353 dla AI) oraz średnią bezwzględną różnicą długości kolejnych zdań (\path{burstiness_diff}: 15,33 vs 9,00). Tekst ludzki cechuje wyraźna dynamika skokowa, podczas gdy modele LLM tworzą zdania o~wygładzonym rytmie.
+	\item \textbf{Bogactwo słownikowe} --
+	wskaźnik Type-Token Ratio $\text{TTR} = |V| / N$ (\path{ttr}) oraz indeks Guirauda (\path{root_ttr} = $|V| / \sqrt{N}$).
+	\item \textbf{Cechy leksykalne i interpunkcyjne} --
+	udział słów funkcyjnych (\path{stopword_ratio}), średnia długość słowa (\path{avg_word_len}: 4,42 dla ludzi vs 5,11 dla AI), gęstość przecinków na zdanie (\path{comma_per_sentence}: 0,83 vs 0,99) oraz proporcja wielkich liter i~cyfr.
+\end{itemize}
+
+\paragraph{Modele klasyfikacyjne.}
+Zbadano dwa warianty decyzyjne operujące na wyekstrahowanych cechach:
+\begin{enumerate}
+	\item \textbf{Model progowy (drzewo o głębokości 2):} jawne reguły decyzyjne oparte o średnią długość wyrazu i burstiness osiągnęły dokładność \textbf{85,34\%} oraz F1 = \textbf{0,8296}.
+	\item \textbf{Regresja logistyczna ze standaryzacją (\texttt{StandardScaler}):} model liniowy osiągnął wynik finalny na odłożonym zbiorze testowym:
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+metryka & wartość \\
+\hline
+accuracy & \textbf{0,90689} \\
+precision & \textbf{0,86986} \\
+recall & \textbf{0,90877} \\
+F1 & \textbf{0,88889} \\
+ROC-AUC & \textbf{0,96836} \\
+\hline
+\end{tabular}
+\end{center}
+
+Macierz pomyłek: \texttt{[[1458, 152], [102, 1016]]}. Na 2\,728 próbek testowych
+model popełnił 254 błędy (152 fałszywe alarmy $\text{human} \rightarrow \text{ai}$ oraz
+102 błędy $\text{ai} \rightarrow \text{human}$).
+
+\paragraph{Interpretowalność wag cech.}
+Analiza znormalizowanych współczynników regresji logistycznej wykazała, że
+najsilniejszymi predyktorami tekstu ludzkiego są: średnia długość zdań (waga $-2{,}74$),
+skokowość długości sąsiednich zdań \path{burstiness_diff} (waga $-2{,}56$),
+zmienność rytmu \path{burstiness_cv} (waga $-1{,}72$) oraz udział wielkich liter (waga $-1{,}45$).
+Z kolei za tekstem AI najsilniej przemawiają: średnia długość wyrazu (waga $+3{,}08$,
+sugerująca używanie bardziej wyszukanego leksykonu), odchylenie długości zdań (waga $+3{,}05$)
+oraz zagęszczenie przecinków (waga $+0{,}94$).
+
+\paragraph{Zależność od długości tekstu.}
+Podział odłożonego zbioru testowego na kwartyle długości słownej ujawnia wyraźną
+wrażliwość metody statystycznej na objętość materiału:
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+kwartyl (słowa) & próbki & accuracy & precision & recall & F1 \\
+\hline
+Q1 (50--256) & 685 & 0,84088 & 0,83846 & 0,87668 & 0,85714 \\
+Q2 (256--345) & 680 & 0,89559 & 0,90000 & 0,90736 & 0,90366 \\
+Q3 (345--453) & 681 & 0,93098 & 0,87755 & 0,95911 & 0,91652 \\
+Q4 (453--1650) & 682 & \textbf{0,96041} & 0,85965 & 0,89908 & 0,87892 \\
+\hline
+\end{tabular}
+\end{center}
+
+Na krótkich tekstach (Q1) dokładność wynosi 84,1\%, podczas gdy na długich esejach
+(Q4) wzrasta do 96,0\%. Wynika to z dużej wariancji estymatorów statystycznych
+(TTR, burstiness) przy małej liczbie zdań.
+
+\paragraph{Ograniczenia metody statystycznej.}
+Kluczowe ograniczenia to: wrażliwość na małą długość tekstu (poniżej 150 słów
+statystyki ulegają degradacji), podatność na celowy prompt engineering
+(instrukcja nakazująca zróżnicowanie zdań znosi sygnaturę stylu), brak analizy
+semantyki i logiki oraz konieczność rekalibracji przy zmianie języka (np. na język polski).
+Pełną analizę zawarto w dokumencie \path{statistical/stat-ograniczenia.md}.
+
+\subsection{Porównanie ścieżki statystycznej i machine learning}
+
+\paragraph{Wspólny podział Kaggle.}
+Dzięki zachowaniu identycznego podziału danych (\texttt{seed = 42}) możliwe
+było bezpośrednie zestawienie obu podejść na odłożonym zbiorze testowym Kaggle.
+Kolumna ML dotyczy modelu bazowego trenowanego wyłącznie na Kaggle
+(commit \texttt{6158bbf}), bo tylko on używa tego samego podziału:
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Cecha / Metryka & Ścieżka statystyczna & ML (DistilBERT, Kaggle) \\
+\hline
+accuracy & 0,90689 & \textbf{0,99707} \\
+precision & 0,86986 & \textbf{1,00000} \\
+recall & 0,90877 & \textbf{0,99284} \\
+F1-score & 0,88889 & \textbf{0,99641} \\
+liczba błędów (na 2\,728) & 254 & \textbf{8} \\
+czas trenowania & \textbf{ok. 25 s (CPU)} & ok. 8,4 min (GPU) \\
+liczba parametrów & \textbf{14} & 67 mln \\
+interpretowalność & \textbf{pełna (jawne wagi)} & niska (czarna skrzynka) \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Test poza domeną (Ghostbuster).}
+Wynik na jednorodnym zbiorze Kaggle zawyża obraz obu metod, dlatego model
+statystyczny oceniono także na tym samym zbiorze OOD co ścieżkę ML
+(Ghostbuster, 1\,892 teksty, 946 ludzkich i~946 wygenerowanych przez modele Claude lub GPT).
+Sprawdzono dwa warianty regresji logistycznej: wytrenowany na Kaggle oraz
+wytrenowany na tej samej mieszance źródeł co \texttt{distilbert-v3}.
+
+\begin{center}
+\small
+\begin{tabular}{|l|l|c|c|c|c|c|}
+\hline
+model & trening & accuracy & precision & recall & F1 & ROC-AUC \\
+\hline
+statystyczny (reg.\ log.) & Kaggle & 0,659 & 0,600 & 0,952 & 0,736 & 0,838 \\
+statystyczny (reg.\ log.) & mieszanka & 0,520 & 0,510 & 0,988 & 0,673 & 0,868 \\
+DistilBERT bazowy & Kaggle & 0,516 & 0,508 & 0,997 & 0,673 & -- \\
+DistilBERT \texttt{v3} & mieszanka & \textbf{0,838} & \textbf{0,767} & 0,970 & \textbf{0,857} & -- \\
+\hline
+\end{tabular}
+\end{center}
+
+Wnioski z porównania:
+\begin{itemize}
+	\item Po wyjściu poza domenę oba modele trenowane tylko na Kaggle tracą
+	najwięcej, ale model statystyczny mniej (0,659 vs 0,516 accuracy). Kilkanaście
+	jawnych cech słabiej dopasowuje się do artefaktów jednego pliku CSV niż
+	67 mln parametrów.
+	\item Model statystyczny nie korzysta na bardziej zróżnicowanych danych: po
+	treningu na mieszance (eseje, Reddit, finanse, medycyna, Wikipedia) accuracy
+	na teście IID spada do 0,747 (DistilBERT \texttt{v3}: 0,986), a na OOD do 0,520.
+	13 cech stylometrycznych nie wystarcza do opisania stylu wielu domen jednocześnie.
+	\item Wszystkie modele na OOD przesuwają się w~stronę klasy AI. Model
+	statystyczny trenowany na Kaggle poprawnie rozpoznaje tylko 36,6\% ludzkich
+	tekstów Ghostbuster, a~trenowany na mieszance --- 5,2\%.
+	\item ROC-AUC modeli statystycznych na OOD (0,84--0,87) wskazuje, że
+	uszeregowanie tekstów jest sensowne, a~głównym problemem jest próg
+	decyzyjny. Kalibracja progu na danych z~docelowej domeny jest naturalnym
+	kolejnym krokiem.
+\end{itemize}
+
+W efekcie DistilBERT \texttt{v3} jest jedynym podejściem z~akceptowalnym wynikiem
+poza domeną. Ścieżka statystyczna pozostaje wartościowa jako szybki,
+interpretowalny punkt odniesienia, który w~dodatku lepiej znosi zmianę domeny
+niż model ML trenowany na jednym źródle. Ewaluację OOD odtwarza skrypt
+\path{statistical/eval_ood.py} (wyniki: \path{statistical/runs/ood_results.json}).

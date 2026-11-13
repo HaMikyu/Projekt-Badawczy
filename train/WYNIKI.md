@@ -64,6 +64,40 @@ Macierz v3 na OOD (`[[TN, FP], [FN, TP]]`):
 
 Czas treningu v3: ~18 min (5 epok, batch 32, max_length 256).
 
+### Rozbicie na źródła (z `metrics.json`)
+
+**v3 nic nie traci na Kaggle.** Na wycinku `kaggle_essays` testu IID: accuracy **0,9985** (3 błędy na 1 978), czyli tyle co baseline (0,997), a na OOD +32 p.p.
+
+OOD Ghostbuster, próg 0,5:
+
+| źródło | n | accuracy |
+|---|---|---|
+| gpt | 243 | **1,000** |
+| gpt_prompt1 | 163 | **0,994** |
+| gpt_prompt2 | 112 | **1,000** |
+| gpt_writing | 111 | **1,000** |
+| gpt_semantic | 178 | 0,983 |
+| claude | 139 | 0,827 |
+| human | 946 | 0,705 |
+
+Tekst AI z Ghostbustera v3 łapie w 97%, a GPT praktycznie zawsze. Prawie wszystkie błędy to fałszywe alarmy na tekstach ludzkich (279 z 307).
+
+**Próg strojony na walidacji nie przenosi się na OOD.** `train_v2.py` dobrał na walidacji próg 0,2 (IID: 0,986), ale na Ghostbusterze daje on 0,829 zamiast 0,838 przy 0,5. Dlatego eksportowany model (`models/distilbert-final/export_meta.json`) używa progu 0,5. To samo zjawisko widać w ścieżce statystycznej (`statistical/WYNIKI.md`, sekcja 7).
+
+### Eksperyment pośredni v2: hold-out domen HC3
+
+`train/runs/distilbert-v2/metrics.json`: trening na Kaggle + HC3 finance + HC3 reddit_eli5 (43 200 tekstów), test na domenach HC3, których model nie widział:
+
+| test | n | accuracy | F1 |
+|---|---|---|---|
+| IID (Kaggle + finance + reddit) | 5 400 | 0,997 | 0,997 |
+| OOD razem | 3 808 | 0,821 | 0,848 |
+| hc3_medicine | 1 245 | **0,969** | 0,932 |
+| hc3_open_qa | 1 649 | 0,927 | 0,960 |
+| hc3_wiki_csai | 914 | 0,428 | 0,414 |
+
+Medycyna i open QA przenoszą się dobrze, ale na tekstach encyklopedycznych (wiki_csai) model myli 522 ludzkie teksty z AI: formalny styl wygląda dla niego jak AI. Wniosek: do treningu v3 dołączono wszystkie domeny HC3 i Pile, a test generalizacji przeniesiono na całkowicie zewnętrzny Ghostbuster.
+
 ## 4. Ograniczenia (uczciwie)
 
 - Detekcja AI **nie jest rozwiązana**: nowszy Claude/GPT i parafrazy nadal będą trudne.

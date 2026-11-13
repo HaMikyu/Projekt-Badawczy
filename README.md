@@ -21,3 +21,30 @@ Projekt badawczy: detekcja tekstu generowanego przez AI
 - porównanie wyniku ML z wynikiem ścieżki statystycznej (ten sam seed i podział danych)
 - krótki opis ograniczeń metody ML (koszt, overfitting, zależność od domeny / długości tekstu)
 - bez SVM / klasycznego TF-IDF jako głównego modelu
+
+## Stan prac
+
+| Ścieżka | Kod | Wyniki | Ograniczenia |
+|---|---|---|---|
+| Statystyczna | `statistical/` | [`statistical/WYNIKI.md`](statistical/WYNIKI.md) | [`statistical/stat-ograniczenia.md`](statistical/stat-ograniczenia.md) |
+| Machine learning | `train/` | [`train/WYNIKI.md`](train/WYNIKI.md) | [`train/ml-ograniczenia.md`](train/ml-ograniczenia.md) |
+
+Najważniejsze liczby (accuracy):
+
+| Model | Test Kaggle (IID) | Ghostbuster (OOD) |
+|---|---|---|
+| Statystyczny — regresja logistyczna, 13 cech, trening Kaggle | 0,907 | 0,659 |
+| DistilBERT — trening Kaggle (baseline) | 0,997 | 0,516 |
+| DistilBERT v3 — trening na mieszance źródeł | 0,986* | **0,838** |
+
+\* test IID mieszanki źródeł, nie samego Kaggle.
+
+Uruchomienie ścieżki statystycznej:
+
+```powershell
+.\.venv\Scripts\python.exe statistical\run_experiment.py
+.\.venv\Scripts\python.exe statistical\eval_ood.py
+.\.venv\Scripts\python.exe statistical\predict.py "tekst do sprawdzenia"
+```
+
+Dokumentacja LaTeX: `Dokumentacja/` (kompilacja: `compile.sh`), rozdział 6 opisuje wyniki obu ścieżek.

@@ -1,0 +1,153 @@
+{
+  "kaggle_lr_on_ood": {
+    "accuracy": 0.6590909090909091,
+    "precision": 0.6002664890073285,
+    "recall": 0.952431289640592,
+    "f1": 0.7364119329791582,
+    "confusion_matrix": [
+      [
+        346,
+        600
+      ],
+      [
+        45,
+        901
+      ]
+    ],
+    "roc_auc": 0.8380350781525865
+  },
+  "mix_lr_on_iid_test": {
+    "accuracy": 0.7470173535791758,
+    "precision": 0.7459503239740821,
+    "recall": 0.7491865509761388,
+    "f1": 0.747564935064935,
+    "confusion_matrix": [
+      [
+        2747,
+        941
+      ],
+      [
+        925,
+        2763
+      ]
+    ],
+    "roc_auc": 0.8185560191698703
+  },
+  "mix_lr_on_ood": {
+    "accuracy": 0.5200845665961945,
+    "precision": 0.5103711790393013,
+    "recall": 0.9883720930232558,
+    "f1": 0.6731461483081354,
+    "confusion_matrix": [
+      [
+        49,
+        897
+      ],
+      [
+        11,
+        935
+      ]
+    ],
+    "roc_auc": 0.8678121745504606
+  },
+  "ood_accuracy_per_source": {
+    "kaggle_lr": {
+      "ghostbuster_claude": 0.964,
+      "ghostbuster_gpt": 0.9753,
+      "ghostbuster_gpt_prompt1": 0.9448,
+      "ghostbuster_gpt_prompt2": 0.8929,
+      "ghostbuster_gpt_semantic": 0.9607,
+      "ghostbuster_gpt_writing": 0.9459,
+      "ghostbuster_human": 0.3658
+    },
+    "mix_lr": {
+      "ghostbuster_claude": 0.9856,
+      "ghostbuster_gpt": 1.0,
+      "ghostbuster_gpt_prompt1": 0.9816,
+      "ghostbuster_gpt_prompt2": 0.9643,
+      "ghostbuster_gpt_semantic": 0.9944,
+      "ghostbuster_gpt_writing": 0.991,
+      "ghostbuster_human": 0.0518
+    }
+  },
+  "mix_lr_weights": [
+    {
+      "feature": "avg_word_len",
+      "weight": 0.9034556833957503,
+      "abs_weight": 0.9034556833957503,
+      "direction": "AI"
+    },
+    {
+      "feature": "burstiness_cv",
+      "weight": -0.8469771960857587,
+      "abs_weight": 0.8469771960857587,
+      "direction": "Human"
+    },
+    {
+      "feature": "std_sentence_len",
+      "weight": 0.7552560993217095,
+      "abs_weight": 0.7552560993217095,
+      "direction": "AI"
+    },
+    {
+      "feature": "ttr",
+      "weight": -0.515598132629817,
+      "abs_weight": 0.515598132629817,
+      "direction": "Human"
+    },
+    {
+      "feature": "comma_per_sentence",
+      "weight": 0.4720195127638547,
+      "abs_weight": 0.4720195127638547,
+      "direction": "AI"
+    },
+    {
+      "feature": "punct_ratio",
+      "weight": -0.38213707859104123,
+      "abs_weight": 0.38213707859104123,
+      "direction": "Human"
+    },
+    {
+      "feature": "burstiness_diff",
+      "weight": -0.32752991500808176,
+      "abs_weight": 0.32752991500808176,
+      "direction": "Human"
+    },
+    {
+      "feature": "avg_sentence_len",
+      "weight": -0.3230852234613082,
+      "abs_weight": 0.3230852234613082,
+      "direction": "Human"
+    },
+    {
+      "feature": "root_ttr",
+      "weight": -0.3077903695493659,
+      "abs_weight": 0.3077903695493659,
+      "direction": "Human"
+    },
+    {
+      "feature": "exclaim_question_ratio",
+      "weight": 0.2458891610037862,
+      "abs_weight": 0.2458891610037862,
+      "direction": "AI"
+    },
+    {
+      "feature": "digit_ratio",
+      "weight": 0.06152837500552707,
+      "abs_weight": 0.06152837500552707,
+      "direction": "AI"
+    },
+    {
+      "feature": "stopword_ratio",
+      "weight": -0.04660298994315574,
+      "abs_weight": 0.04660298994315574,
+      "direction": "Human"
+    },
+    {
+      "feature": "uppercase_ratio",
+      "weight": 0.020276574256936897,
+      "abs_weight": 0.020276574256936897,
+      "direction": "AI"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "dataset_report": {
+    "raw_rows": 29145,
+    "dropped_short_rows": 3,
+    "dropped_conflicting_label_rows": 0,
+    "dropped_duplicate_rows": 1862,
+    "duplicate_groups_removed": 1858,
+    "clean_rows": 27280
+  },
+  "feature_means": [
+    {
+      "feature": "avg_sentence_len",
+      "human_mean": 25.944263557347128,
+      "ai_mean": 22.987905326449546,
+      "diff": -2.9563582308975818
+    },
+    {
+      "feature": "std_sentence_len",
+      "human_mean": 13.029158347654391,
+      "ai_mean": 8.43741951740664,
+      "diff": -4.591738830247751
+    },
+    {
+      "feature": "burstiness_cv",
+      "human_mean": 0.4913150809365445,
+      "ai_mean": 0.3533612296047152,
+      "diff": -0.1379538513318293
+    },
+    {
+      "feature": "burstiness_diff",
+      "human_mean": 15.331075859772595,
+      "ai_mean": 9.00132993299904,
+      "diff": -6.329745926773555
+    },
+    {
+      "feature": "ttr",
+      "human_mean": 0.44650553688896005,
+      "ai_mean": 0.5555668576506441,
+      "diff": 0.10906132076168401
+    },
+    {
+      "feature": "root_ttr",
+      "human_mean": 8.736319411344805,
+      "ai_mean": 9.443925279179584,
+      "diff": 0.7076058678347792
+    },
+    {
+      "feature": "stopword_ratio",
+      "human_mean": 0.5003992695169337,
+      "ai_mean": 0.437945757324685,
+      "diff": -0.062453512192248706
+    },
+    {
+      "feature": "avg_word_len",
+      "human_mean": 4.420291518968006,
+      "ai_mean": 5.110710944420949,
+      "diff": 0.6904194254529425
+    },
+    {
+      "feature": "punct_ratio",
+      "human_mean": 0.019963317688964703,
+      "ai_mean": 0.018152736273073025,
+      "diff": -0.0018105814158916773
+    },
+    {
+      "feature": "comma_per_sentence",
+      "human_mean": 0.8274654965927895,
+      "ai_mean": 0.9897600500236855,
+      "diff": 0.16229455343089605
+    },
+    {
+      "feature": "exclaim_question_ratio",
+      "human_mean": 0.0004099530095982186,
+      "ai_mean": 0.0002610056829443382,
+      "diff": -0.0001489473266538804
+    },
+    {
+      "feature": "uppercase_ratio",
+      "human_mean": 0.017189943792775223,
+      "ai_mean": 0.01117600518274074,
+      "diff": -0.006013938610034483
+    },
+    {
+      "feature": "digit_ratio",
+      "human_mean": 0.0028606167745307866,
+      "ai_mean": 0.0006617276905065316,
+      "diff": -0.002198889084024255
+    }
+  ],
+  "threshold_model": {
+    "rules": "|--- avg_word_len <= 4.85\n|   |--- burstiness_cv <= 0.32\n|   |   |--- class: 1\n|   |--- burstiness_cv >  0.32\n|   |   |--- class: 0\n|--- avg_word_len >  4.85\n|   |--- avg_word_len <= 5.04\n|   |   |--- class: 1\n|   |--- avg_word_len >  5.04\n|   |   |--- class: 1\n",
+    "metrics": {
+      "accuracy": 0.8533724340175953,
+      "precision": 0.791869918699187,
+      "recall": 0.8711985688729875,
+      "f1": 0.8296422487223168,
+      "confusion_matrix": [
+        [
+          1354,
+          256
+        ],
+        [
+          144,
+          974
+        ]
+      ]
+    }
+  },
+  "logistic_regression": {
+    "metrics": {
+      "accuracy": 0.906891495601173,
+      "precision": 0.8698630136986302,
+      "recall": 0.9087656529516994,
+      "f1": 0.8888888888888888,
+      "confusion_matrix": [
+        [
+          1458,
+          152
+        ],
+        [
+          102,
+          1016
+        ]
+      ],
+      "roc_auc": 0.9683574261936243
+    },
+    "feature_weights": [
+      {
+        "feature": "avg_word_len",
+        "weight": 3.077111084166314,
+        "abs_weight": 3.077111084166314,
+        "direction": "AI"
+      },
+      {
+        "feature": "std_sentence_len",
+        "weight": 3.0478897549508983,
+        "abs_weight": 3.0478897549508983,
+        "direction": "AI"
+      },
+      {
+        "feature": "avg_sentence_len",
+        "weight": -2.7442626569466655,
+        "abs_weight": 2.7442626569466655,
+        "direction": "Human"
+      },
+      {
+        "feature": "burstiness_diff",
+        "weight": -2.563638087939212,
+        "abs_weight": 2.563638087939212,
+        "direction": "Human"
+      },
+      {
+        "feature": "burstiness_cv",
+        "weight": -1.720302904513921,
+        "abs_weight": 1.720302904513921,
+        "direction": "Human"
+      },
+      {
+        "feature": "ttr",
+        "weight": 1.4713647572662063,
+        "abs_weight": 1.4713647572662063,
+        "direction": "AI"
+      },
+      {
+        "feature": "uppercase_ratio",
+        "weight": -1.452874398103406,
+        "abs_weight": 1.452874398103406,
+        "direction": "Human"
+      },
+      {
+        "feature": "root_ttr",
+        "weight": -1.3611591226399569,
+        "abs_weight": 1.3611591226399569,
+        "direction": "Human"
+      },
+      {
+        "feature": "comma_per_sentence",
+        "weight": 0.9392829652875831,
+        "abs_weight": 0.9392829652875831,
+        "direction": "AI"
+      },
+      {
+        "feature": "digit_ratio",
+        "weight": -0.5772736434260787,
+        "abs_weight": 0.5772736434260787,
+        "direction": "Human"
+      },
+      {
+        "feature": "stopword_ratio",
+        "weight": 0.3080387076271299,
+        "abs_weight": 0.3080387076271299,
+        "direction": "AI"
+      },
+      {
+        "feature": "exclaim_question_ratio",
+        "weight": 0.2205897224720791,
+        "abs_weight": 0.2205897224720791,
+        "direction": "AI"
+      },
+      {
+        "feature": "punct_ratio",
+        "weight": 0.07301355192836054,
+        "abs_weight": 0.07301355192836054,
+        "direction": "AI"
+      }
+    ],
+    "length_buckets": [
+      {
+        "bucket": "(49.999, 256.0]",
+        "rows": 685,
+        "accuracy": 0.8408759124087591,
+        "precision": 0.8384615384615385,
+        "recall": 0.8766756032171582,
+        "f1": 0.8571428571428571
+      },
+      {
+        "bucket": "(256.0, 345.0]",
+        "rows": 680,
+        "accuracy": 0.8955882352941177,
+        "precision": 0.9,
+        "recall": 0.9073569482288828,
+        "f1": 0.903663500678426
+      },
+      {
+        "bucket": "(345.0, 453.25]",
+        "rows": 681,
+        "accuracy": 0.9309838472834068,
+        "precision": 0.8775510204081632,
+        "recall": 0.9591078066914498,
+        "f1": 0.91651865008881
+      },
+      {
+        "bucket": "(453.25, 1650.0]",
+        "rows": 682,
+        "accuracy": 0.9604105571847508,
+        "precision": 0.8596491228070176,
+        "recall": 0.8990825688073395,
+        "f1": 0.8789237668161435
+      }
+    ],
+    "length_only_auc": 0.6864051267236302
+  }
+}
