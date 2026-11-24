@@ -1,0 +1,240 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+\usefonttheme{professionalfonts}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\righthyphenmin=62
+\lefthyphenmin=62
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\title{Detekcja tekstu wygenerowanego przez AI}
+\subtitle{Jak odróżnić esej człowieka od tekstu AI}
+\author{Michał Dąbrowski \and Dominik Zabielski \and Michał Niechciałkowski}
+\institute{Politechnika Białostocka, Wydział Informatyki\\
+Prowadzący: dr hab.\ inż.\ Sławomir Zieliński}
+\date{Białystok, 2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Plan prezentacji}
+  \begin{enumerate}
+    \item O co chodzi w projekcie
+    \item Z jakich danych korzystaliśmy
+    \item Prosta metoda: cechy stylu tekstu
+    \item DistilBERT i dlaczego wynik 99\% był mylący
+    \item System One: lepszy model na esejach
+    \item Aplikacja, test na nowych esejach i wnioski
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{O co chodzi w projekcie}
+  \begin{itemize}
+    \item Chcemy rozpoznać, czy esej napisał człowiek, czy sztuczna inteligencja
+    \item Metoda 1: proste cechy stylu tekstu (długość zdań, rytm, słownictwo)
+    \item Metoda 2: modele językowe DistilBERT, a potem System One
+    \item Sprawdzamy wyniki na tych samych danych, na obcych tekstach
+          i na 300 ludzkich esejach z 2021~r.
+    \item Patrzymy też, ile ludzkich tekstów mylnie uznajemy za AI
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Zaczęliśmy od zbioru Kaggle}
+  \begin{itemize}
+    \item Angielskie eseje: 29\,145 tekstów, po czyszczeniu 27\,296
+    \item Usunęliśmy powtórzenia; ok.\ 60\% człowiek, 40\% AI
+  \end{itemize}
+
+  \vspace{0.6em}
+  \begin{center}
+  \begin{tabular}{lr}
+    \toprule
+    podział & teksty \\
+    \midrule
+    nauka modelu & 21\,838 \\
+    sprawdzanie w trakcie & 2\,729 \\
+    test końcowy & 2\,729 \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.8em}
+  \alert{To był tylko początek.} Wynik na samym Kaggle okazał się mylący.
+\end{frame}
+
+\begin{frame}{Metoda statystyczna}
+  \begin{itemize}
+    \item 13 prostych cech z tekstu: długość zdań, skokowość rytmu,
+          bogactwo słów, przecinki
+    \item Regresja logistyczna: ok.\ 91\% trafień, 254 błędy na 2\,728 tekstów
+    \item Za człowiekiem: dłuższe i bardziej nierówne zdania
+    \item Za AI: dłuższe słowa i więcej przecinków
+    \item Plus: decyzje da się wyjaśnić
+    \item Minus: na krótkich tekstach działa gorzej, a promptem da się ją oszukać
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Wynik 99\% był mylący}
+  DistilBERT uczony tylko na Kaggle wygląda świetnie,
+  dopóki nie wyjdziemy poza ten zbiór.
+
+  \vspace{1em}
+  \begin{center}
+  \begin{tabular}{lcc}
+    \toprule
+    & Kaggle & obce teksty Ghostbuster \\
+    \midrule
+    DistilBERT (tylko Kaggle) & \textbf{99,7\%} & \alert{51,6\%} \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{1em}
+  Na nowych danych model prawie zawsze mówi ,,to AI''.
+
+  \vspace{0.5em}
+  \textbf{Wniosek:} jeden zbiór z Kaggle nie pokazuje,
+  jak detektor działa naprawdę.
+\end{frame}
+
+\begin{frame}{Trening na wielu źródłach}
+  \begin{itemize}
+    \item Do nauki dodaliśmy teksty z kilku zbiorów, nie tylko z Kaggle
+    \item Osobno sprawdzamy Ghostbustera, którego model wcześniej nie widział
+  \end{itemize}
+
+  \vspace{0.8em}
+  \begin{center}
+  \begin{tabular}{lc}
+    \toprule
+    model na obcych tekstach & trafność \\
+    \midrule
+    stary model (tylko Kaggle) & 52\% \\
+    DistilBERT na wielu źródłach & \textbf{84\%} \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.8em}
+  Duży skok, ale ludzkie teksty nadal bywają mylone z AI.
+  Dlatego zbudowaliśmy System One.
+\end{frame}
+
+\begin{frame}{System One: jak działa}
+  Model dostaje esej i porównuje dwie możliwości:
+
+  \vspace{0.6em}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{opcja: człowiek}
+        nierówny rytm, szczegóły, głos studenta
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{opcja: AI}
+        szablon, wygładzony styl, ogólnikowa teza
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.6em}
+  \begin{itemize}
+    \item Z wyników obu opcji powstaje prawdopodobieństwo ,,to AI''
+    \item Nauka na wielu zbiorach esejów (ok.\ 52 tys.\ tekstów)
+    \item Trening ok.\ 37 minut; gotowy model: \texttt{models/system-one-final/}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{System One: wyniki}
+  Na obcych tekstach jest wyraźnie lepszy
+  i rzadziej oskarża człowieka o AI.
+
+  \vspace{0.8em}
+  \begin{center}
+  \begin{tabular}{lccc}
+    \toprule
+    model & obce teksty & ludzkie OK & AI wykryte \\
+    \midrule
+    DistilBERT (wiele źródeł) & 0,838 & 0,705 & 0,970 \\
+    System One v3 (finalny) & \textbf{0,946} & \textbf{0,900} & 0,993 \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.8em}
+  Mylne alarmy na Ghostbusterze spadły z 279 do 30.
+\end{frame}
+
+\begin{frame}{Aplikacja i test na nieznanych esejach}
+  \begin{itemize}
+    \item Model widzi tylko początek tekstu, zwykle wstęp
+    \item Aplikacja dzieli esej na fragmenty, ocenia każdy i bierze średnią
+    \item Test: 300 ludzkich esejów z 2021~r., sprzed ChatGPT, nigdy w treningu
+  \end{itemize}
+
+  \vspace{0.6em}
+  \begin{center}
+  \begin{tabular}{lccc}
+    \toprule
+    detektor & człowiek & niepewne & mylnie AI \\
+    \midrule
+    stara aplikacja & -- & -- & 93,3\% \\
+    DistilBERT z Kaggle & -- & -- & 96,3\% \\
+    metoda statystyczna & -- & -- & 18,3\% \\
+    System One, fragmenty & \textbf{80,3\%} & 12,7\% & \textbf{7,0\%} \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Czego jeszcze nie rozwiązaliśmy}
+  \begin{itemize}
+    \item Nowe modele AI i przerobione teksty nadal bywają trudne
+    \item Początek i koniec ludzkiego eseju czasem wygląda jak AI
+    \item Na esejach z 2021~r.\ nadal 7\% mylnych alarmów
+          i ok.\ 13\% odpowiedzi ,,niepewne''
+    \item Bardzo gładki tekst nadal skłania model do odpowiedzi ,,AI''
+    \item Statystykę łatwo oszukać poleceniem
+          ,,pisz zdaniami różnej długości''
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Podsumowanie}
+  \begin{itemize}
+    \item Sam Kaggle zawyża wynik: 99,7\% potrafi spaść do ok.\ 52\%
+    \item Statystyka: ok.\ 91\% na Kaggle, łatwa do wyjaśnienia,
+          słabsza poza tym zbiorem
+    \item System One: ok.\ 95\% na obcych tekstach
+    \item W aplikacji mylne ,,AI'' na esejach z 2021~r.\ spadło z 93\% do 7\%
+    \item Na końcu używamy System One, a nie pierwszego modelu z Kaggle
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \centering
+  \vspace{1.5cm}
+  {\LARGE Dziękujemy za uwagę}
+
+  \vspace{1cm}
+  {\Large Pytania?}
+
+  \vspace{1.2cm}
+  Michał Dąbrowski · Dominik Zabielski · Michał Niechciałkowski
+\end{frame}
+
+\end{document}
