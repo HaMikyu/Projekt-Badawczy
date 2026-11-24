@@ -1,0 +1,3014 @@
+{
+ "summary": {
+  "n_human_essays": 300,
+  "system_one": {
+   "HUMAN (poprawnie)": 0.8033,
+   "UNSURE": 0.1267,
+   "AI (falszywy alarm)": 0.07
+  },
+  "distilbert_pomocniczy_falszywe_AI": 0.9633,
+  "statystyczny_pomocniczy_falszywe_AI": 0.1833
+ },
+ "essays": [
+  {
+   "file": "001_should-smoking-be-banned.txt",
+   "words": 529,
+   "verdict": "HUMAN",
+   "ai_percent": 9.5,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "002_juvenile-delinquency-causes-and-effects.txt",
+   "words": 2215,
+   "verdict": "UNSURE",
+   "ai_percent": 44.05,
+   "chunks_ai": 4,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "003_fast-food-causes-and-effects.txt",
+   "words": 560,
+   "verdict": "UNSURE",
+   "ai_percent": 49.35,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "004_social-media-effect-on-young-people.txt",
+   "words": 573,
+   "verdict": "UNSURE",
+   "ai_percent": 43.93,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "005_are-we-too-dependent-on-technology.txt",
+   "words": 1674,
+   "verdict": "HUMAN",
+   "ai_percent": 9.02,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "006_the-story-of-an-hour-analysis-summary-essay-example.txt",
+   "words": 1446,
+   "verdict": "HUMAN",
+   "ai_percent": 0.17,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "007_watching-movies-in-cinemas-and-at-home.txt",
+   "words": 763,
+   "verdict": "AI",
+   "ai_percent": 96.58,
+   "chunks_ai": 3,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "008_life-changing-events-personal-experience.txt",
+   "words": 1061,
+   "verdict": "AI",
+   "ai_percent": 98.85,
+   "chunks_ai": 4,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "009_reflection-about-statistics-essay-sample-new.txt",
+   "words": 780,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "010_school-bullying-causes-and-effects.txt",
+   "words": 809,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "011_literary-analysis-girl-by-jamaica-kincaid.txt",
+   "words": 643,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "012_exam-cheating-its-causes-and-effects.txt",
+   "words": 1160,
+   "verdict": "HUMAN",
+   "ai_percent": 19.81,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "013_the-lottery-analysis-essay-on-shirley-jacksons-short-story.txt",
+   "words": 1130,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "014_religion-in-schools-is-there-a-place-for-it-pros-and-cons.txt",
+   "words": 1695,
+   "verdict": "HUMAN",
+   "ai_percent": 28.23,
+   "chunks_ai": 2,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "015_five-forces-model-beer-industry-analysis-porters-model.txt",
+   "words": 1448,
+   "verdict": "UNSURE",
+   "ai_percent": 32.93,
+   "chunks_ai": 2,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "016_e-book-vs-paper-book-advantages-and-disadvantages.txt",
+   "words": 540,
+   "verdict": "AI",
+   "ai_percent": 98.11,
+   "chunks_ai": 2,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "017_oedipus-rex-hamlet-compare-contrast-essay.txt",
+   "words": 1395,
+   "verdict": "UNSURE",
+   "ai_percent": 49.13,
+   "chunks_ai": 3,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "018_stress-and-anxiety-amongst-students.txt",
+   "words": 3160,
+   "verdict": "HUMAN",
+   "ai_percent": 7.76,
+   "chunks_ai": 1,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "019_international-marketing-analysis-for-nestl-nespresso.txt",
+   "words": 1644,
+   "verdict": "HUMAN",
+   "ai_percent": 27.89,
+   "chunks_ai": 2,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "020_the-history-and-evolution-of-number-systems-and-counting.txt",
+   "words": 1321,
+   "verdict": "HUMAN",
+   "ai_percent": 16.81,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "021_electric-cars-vs-gas-cars-compare-contrast-essay.txt",
+   "words": 1482,
+   "verdict": "AI",
+   "ai_percent": 81.82,
+   "chunks_ai": 5,
+   "chunks_total": 6,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "022_apples-iphone-and-consumer-behavior.txt",
+   "words": 2678,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "023_nestle-company-promotion-marketing-portfolio.txt",
+   "words": 2947,
+   "verdict": "HUMAN",
+   "ai_percent": 4.38,
+   "chunks_ai": 1,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "024_why-reality-shows-are-so-popular.txt",
+   "words": 600,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "HUMAN",
+   "stat_label": "AI"
+  },
+  {
+   "file": "025_thomas-hobbes-and-john-locke-beliefs-and-ideas-comparison.txt",
+   "words": 2166,
+   "verdict": "HUMAN",
+   "ai_percent": 22.42,
+   "chunks_ai": 2,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "026_the-effect-of-video-game-violence.txt",
+   "words": 983,
+   "verdict": "HUMAN",
+   "ai_percent": 24.76,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "027_the-story-of-an-hour-and-the-yellow-wallpaper-comparison.txt",
+   "words": 1478,
+   "verdict": "UNSURE",
+   "ai_percent": 32.98,
+   "chunks_ai": 2,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "028_what-would-i-do-if-i-had-a-million-dollars.txt",
+   "words": 621,
+   "verdict": "AI",
+   "ai_percent": 98.53,
+   "chunks_ai": 2,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "029_volkswagen-companys-emissions-scandal-ethical-dilemma.txt",
+   "words": 1611,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "030_neoliberalism-advantages-and-disadvantages.txt",
+   "words": 803,
+   "verdict": "HUMAN",
+   "ai_percent": 0.14,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "031_amazon-com-company-management-information-systems.txt",
+   "words": 2465,
+   "verdict": "HUMAN",
+   "ai_percent": 9.97,
+   "chunks_ai": 1,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "032_you-are-what-you-eat.txt",
+   "words": 934,
+   "verdict": "HUMAN",
+   "ai_percent": 24.73,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "033_essay-on-cross-cultural-communication-differences.txt",
+   "words": 1193,
+   "verdict": "AI",
+   "ai_percent": 82.71,
+   "chunks_ai": 4,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "034_homeschooling-argumentation-for-and-against.txt",
+   "words": 773,
+   "verdict": "UNSURE",
+   "ai_percent": 32.99,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "035_drug-and-alcohol-abuse-among-young-people.txt",
+   "words": 761,
+   "verdict": "HUMAN",
+   "ai_percent": 0.14,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "036_dyson-company-cordless-vacuum-cleaner-marketing-plan.txt",
+   "words": 3771,
+   "verdict": "AI",
+   "ai_percent": 52.52,
+   "chunks_ai": 8,
+   "chunks_total": 15,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "037_euthanasia-pros-and-cons.txt",
+   "words": 1380,
+   "verdict": "HUMAN",
+   "ai_percent": 0.32,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "038_a-good-man-is-hard-to-find-analysis-essay-example-summary.txt",
+   "words": 1316,
+   "verdict": "HUMAN",
+   "ai_percent": 0.26,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "039_a-more-perfect-union-speech-analysis-barack-obamas-speech.txt",
+   "words": 1431,
+   "verdict": "UNSURE",
+   "ai_percent": 43.0,
+   "chunks_ai": 3,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "040_the-importance-of-word-formation-knowledge.txt",
+   "words": 550,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "041_boeing-strategy-analysis-business-plan-objectives.txt",
+   "words": 1639,
+   "verdict": "AI",
+   "ai_percent": 65.96,
+   "chunks_ai": 4,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "042_starbucks-companys-operations-and-inventory-management.txt",
+   "words": 2775,
+   "verdict": "HUMAN",
+   "ai_percent": 17.53,
+   "chunks_ai": 2,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "043_human-and-animal-language-differences.txt",
+   "words": 680,
+   "verdict": "HUMAN",
+   "ai_percent": 0.4,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "044_the-benefits-of-raising-the-minimum-wage.txt",
+   "words": 2560,
+   "verdict": "HUMAN",
+   "ai_percent": 19.43,
+   "chunks_ai": 2,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "045_the-united-nations-strengths-and-weaknesses.txt",
+   "words": 874,
+   "verdict": "UNSURE",
+   "ai_percent": 32.89,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "046_mcdonalds-organizational-culture-and-its-elements.txt",
+   "words": 2981,
+   "verdict": "HUMAN",
+   "ai_percent": 14.32,
+   "chunks_ai": 2,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "047_internal-and-external-factors-influencing-ikea.txt",
+   "words": 2521,
+   "verdict": "HUMAN",
+   "ai_percent": 19.82,
+   "chunks_ai": 2,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "048_the-importance-of-healthy-lifestyle.txt",
+   "words": 1159,
+   "verdict": "UNSURE",
+   "ai_percent": 49.38,
+   "chunks_ai": 2,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "049_example-of-semiotic-analysis-of-advertisements-chanel-5.txt",
+   "words": 1197,
+   "verdict": "AI",
+   "ai_percent": 59.19,
+   "chunks_ai": 3,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "050_hamlet-and-gertrude-relationship-analysis-research-paper.txt",
+   "words": 1145,
+   "verdict": "HUMAN",
+   "ai_percent": 22.66,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "051_literature-analysis-hamlets-appearance-vs-reality.txt",
+   "words": 1348,
+   "verdict": "HUMAN",
+   "ai_percent": 16.19,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "052_gender-and-sexuality.txt",
+   "words": 665,
+   "verdict": "UNSURE",
+   "ai_percent": 32.99,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "053_visual-argument-examples-definition-ideas-free.txt",
+   "words": 806,
+   "verdict": "HUMAN",
+   "ai_percent": 0.17,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "054_maybelline-case-study-analysis-marketing-competitors.txt",
+   "words": 940,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "055_animals-should-have-the-same-rights-as-humans.txt",
+   "words": 2097,
+   "verdict": "HUMAN",
+   "ai_percent": 23.34,
+   "chunks_ai": 2,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "056_the-four-seasons-winter-by-antonio-vivaldi.txt",
+   "words": 528,
+   "verdict": "HUMAN",
+   "ai_percent": 0.62,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "057_aristotle-and-virtue-ethics.txt",
+   "words": 1351,
+   "verdict": "HUMAN",
+   "ai_percent": 16.09,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "058_comparison-of-living-on-a-farm-or-in-the-city.txt",
+   "words": 983,
+   "verdict": "AI",
+   "ai_percent": 50.19,
+   "chunks_ai": 2,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "059_benefits-of-healthy-lifestyle.txt",
+   "words": 770,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "060_the-lottery-essay-literary-analysis-example.txt",
+   "words": 1571,
+   "verdict": "HUMAN",
+   "ai_percent": 17.14,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "061_studying-abroad-pros-and-cons.txt",
+   "words": 889,
+   "verdict": "AI",
+   "ai_percent": 98.53,
+   "chunks_ai": 3,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "062_comparison-of-theory-of-value-adam-smith-and-david-ricardo.txt",
+   "words": 3262,
+   "verdict": "HUMAN",
+   "ai_percent": 22.55,
+   "chunks_ai": 3,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "063_why-do-you-want-to-be-a-dental-hygienist-essay-example.txt",
+   "words": 654,
+   "verdict": "AI",
+   "ai_percent": 98.75,
+   "chunks_ai": 2,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "064_speed-limit-essay-arguing-for-the-limitation.txt",
+   "words": 795,
+   "verdict": "AI",
+   "ai_percent": 67.0,
+   "chunks_ai": 2,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "065_ap-analysis-essay-on-john-updikes-short-story-new-sample.txt",
+   "words": 1081,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "066_zara-companys-international-marketing-strategy.txt",
+   "words": 3035,
+   "verdict": "HUMAN",
+   "ai_percent": 0.13,
+   "chunks_ai": 0,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "067_abolition-of-capital-punishment.txt",
+   "words": 6059,
+   "verdict": "HUMAN",
+   "ai_percent": 12.69,
+   "chunks_ai": 3,
+   "chunks_total": 24,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "068_the-burnout-problem-and-picot-statement.txt",
+   "words": 1666,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "069_communication-strengths-weaknesses-and-tips.txt",
+   "words": 612,
+   "verdict": "HUMAN",
+   "ai_percent": 0.13,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "070_heredity-and-environment-effects-on-intelligence.txt",
+   "words": 1203,
+   "verdict": "HUMAN",
+   "ai_percent": 0.66,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "071_arranged-marriages-advantages-and-disadvantages.txt",
+   "words": 2710,
+   "verdict": "HUMAN",
+   "ai_percent": 5.22,
+   "chunks_ai": 0,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "072_essay-on-miss-representation-analysis-summary.txt",
+   "words": 773,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "073_romanesque-and-gothic-styles-comparison.txt",
+   "words": 1419,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "074_benefits-of-knowing-a-foreign-language.txt",
+   "words": 819,
+   "verdict": "HUMAN",
+   "ai_percent": 3.36,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "075_supply-chain-management-theories.txt",
+   "words": 400,
+   "verdict": "HUMAN",
+   "ai_percent": 0.14,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "076_harry-potter-and-the-sorcerers-stone-by-j-k-rowling.txt",
+   "words": 1367,
+   "verdict": "HUMAN",
+   "ai_percent": 0.14,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "077_alibaba-groups-organizational-values-and-structure.txt",
+   "words": 821,
+   "verdict": "HUMAN",
+   "ai_percent": 24.35,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "078_night-by-elie-wiesel-eliezers-and-his-father-relationship.txt",
+   "words": 576,
+   "verdict": "HUMAN",
+   "ai_percent": 0.3,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "079_the-impact-of-ancient-greek-philosophy-on-modern-day-thought.txt",
+   "words": 1853,
+   "verdict": "HUMAN",
+   "ai_percent": 24.72,
+   "chunks_ai": 2,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "080_doctors-and-teachers-comparison.txt",
+   "words": 399,
+   "verdict": "UNSURE",
+   "ai_percent": 49.08,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "HUMAN",
+   "stat_label": "AI"
+  },
+  {
+   "file": "081_marriott-international-company-human-resources-management.txt",
+   "words": 3739,
+   "verdict": "HUMAN",
+   "ai_percent": 0.12,
+   "chunks_ai": 0,
+   "chunks_total": 15,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "082_global-health-issues.txt",
+   "words": 2038,
+   "verdict": "HUMAN",
+   "ai_percent": 12.14,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "083_the-social-construction-of-gender-roles.txt",
+   "words": 1205,
+   "verdict": "AI",
+   "ai_percent": 58.55,
+   "chunks_ai": 3,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "084_corruption-in-nigeria-causes-and-effects.txt",
+   "words": 1422,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "085_apple-vs-samsung-companies-operational-strategies.txt",
+   "words": 1981,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "086_roberts-coffee-shop-marketing-strategy.txt",
+   "words": 2592,
+   "verdict": "AI",
+   "ai_percent": 58.65,
+   "chunks_ai": 6,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "087_theological-approaches-comparison-thomas-of-aquinas-and-saint-augustine.txt",
+   "words": 815,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "088_orems-self-care-deficit-theory-in-nursing-practice.txt",
+   "words": 1411,
+   "verdict": "HUMAN",
+   "ai_percent": 16.52,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "089_nestle-companys-international-marketing-analysis.txt",
+   "words": 1843,
+   "verdict": "HUMAN",
+   "ai_percent": 11.91,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "090_marx-vs-weber-capitalism-compare-and-contrast-essay.txt",
+   "words": 1225,
+   "verdict": "AI",
+   "ai_percent": 56.62,
+   "chunks_ai": 3,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "091_father-son-relationships-in-eliezer-wiesels-book-night.txt",
+   "words": 663,
+   "verdict": "HUMAN",
+   "ai_percent": 0.32,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "092_starbucks-companys-supply-chain-management-strategies.txt",
+   "words": 2036,
+   "verdict": "HUMAN",
+   "ai_percent": 21.94,
+   "chunks_ai": 2,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "093_iphone-markets-supply-and-demand.txt",
+   "words": 1036,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "094_apple-watch-products-market-segmentation.txt",
+   "words": 562,
+   "verdict": "HUMAN",
+   "ai_percent": 0.15,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "095_the-red-balloon-by-albert-lamorisse-film-analysis.txt",
+   "words": 1193,
+   "verdict": "HUMAN",
+   "ai_percent": 0.18,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "096_british-petroleum-companys-swot-and-pestle-analysis.txt",
+   "words": 1599,
+   "verdict": "HUMAN",
+   "ai_percent": 13.69,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "097_amazon-rainforest-keystone-invasive-endangered-species.txt",
+   "words": 550,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "098_food-truck-businesss-swot-analysis.txt",
+   "words": 1308,
+   "verdict": "HUMAN",
+   "ai_percent": 17.66,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "099_teenage-parenting-problems-of-children-and-parent.txt",
+   "words": 1442,
+   "verdict": "UNSURE",
+   "ai_percent": 39.56,
+   "chunks_ai": 2,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "100_italian-culture-essay.txt",
+   "words": 1425,
+   "verdict": "UNSURE",
+   "ai_percent": 41.23,
+   "chunks_ai": 2,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "101_coca-cola-company-consumer-behavior.txt",
+   "words": 3261,
+   "verdict": "UNSURE",
+   "ai_percent": 45.65,
+   "chunks_ai": 6,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "102_marriott-hotels-marketing-management.txt",
+   "words": 3736,
+   "verdict": "HUMAN",
+   "ai_percent": 26.31,
+   "chunks_ai": 4,
+   "chunks_total": 15,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "103_starbucks-coffees-changes-in-management-style.txt",
+   "words": 1405,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "104_the-last-leaf-by-o-henry.txt",
+   "words": 591,
+   "verdict": "HUMAN",
+   "ai_percent": 0.13,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "105_impacts-of-internet-on-print-media-and-journalism.txt",
+   "words": 2335,
+   "verdict": "HUMAN",
+   "ai_percent": 0.16,
+   "chunks_ai": 0,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "106_disney-companys-international-marketing.txt",
+   "words": 2384,
+   "verdict": "UNSURE",
+   "ai_percent": 42.3,
+   "chunks_ai": 4,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "107_president-obamas-inaugural-speech-analysis.txt",
+   "words": 1280,
+   "verdict": "HUMAN",
+   "ai_percent": 19.83,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "108_the-christian-worldview-gospel-essentials.txt",
+   "words": 1299,
+   "verdict": "HUMAN",
+   "ai_percent": 0.06,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "109_literary-analysis-common-sense-by-thomas-paine.txt",
+   "words": 1424,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "110_tesco-companys-global-supply-chain-management.txt",
+   "words": 2775,
+   "verdict": "HUMAN",
+   "ai_percent": 8.33,
+   "chunks_ai": 1,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "111_coca-cola-company-and-pepsico-comparative-analyses.txt",
+   "words": 2335,
+   "verdict": "HUMAN",
+   "ai_percent": 9.95,
+   "chunks_ai": 1,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "112_elizabethan-era-gender-roles-in-shakespeares-plays.txt",
+   "words": 1254,
+   "verdict": "HUMAN",
+   "ai_percent": 19.93,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "113_social-studies-under-interdisciplinary-approach.txt",
+   "words": 1374,
+   "verdict": "UNSURE",
+   "ai_percent": 48.55,
+   "chunks_ai": 3,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "114_unitarist-and-pluralist-perspectives-in-management.txt",
+   "words": 3455,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "115_tesla-motors-company-and-its-marketing-communications.txt",
+   "words": 12488,
+   "verdict": "HUMAN",
+   "ai_percent": 0.06,
+   "chunks_ai": 0,
+   "chunks_total": 24,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "116_how-multiculturalism-is-a-good-thing.txt",
+   "words": 1646,
+   "verdict": "HUMAN",
+   "ai_percent": 2.46,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "117_philip-larkins-poem-the-explosion-literature-analysis.txt",
+   "words": 595,
+   "verdict": "HUMAN",
+   "ai_percent": 0.69,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "118_toyota-companys-problems-fixing.txt",
+   "words": 3916,
+   "verdict": "HUMAN",
+   "ai_percent": 19.75,
+   "chunks_ai": 3,
+   "chunks_total": 15,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "119_childrens-bullying-in-school.txt",
+   "words": 904,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "120_e-poes-the-black-cat-literary-analysis.txt",
+   "words": 1650,
+   "verdict": "HUMAN",
+   "ai_percent": 13.97,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "121_sony-companys-supply-chain-management.txt",
+   "words": 1482,
+   "verdict": "HUMAN",
+   "ai_percent": 0.24,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "122_doping-in-sports.txt",
+   "words": 1039,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "123_product-life-cycle-concept-usefulness-and-limitations.txt",
+   "words": 2257,
+   "verdict": "UNSURE",
+   "ai_percent": 32.94,
+   "chunks_ai": 3,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "124_brexit-from-the-european-union.txt",
+   "words": 2412,
+   "verdict": "HUMAN",
+   "ai_percent": 19.69,
+   "chunks_ai": 2,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "125_law-enforcement-cameras-are-an-invasion-of-privacy.txt",
+   "words": 888,
+   "verdict": "AI",
+   "ai_percent": 65.62,
+   "chunks_ai": 2,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "126_the-importance-of-being-earnest-by-oscar-wilde.txt",
+   "words": 1729,
+   "verdict": "HUMAN",
+   "ai_percent": 13.38,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "127_walmart-companys-unethical-business-practices.txt",
+   "words": 573,
+   "verdict": "HUMAN",
+   "ai_percent": 7.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "128_the-issue-of-violence-in-sports.txt",
+   "words": 2989,
+   "verdict": "HUMAN",
+   "ai_percent": 16.38,
+   "chunks_ai": 2,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "129_symbolism-in-disgrace-by-john-coetzee.txt",
+   "words": 883,
+   "verdict": "HUMAN",
+   "ai_percent": 24.47,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "130_etihad-airways-companys-strategic-case.txt",
+   "words": 4124,
+   "verdict": "UNSURE",
+   "ai_percent": 35.06,
+   "chunks_ai": 6,
+   "chunks_total": 17,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "131_homeschooling-argumentation-for-and-against-essay.txt",
+   "words": 1582,
+   "verdict": "HUMAN",
+   "ai_percent": 16.49,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "132_the-walt-disney-companys-bcg-matrix.txt",
+   "words": 597,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "133_tata-motors-company-market-research.txt",
+   "words": 2019,
+   "verdict": "HUMAN",
+   "ai_percent": 1.92,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "134_where-does-organizational-culture-come-from.txt",
+   "words": 2868,
+   "verdict": "UNSURE",
+   "ai_percent": 44.71,
+   "chunks_ai": 5,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "135_apple-companys-teamwork-benefits.txt",
+   "words": 775,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "136_innocent-smoothies-brand-marketing-communication.txt",
+   "words": 13274,
+   "verdict": "HUMAN",
+   "ai_percent": 11.95,
+   "chunks_ai": 3,
+   "chunks_total": 24,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "137_effects-of-cell-phone-on-society.txt",
+   "words": 818,
+   "verdict": "UNSURE",
+   "ai_percent": 32.78,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "138_mcdonalds-business-and-corporate-level-strategies.txt",
+   "words": 1466,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "139_essay-on-soldiers-home-analysis-of-the-characters.txt",
+   "words": 1129,
+   "verdict": "HUMAN",
+   "ai_percent": 19.65,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "140_mcdonalds-company-integration-of-marketing-communication.txt",
+   "words": 2483,
+   "verdict": "HUMAN",
+   "ai_percent": 10.02,
+   "chunks_ai": 1,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "141_virginia-hendersons-theory-of-needs.txt",
+   "words": 365,
+   "verdict": "HUMAN",
+   "ai_percent": 0.06,
+   "chunks_ai": 0,
+   "chunks_total": 1,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "142_the-coca-cola-companys-functional-areas-and-goals.txt",
+   "words": 4434,
+   "verdict": "HUMAN",
+   "ai_percent": 6.28,
+   "chunks_ai": 1,
+   "chunks_total": 18,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "143_under-armour-company-analysis-and-strategic-alternatives.txt",
+   "words": 1653,
+   "verdict": "UNSURE",
+   "ai_percent": 32.47,
+   "chunks_ai": 2,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "144_woolworths-integrated-cost-leadership-differentiation-strategy.txt",
+   "words": 826,
+   "verdict": "HUMAN",
+   "ai_percent": 26.09,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "145_major-themes-of-social-studies.txt",
+   "words": 541,
+   "verdict": "AI",
+   "ai_percent": 95.38,
+   "chunks_ai": 2,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "146_mcdonalds-internal-and-amp-external-strategic-analyses.txt",
+   "words": 1121,
+   "verdict": "HUMAN",
+   "ai_percent": 19.81,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "147_causes-of-violence-in-society.txt",
+   "words": 882,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "148_marxist-and-liberal-theories-on-property.txt",
+   "words": 4189,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 16,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "149_floods-stages-types-effects-and-prevention.txt",
+   "words": 1914,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "150_a-clean-well-lighted-place-essay-character-analysis.txt",
+   "words": 1162,
+   "verdict": "AI",
+   "ai_percent": 66.76,
+   "chunks_ai": 3,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "151_criterion-and-norm-referenced-tests.txt",
+   "words": 882,
+   "verdict": "HUMAN",
+   "ai_percent": 0.53,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "152_gothic-elements-in-william-faulkners-a-rose-for-emily.txt",
+   "words": 818,
+   "verdict": "AI",
+   "ai_percent": 64.47,
+   "chunks_ai": 2,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "153_cell-phone-effects-on-family-life.txt",
+   "words": 1155,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "154_the-coca-cola-consumer-behavior-and-demographics.txt",
+   "words": 3484,
+   "verdict": "HUMAN",
+   "ai_percent": 0.18,
+   "chunks_ai": 0,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "155_tesla-motors-inc-s-strategy-and-its-distinctions.txt",
+   "words": 909,
+   "verdict": "HUMAN",
+   "ai_percent": 0.12,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "156_like-a-girl-by-always-campaign-analysis.txt",
+   "words": 1361,
+   "verdict": "HUMAN",
+   "ai_percent": 16.67,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "157_chernobyl-disaster-and-engineering-ethics.txt",
+   "words": 1602,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "158_vision-impairment-nursing-diagnosis-and-planning.txt",
+   "words": 551,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "159_mark-zuckerbergs-leadership-strategies.txt",
+   "words": 1138,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "160_global-governance-advantages-and-disadvantages.txt",
+   "words": 2753,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "161_nursing-as-a-combination-of-art-and-science.txt",
+   "words": 1475,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "162_colgate-companys-marketing-strategies.txt",
+   "words": 2496,
+   "verdict": "HUMAN",
+   "ai_percent": 0.22,
+   "chunks_ai": 0,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "163_fahrenheit-451-essay-book-review-analysis-with-examples.txt",
+   "words": 1679,
+   "verdict": "HUMAN",
+   "ai_percent": 14.4,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "164_the-amazon-rainforest-an-integral-component-of-the-environment.txt",
+   "words": 1928,
+   "verdict": "HUMAN",
+   "ai_percent": 0.2,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "165_william-wordsworth-and-samuel-taylor-coleridge-comparison.txt",
+   "words": 1371,
+   "verdict": "HUMAN",
+   "ai_percent": 19.69,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "166_levendary-caf-the-china-challenge-case.txt",
+   "words": 1340,
+   "verdict": "HUMAN",
+   "ai_percent": 19.92,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "167_teleological-ethics-and-its-forms-in-business.txt",
+   "words": 1180,
+   "verdict": "HUMAN",
+   "ai_percent": 3.74,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "168_marks-and-amp-spencer-company-organisational-structure.txt",
+   "words": 1691,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "169_personal-and-professional-values-conflict.txt",
+   "words": 2194,
+   "verdict": "HUMAN",
+   "ai_percent": 12.34,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "170_should-parents-be-held-responsible-for-the-crimes-of-their-children.txt",
+   "words": 572,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "171_apple-inc-s-internal-and-external-strategic-environment.txt",
+   "words": 1883,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "172_what-is-public-administration-essay.txt",
+   "words": 918,
+   "verdict": "AI",
+   "ai_percent": 98.51,
+   "chunks_ai": 4,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "173_positive-effects-of-video-gaming.txt",
+   "words": 2788,
+   "verdict": "HUMAN",
+   "ai_percent": 14.06,
+   "chunks_ai": 2,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "174_love-and-sexuality-in-tom-jones-by-h-fielding.txt",
+   "words": 4160,
+   "verdict": "HUMAN",
+   "ai_percent": 5.85,
+   "chunks_ai": 1,
+   "chunks_total": 17,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "175_hyundai-motor-company-strategies-dynamics.txt",
+   "words": 2754,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "176_hospitals-organizational-structure-and-departments.txt",
+   "words": 542,
+   "verdict": "HUMAN",
+   "ai_percent": 0.17,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "177_philosophy-no-one-can-make-you-feel-inferior-without-your-consent.txt",
+   "words": 549,
+   "verdict": "UNSURE",
+   "ai_percent": 49.35,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "178_communication-models-advantages-and-disadvantages.txt",
+   "words": 318,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 1,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "179_toyota-total-quality-management-theory-and-practice.txt",
+   "words": 2661,
+   "verdict": "HUMAN",
+   "ai_percent": 26.99,
+   "chunks_ai": 3,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "180_why-are-miranda-rights-important-essay.txt",
+   "words": 997,
+   "verdict": "HUMAN",
+   "ai_percent": 21.44,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "181_google-company-strategic-human-resources-management.txt",
+   "words": 3701,
+   "verdict": "HUMAN",
+   "ai_percent": 26.45,
+   "chunks_ai": 4,
+   "chunks_total": 15,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "182_the-negative-effects-of-fast-food.txt",
+   "words": 557,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "183_video-game-console-industry-strategy-and-competition.txt",
+   "words": 3671,
+   "verdict": "HUMAN",
+   "ai_percent": 7.12,
+   "chunks_ai": 1,
+   "chunks_total": 14,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "184_the-ritz-carlton-hotel-companys-dilemma.txt",
+   "words": 2199,
+   "verdict": "UNSURE",
+   "ai_percent": 47.86,
+   "chunks_ai": 4,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "185_dunkin-donuts-companys-district-manager-job.txt",
+   "words": 1402,
+   "verdict": "HUMAN",
+   "ai_percent": 16.52,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "186_mcdonald-companys-buyer-behaviour-and-marketing.txt",
+   "words": 2171,
+   "verdict": "HUMAN",
+   "ai_percent": 11.01,
+   "chunks_ai": 1,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "187_upon-wedlock-and-death-of-children-by-e-taylor.txt",
+   "words": 565,
+   "verdict": "UNSURE",
+   "ai_percent": 49.48,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "188_apple-companys-business-ethics.txt",
+   "words": 1742,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "189_teen-pregnancy-persuasive-speech-plan.txt",
+   "words": 532,
+   "verdict": "UNSURE",
+   "ai_percent": 48.56,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "190_philosophy-and-major-domains-in-nursing.txt",
+   "words": 925,
+   "verdict": "HUMAN",
+   "ai_percent": 24.67,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "191_fire-prevention-strategies-in-the-workplace.txt",
+   "words": 1957,
+   "verdict": "HUMAN",
+   "ai_percent": 12.39,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "192_human-trafficking-from-perspectives-of-deontology-utilitarianism-and-egoism.txt",
+   "words": 1643,
+   "verdict": "HUMAN",
+   "ai_percent": 14.33,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "193_concept-of-social-inequality.txt",
+   "words": 3481,
+   "verdict": "HUMAN",
+   "ai_percent": 0.11,
+   "chunks_ai": 0,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "194_googles-corporate-governance.txt",
+   "words": 3306,
+   "verdict": "HUMAN",
+   "ai_percent": 15.09,
+   "chunks_ai": 2,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "195_apple-companys-management-and-organizational-behavior.txt",
+   "words": 2511,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "196_role-of-women-in-theatre-throughout-history.txt",
+   "words": 1933,
+   "verdict": "HUMAN",
+   "ai_percent": 12.4,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "197_john-wayne-gacy-serial-killers-mental-status.txt",
+   "words": 1391,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "198_nightingale-pledge-role-function-and-purpose-nursing.txt",
+   "words": 1642,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "199_lexus-company-brand-management-strategy.txt",
+   "words": 3030,
+   "verdict": "HUMAN",
+   "ai_percent": 6.93,
+   "chunks_ai": 1,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "200_bmw-companys-consumer-behaviour.txt",
+   "words": 3367,
+   "verdict": "HUMAN",
+   "ai_percent": 14.2,
+   "chunks_ai": 2,
+   "chunks_total": 14,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "201_the-coca-cola-companys-cost-of-production.txt",
+   "words": 836,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "202_beauty-by-jane-martin-drama.txt",
+   "words": 937,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "203_reality-television-shows-impact-on-teenagers.txt",
+   "words": 2175,
+   "verdict": "HUMAN",
+   "ai_percent": 9.87,
+   "chunks_ai": 1,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "204_nike-company-marketing-principles-and-concepts.txt",
+   "words": 2856,
+   "verdict": "HUMAN",
+   "ai_percent": 0.38,
+   "chunks_ai": 0,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "205_samsung-companys-international-strategy.txt",
+   "words": 3546,
+   "verdict": "HUMAN",
+   "ai_percent": 14.27,
+   "chunks_ai": 2,
+   "chunks_total": 14,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "206_do-androids-dream-of-electric-sheep-essay-on-empathy-as-the-novels-theme.txt",
+   "words": 1382,
+   "verdict": "HUMAN",
+   "ai_percent": 11.99,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "207_history-of-leonardo-da-vinci.txt",
+   "words": 2115,
+   "verdict": "HUMAN",
+   "ai_percent": 0.21,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "208_satire-in-gullivers-travels-by-jonathan-swift.txt",
+   "words": 570,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "HUMAN",
+   "stat_label": "AI"
+  },
+  {
+   "file": "209_classical-conditioning-benefits-and-weaknesses.txt",
+   "words": 724,
+   "verdict": "UNSURE",
+   "ai_percent": 33.72,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "210_hamlets-costume-design.txt",
+   "words": 1650,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "211_coca-cola-international-human-resource-management.txt",
+   "words": 2421,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "212_the-da-vinci-code-movie-vs-book.txt",
+   "words": 807,
+   "verdict": "UNSURE",
+   "ai_percent": 41.94,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "213_climate-change-impacts.txt",
+   "words": 2525,
+   "verdict": "HUMAN",
+   "ai_percent": 19.87,
+   "chunks_ai": 2,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "214_marriott-hotels-organisational-leadership-and-strategy.txt",
+   "words": 2507,
+   "verdict": "HUMAN",
+   "ai_percent": 9.88,
+   "chunks_ai": 1,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "215_philosophical-positions-rationalism-vs-empiricism.txt",
+   "words": 1923,
+   "verdict": "HUMAN",
+   "ai_percent": 25.03,
+   "chunks_ai": 2,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "216_ryanair-airlines-low-cost-operations-strategy.txt",
+   "words": 3333,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "217_philosophy-imagination-is-more-important-than-knowledge.txt",
+   "words": 551,
+   "verdict": "UNSURE",
+   "ai_percent": 46.42,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "218_restaurant-industry-service-process-design.txt",
+   "words": 2701,
+   "verdict": "HUMAN",
+   "ai_percent": 18.63,
+   "chunks_ai": 2,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "219_critical-incident-analysis-in-teaching.txt",
+   "words": 3843,
+   "verdict": "HUMAN",
+   "ai_percent": 11.48,
+   "chunks_ai": 2,
+   "chunks_total": 15,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "220_leadership-styles-in-apollo-13-by-ron-howard.txt",
+   "words": 552,
+   "verdict": "HUMAN",
+   "ai_percent": 0.06,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "221_the-functions-of-film-music.txt",
+   "words": 847,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "222_walmart-companys-corporate-social-responsibility-promotion.txt",
+   "words": 2643,
+   "verdict": "HUMAN",
+   "ai_percent": 8.95,
+   "chunks_ai": 1,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "223_ford-motor-company-organisational-structures.txt",
+   "words": 957,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "224_television-shows-classification.txt",
+   "words": 576,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "HUMAN",
+   "stat_label": "AI"
+  },
+  {
+   "file": "225_online-versus-face-to-face-communication.txt",
+   "words": 545,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "226_the-ford-company-management-and-leadership-approaches.txt",
+   "words": 2329,
+   "verdict": "HUMAN",
+   "ai_percent": 0.15,
+   "chunks_ai": 0,
+   "chunks_total": 10,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "227_mark-twains-the-war-prayer.txt",
+   "words": 1958,
+   "verdict": "HUMAN",
+   "ai_percent": 12.53,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "228_heineken-companys-challenges-in-strategic-positioning.txt",
+   "words": 3328,
+   "verdict": "HUMAN",
+   "ai_percent": 21.71,
+   "chunks_ai": 3,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "229_perfect-competition.txt",
+   "words": 1070,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "230_aacn-essentials-of-masters-education-in-nursing-essay.txt",
+   "words": 446,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "231_movie-theatre-business-porters-five-forces-analysis.txt",
+   "words": 1726,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "232_multicultural-education-its-benefits-and-limits.txt",
+   "words": 2298,
+   "verdict": "HUMAN",
+   "ai_percent": 11.35,
+   "chunks_ai": 1,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "233_osullivans-the-great-nation-of-futurity.txt",
+   "words": 1207,
+   "verdict": "HUMAN",
+   "ai_percent": 19.85,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "234_crisis-theory-its-strengths-and-weaknesses.txt",
+   "words": 652,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "235_ida-jean-orlando-views-on-nursing-process.txt",
+   "words": 2282,
+   "verdict": "HUMAN",
+   "ai_percent": 10.9,
+   "chunks_ai": 1,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "236_kotters-change-management-theory-in-nursing-practice.txt",
+   "words": 798,
+   "verdict": "HUMAN",
+   "ai_percent": 0.22,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "237_burj-al-arab-hotel-marketing-analysis.txt",
+   "words": 2831,
+   "verdict": "HUMAN",
+   "ai_percent": 7.67,
+   "chunks_ai": 1,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "238_friedman-family-assessment-and-nursing-diagnosis.txt",
+   "words": 1280,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "239_coca-cola-company-strategy-implementation-and-controls.txt",
+   "words": 1714,
+   "verdict": "HUMAN",
+   "ai_percent": 28.25,
+   "chunks_ai": 2,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "240_police-brutality-in-the-united-states.txt",
+   "words": 6023,
+   "verdict": "HUMAN",
+   "ai_percent": 9.12,
+   "chunks_ai": 2,
+   "chunks_total": 22,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "241_porters-diamond-model-in-international-business.txt",
+   "words": 2338,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "242_steve-jobs-leadership-style-and-traits.txt",
+   "words": 670,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "243_innisfree-cosmetics-brands-marketing-plan.txt",
+   "words": 1113,
+   "verdict": "HUMAN",
+   "ai_percent": 12.24,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "244_dell-companys-supply-chain-management.txt",
+   "words": 5416,
+   "verdict": "UNSURE",
+   "ai_percent": 45.18,
+   "chunks_ai": 10,
+   "chunks_total": 21,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "245_economics-unemployment-its-causes-and-types.txt",
+   "words": 1236,
+   "verdict": "HUMAN",
+   "ai_percent": 10.43,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "246_literature-studies-blue-winds-dancing-by-tom-whitecloud.txt",
+   "words": 552,
+   "verdict": "UNSURE",
+   "ai_percent": 48.97,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "247_lessons-learned-from-the-metamorphosis-by-franz-kafka.txt",
+   "words": 1135,
+   "verdict": "HUMAN",
+   "ai_percent": 0.15,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "248_etisalat-telecommunications-company-strategic-analysis.txt",
+   "words": 2630,
+   "verdict": "HUMAN",
+   "ai_percent": 27.8,
+   "chunks_ai": 3,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "249_the-macro-environment-of-the-smartphone-industry.txt",
+   "words": 2074,
+   "verdict": "HUMAN",
+   "ai_percent": 0.25,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "250_onion-prices-rise-in-india-demand-and-supply-factors.txt",
+   "words": 3182,
+   "verdict": "HUMAN",
+   "ai_percent": 8.47,
+   "chunks_ai": 1,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "251_christinas-world-painting-by-andrew-wyeth.txt",
+   "words": 1392,
+   "verdict": "HUMAN",
+   "ai_percent": 16.54,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "252_nestle-company-strategy-enterprise-and-innovation.txt",
+   "words": 2144,
+   "verdict": "HUMAN",
+   "ai_percent": 12.85,
+   "chunks_ai": 1,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "253_samsung-electronics-marketing-plan.txt",
+   "words": 1999,
+   "verdict": "HUMAN",
+   "ai_percent": 2.4,
+   "chunks_ai": 0,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "254_music-of-romantic-era.txt",
+   "words": 695,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "255_mcluhans-the-medium-is-the-message-nowadays.txt",
+   "words": 3614,
+   "verdict": "HUMAN",
+   "ai_percent": 7.22,
+   "chunks_ai": 1,
+   "chunks_total": 14,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "256_health-service-management-and-motivation-theories.txt",
+   "words": 3106,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 13,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "257_nationalism-its-history-and-impacts.txt",
+   "words": 1289,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "258_the-role-of-history-learning-in-society.txt",
+   "words": 553,
+   "verdict": "UNSURE",
+   "ai_percent": 49.41,
+   "chunks_ai": 1,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "259_social-norm-violation-essay.txt",
+   "words": 1423,
+   "verdict": "UNSURE",
+   "ai_percent": 33.21,
+   "chunks_ai": 2,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "260_shakespeares-the-tempest-gender-roles.txt",
+   "words": 1345,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "261_mcdonalds-companys-sales-decline-and-its-causes.txt",
+   "words": 2694,
+   "verdict": "HUMAN",
+   "ai_percent": 8.26,
+   "chunks_ai": 1,
+   "chunks_total": 12,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "262_organizational-behavior-in-the-up-in-the-air-film.txt",
+   "words": 2005,
+   "verdict": "UNSURE",
+   "ai_percent": 35.76,
+   "chunks_ai": 3,
+   "chunks_total": 8,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "263_teenage-rebellion-against-parents.txt",
+   "words": 1395,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "264_global-poverty-and-nursing-intervention.txt",
+   "words": 2584,
+   "verdict": "HUMAN",
+   "ai_percent": 0.72,
+   "chunks_ai": 0,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "265_walmart-companys-ethical-issues.txt",
+   "words": 647,
+   "verdict": "HUMAN",
+   "ai_percent": 0.13,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "266_monopoly-and-monopolistic-competition.txt",
+   "words": 1973,
+   "verdict": "HUMAN",
+   "ai_percent": 12.4,
+   "chunks_ai": 1,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "267_the-transcultural-assessment-model-of-giger-and-davidhizar.txt",
+   "words": 564,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "268_global-supply-chain-advantages-and-disadvantages.txt",
+   "words": 1409,
+   "verdict": "UNSURE",
+   "ai_percent": 32.83,
+   "chunks_ai": 2,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "269_dorothy-johnsons-behavioral-system-model-in-nursing.txt",
+   "words": 1375,
+   "verdict": "HUMAN",
+   "ai_percent": 16.5,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "270_zaras-internationalization-and-amp-multi-brand-strategy.txt",
+   "words": 2161,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "271_the-theme-of-goodness-in-the-good-person-of-setzuan-by-hoit-hilsman.txt",
+   "words": 552,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "272_home-depot-companys-international-strategies.txt",
+   "words": 4149,
+   "verdict": "HUMAN",
+   "ai_percent": 23.24,
+   "chunks_ai": 4,
+   "chunks_total": 16,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "273_the-organization-of-international-business.txt",
+   "words": 560,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "274_florence-nightingales-environmental-theory.txt",
+   "words": 814,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "275_blackberrys-targeting-strategy-in-the-smartphone-market.txt",
+   "words": 1345,
+   "verdict": "HUMAN",
+   "ai_percent": 19.77,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "276_samsung-groups-supply-chain-and-operation-management.txt",
+   "words": 1567,
+   "verdict": "HUMAN",
+   "ai_percent": 14.15,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "277_eastman-kodak-company-vision-and-mission-statements.txt",
+   "words": 915,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "278_languages-role-in-cross-cultural-communication.txt",
+   "words": 1109,
+   "verdict": "HUMAN",
+   "ai_percent": 19.87,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "279_camillo-di-cavour-and-the-unification-of-italy.txt",
+   "words": 1371,
+   "verdict": "UNSURE",
+   "ai_percent": 49.08,
+   "chunks_ai": 3,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "280_literature-analysis-of-hamlets-soliloquies.txt",
+   "words": 1410,
+   "verdict": "HUMAN",
+   "ai_percent": 11.4,
+   "chunks_ai": 1,
+   "chunks_total": 7,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "281_sainsbury-supermarkets-strategic-management.txt",
+   "words": 1915,
+   "verdict": "HUMAN",
+   "ai_percent": 0.15,
+   "chunks_ai": 0,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "282_the-harm-that-good-men-do.txt",
+   "words": 620,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "283_ethical-dilemma-in-the-healthcare.txt",
+   "words": 2814,
+   "verdict": "HUMAN",
+   "ai_percent": 0.13,
+   "chunks_ai": 0,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "284_the-painting-olympia-by-edouard-manet.txt",
+   "words": 724,
+   "verdict": "UNSURE",
+   "ai_percent": 33.31,
+   "chunks_ai": 1,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "285_why-is-martin-luther-king-jr-speech-i-have-a-dream-still-important-after-40-year.txt",
+   "words": 509,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "286_dell-company-global-strategies.txt",
+   "words": 796,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 3,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "287_florence-nightingale-environmental-theory-analysis.txt",
+   "words": 2184,
+   "verdict": "HUMAN",
+   "ai_percent": 0.07,
+   "chunks_ai": 0,
+   "chunks_total": 9,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "288_literary-analysis-of-heidi-by-johanna-spyri.txt",
+   "words": 894,
+   "verdict": "HUMAN",
+   "ai_percent": 25.25,
+   "chunks_ai": 1,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "289_natural-soap-making-step-by-step-guide.txt",
+   "words": 591,
+   "verdict": "HUMAN",
+   "ai_percent": 0.1,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "290_lululemon-athletica-inc-company-analysis.txt",
+   "words": 2760,
+   "verdict": "UNSURE",
+   "ai_percent": 35.95,
+   "chunks_ai": 4,
+   "chunks_total": 11,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "291_classroom-observation-summaries.txt",
+   "words": 1551,
+   "verdict": "HUMAN",
+   "ai_percent": 23.49,
+   "chunks_ai": 1,
+   "chunks_total": 6,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "292_comparison-of-adidas-and-nike-social-media-management-strategies.txt",
+   "words": 4489,
+   "verdict": "HUMAN",
+   "ai_percent": 0.46,
+   "chunks_ai": 0,
+   "chunks_total": 18,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "293_the-film-remember-the-titans-leadership-roles.txt",
+   "words": 1188,
+   "verdict": "HUMAN",
+   "ai_percent": 19.8,
+   "chunks_ai": 1,
+   "chunks_total": 5,
+   "distilbert_label": "HUMAN",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "294_best-buy-company-resources-capabilities-and-competencies.txt",
+   "words": 609,
+   "verdict": "HUMAN",
+   "ai_percent": 0.08,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "295_david-lurie-character-in-coetzees-novel-disgrace.txt",
+   "words": 1093,
+   "verdict": "HUMAN",
+   "ai_percent": 0.29,
+   "chunks_ai": 0,
+   "chunks_total": 5,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "296_burger-king-corporation-resources-and-core-competencies.txt",
+   "words": 520,
+   "verdict": "HUMAN",
+   "ai_percent": 0.52,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "297_the-role-of-hrm-in-career-management.txt",
+   "words": 3821,
+   "verdict": "HUMAN",
+   "ai_percent": 0.17,
+   "chunks_ai": 0,
+   "chunks_total": 15,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "298_nursing-metaparadigm-concepts-and-interrelationship.txt",
+   "words": 1072,
+   "verdict": "HUMAN",
+   "ai_percent": 0.38,
+   "chunks_ai": 0,
+   "chunks_total": 4,
+   "distilbert_label": "AI",
+   "stat_label": "AI"
+  },
+  {
+   "file": "299_low-cost-economy-companies-benefits-and-drawbacks.txt",
+   "words": 1810,
+   "verdict": "HUMAN",
+   "ai_percent": 24.55,
+   "chunks_ai": 2,
+   "chunks_total": 8,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  },
+  {
+   "file": "300_social-medias-influence-on-children-and-teenagers.txt",
+   "words": 581,
+   "verdict": "HUMAN",
+   "ai_percent": 0.09,
+   "chunks_ai": 0,
+   "chunks_total": 2,
+   "distilbert_label": "AI",
+   "stat_label": "HUMAN"
+  }
+ ]
+}

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detektor Tekstu AI</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-2: #0b1220;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --ai: #ef4444;
+      --ai-soft: rgba(239, 68, 68, 0.16);
+      --human: #22c55e;
+      --human-soft: rgba(34, 197, 94, 0.16);
+      --accent: #38bdf8;
+      --warn: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    header {
+      margin-bottom: 22px;
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-family: inherit;
+      line-height: 1.6;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .live-count {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button, .file-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s ease, transform 0.1s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #082f49;
+    }
+
+    .btn-secondary, .file-btn {
+      background: #334155;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .file-btn input {
+      display: none;
+    }
+
+    .error-box {
+      background: var(--ai-soft);
+      border: 1px solid var(--ai);
+      color: #fecaca;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .warnings {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .warn-item {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fde68a;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    #results {
+      display: none;
+    }
+
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .verdict-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .verdict-card.main-ai {
+      border-color: var(--ai);
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.12), var(--panel));
+    }
+
+    .verdict-card.main-human {
+      border-color: var(--human);
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.12), var(--panel));
+    }
+
+    .model-tag {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .verdict-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      font-size: 20px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 8px;
+    }
+
+    .badge-ai {
+      background: var(--ai-soft);
+      color: #fca5a5;
+    }
+
+    .badge-human {
+      background: var(--human-soft);
+      color: #86efac;
+    }
+
+    .big-pct {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .bar-track {
+      height: 12px;
+      background: var(--panel-2);
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      margin: 10px 0 8px;
+    }
+
+    .bar-ai {
+      background: var(--ai);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .bar-human {
+      background: var(--human);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .bar-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 12px;
+    }
+
+    .stat-tile {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 820px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .impact-row {
+      margin-bottom: 10px;
+    }
+
+    .impact-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .impact-bar-bg {
+      height: 8px;
+      background: var(--panel-2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .impact-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .chart-box {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 150px;
+      padding: 12px 8px 4px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    .sent-bar {
+      flex: 1 0 10px;
+      max-width: 24px;
+      background: var(--accent);
+      border-radius: 4px 4px 0 0;
+      min-height: 4px;
+      position: relative;
+    }
+
+    .sent-bar:hover {
+      background: #7dd3fc;
+    }
+
+    .chart-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pill-ai {
+      background: var(--ai-soft);
+      color: #fca5a5;
+    }
+
+    .pill-human {
+      background: var(--human-soft);
+      color: #86efac;
+    }
+
+    .verdict-card.main-unsure {
+      border-color: var(--warn);
+      box-shadow: 0 0 0 1px var(--warn) inset;
+    }
+
+    .badge-unsure {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fcd34d;
+    }
+
+    .verdict-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .aux-title {
+      margin: 6px 0 10px;
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .segment {
+      border-left: 4px solid var(--border);
+      background: var(--panel-2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .segment.seg-ai {
+      border-left-color: var(--ai);
+    }
+
+    .segment.seg-human {
+      border-left-color: var(--human);
+    }
+
+    .segment-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .segment-text {
+      color: #cbd5e1;
+      max-height: 4.6em;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .segment-text.open {
+      max-height: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Detektor tekstu AI</h1>
+      <p>Wklej angielski tekst lub wczytaj plik .txt. Werdykt wydaje model System One (DistilBERT, ocena kazdego fragmentu tekstu osobno i srednia). Model statystyczny i bazowy DistilBERT sa pokazane pomocniczo.</p>
+    </header>
+
+    <div class="card">
+      <textarea id="textInput" placeholder="Wklej tutaj tekst do analizy..."></textarea>
+      <div class="toolbar">
+        <div class="live-count" id="liveCount">0 slow | 0 znakow</div>
+        <div class="actions">
+          <label class="file-btn">
+            Wczytaj .txt
+            <input type="file" id="fileInput" accept=".txt">
+          </label>
+          <button class="btn-secondary" id="clearBtn" type="button">Wyczysc</button>
+          <button class="btn-primary" id="analyzeBtn" type="button">Analizuj tekst</button>
+        </div>
+      </div>
+      <div class="error-box" id="errorBox"></div>
+    </div>
+
+    <div id="results">
+      <div class="warnings" id="warningsBox"></div>
+
+      <div class="verdict-grid" id="verdictGrid"></div>
+      <div class="aux-title">Modele pomocnicze (nie wplywaja na werdykt)</div>
+      <div class="verdict-grid" id="auxGrid"></div>
+
+      <div class="card" id="segmentsCard">
+        <h2>Ocena fragmentow tekstu (System One)</h2>
+        <div id="segmentsList"></div>
+      </div>
+
+      <div class="card">
+        <h2>Podstawowe statystyki tekstu</h2>
+        <div class="stats-grid" id="basicStatsGrid"></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h2>Rozklad dlugosci zdan (burstiness)</h2>
+          <div class="chart-box" id="sentenceChart"></div>
+          <div class="chart-meta" id="sentenceMeta"></div>
+        </div>
+
+        <div class="card">
+          <h2>Najwazniejsze sygnaly modelu statystycznego</h2>
+          <div id="impactsList"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Szczegolowe cechy stylometryczne (porownanie ze srednimi zbioru)</h2>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Cecha</th>
+                <th>Twoj tekst</th>
+                <th>Srednia Czlowiek</th>
+                <th>Srednia AI</th>
+                <th>Blizej do</th>
+              </tr>
+            </thead>
+            <tbody id="featuresTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = (location.protocol === "http:" || location.protocol === "https:")
+      ? ""
+      : "http://127.0.0.1:8000";
+
+    const textInput = document.getElementById("textInput");
+    const liveCount = document.getElementById("liveCount");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const fileInput = document.getElementById("fileInput");
+    const errorBox = document.getElementById("errorBox");
+    const resultsBox = document.getElementById("results");
+
+    if (location.protocol === "file:") {
+      errorBox.textContent = "Otworzyles plik HTML bezposrednio. Uruchom DetektorAI.exe albo 'Uruchom Detektor.bat'.";
+      errorBox.style.display = "block";
+    }
+
+    async function checkHealth() {
+      try {
+        const res = await fetch(API_BASE + "/api/health");
+        if (!res.ok) throw new Error("health bad");
+        const data = await res.json();
+        if (!data.ok || !data.ready) throw new Error("not ready");
+      } catch (err) {
+        errorBox.textContent = "Serwer nie odpowiada. Zamknij stare okna i uruchom ponownie DetektorAI.exe.";
+        errorBox.style.display = "block";
+      }
+    }
+    checkHealth();
+
+    function updateLiveCount() {
+      const val = textInput.value.trim();
+      const words = val ? val.split(/\s+/).length : 0;
+      liveCount.textContent = `${words} slow | ${textInput.value.length} znakow`;
+    }
+
+    textInput.addEventListener("input", updateLiveCount);
+
+    clearBtn.addEventListener("click", () => {
+      textInput.value = "";
+      updateLiveCount();
+      resultsBox.style.display = "none";
+      errorBox.style.display = "none";
+    });
+
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        textInput.value = reader.result;
+        updateLiveCount();
+      };
+      reader.readAsText(file, "utf-8");
+      fileInput.value = "";
+    });
+
+    function formatValue(feature, value) {
+      if (value === null || value === undefined) return "-";
+      if (feature.endsWith("_ratio")) {
+        return (value * 100).toFixed(2) + "%";
+      }
+      return Number(value).toFixed(3);
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function renderVerdictCard(title, data, isMain, note) {
+      if (!data) return "";
+      const kind = data.label === "AI" ? "ai" : (data.label === "UNSURE" ? "unsure" : "human");
+      const labelText = { ai: "AI", unsure: "NIEPEWNE", human: "CZLOWIEK" }[kind];
+      const cardClass = isMain ? `verdict-card main-${kind}` : "verdict-card";
+      const badgeClass = `badge badge-${kind}`;
+      const mainPct = kind === "human" ? data.human_percent : data.ai_percent;
+      return `
+        <div class="${cardClass}">
+          <div class="model-tag">${title}</div>
+          <div class="verdict-row">
+            <span class="${badgeClass}">${labelText}</span>
+            <span class="big-pct">${mainPct.toFixed(1)}%</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-ai" style="width: ${data.ai_percent}%"></div>
+            <div class="bar-human" style="width: ${data.human_percent}%"></div>
+          </div>
+          <div class="bar-legend">
+            <span>AI: ${data.ai_percent.toFixed(1)}%</span>
+            <span>Czlowiek: ${data.human_percent.toFixed(1)}%</span>
+          </div>
+          ${note ? `<div class="verdict-note">${note}</div>` : ""}
+        </div>
+      `;
+    }
+
+    function renderSegments(so) {
+      const card = document.getElementById("segmentsCard");
+      if (!so || !so.segments) {
+        card.style.display = "none";
+        return;
+      }
+      card.style.display = "block";
+      document.getElementById("segmentsList").innerHTML = so.segments
+        .map(s => `
+          <div class="segment ${s.label === "AI" ? "seg-ai" : "seg-human"}">
+            <div class="segment-head">
+              <span>Fragment ${s.index}</span>
+              <span>AI: ${s.ai_percent.toFixed(1)}%</span>
+            </div>
+            <div class="segment-text" onclick="this.classList.toggle('open')">${escapeHtml(s.text)}</div>
+          </div>
+        `).join("");
+    }
+
+    function formatReadingTime(sec) {
+      if (sec < 60) return `${sec} s`;
+      const min = Math.floor(sec / 60);
+      const rem = sec % 60;
+      return `${min} min ${rem} s`;
+    }
+
+    function renderResults(data) {
+      const warningsBox = document.getElementById("warningsBox");
+      warningsBox.innerHTML = (data.warnings || [])
+        .map(w => `<div class="warn-item">${w}</div>`)
+        .join("");
+
+      const verdictGrid = document.getElementById("verdictGrid");
+      const so = data.system_one;
+      const note = so
+        ? `Srednia z ${so.chunks_total} fragmentow; jako AI ocenione: ${so.chunks_ai}. AI od 50%, czlowiek ponizej 30%, pomiedzy - niepewne.`
+        : (data.combined.source || "");
+      verdictGrid.innerHTML = renderVerdictCard("Werdykt - System One", data.combined, true, note);
+      document.getElementById("auxGrid").innerHTML =
+        renderVerdictCard("DistilBERT (pierwsze 256 tokenow)", data.ml, false) +
+        renderVerdictCard("Model statystyczny (regresja logistyczna)", data.statistical, false);
+      renderSegments(so);
+
+      const b = data.basic_stats;
+      const tiles = [
+        ["Slowa", b.words],
+        ["Unikalne slowa", b.unique_words],
+        ["Zdania", b.sentences],
+        ["Akapity", b.paragraphs],
+        ["Znaki", b.characters],
+        ["Czas czytania", formatReadingTime(b.reading_time_sec)],
+        ["Tokeny BERT", data.ml ? data.ml.token_count : "-"],
+        ["Mediana dl. zdania", b.median_sentence_len + " sl."],
+      ];
+      document.getElementById("basicStatsGrid").innerHTML = tiles
+        .map(([k, v]) => `
+          <div class="stat-tile">
+            <div class="stat-label">${k}</div>
+            <div class="stat-val">${v}</div>
+          </div>
+        `).join("");
+
+      const chart = document.getElementById("sentenceChart");
+      const lens = b.sentence_lengths || [];
+      const maxLen = Math.max(...lens, 1);
+      chart.innerHTML = lens
+        .map((n, idx) => {
+          const h = Math.max(6, Math.round((n / maxLen) * 125));
+          return `<div class="sent-bar" style="height: ${h}px" title="Zdanie ${idx + 1}: ${n} slow"></div>`;
+        }).join("");
+      document.getElementById("sentenceMeta").innerHTML = `
+        <span>Min: ${b.min_sentence_len} slow</span>
+        <span>Mediana: ${b.median_sentence_len} slow</span>
+        <span>Max: ${b.max_sentence_len} slow</span>
+      `;
+
+      const impacts = data.impacts || [];
+      const maxImpact = Math.max(...impacts.map(x => Math.abs(x.impact)), 0.01);
+      document.getElementById("impactsList").innerHTML = impacts
+        .map(item => {
+          const width = Math.min(100, Math.round((Math.abs(item.impact) / maxImpact) * 100));
+          const isAi = item.direction === "AI";
+          const color = isAi ? "var(--ai)" : "var(--human)";
+          const sign = item.impact >= 0 ? "+" : "";
+          return `
+            <div class="impact-row">
+              <div class="impact-head">
+                <span>${item.label}</span>
+                <span style="color: ${color}; font-weight: 600;">${sign}${item.impact.toFixed(2)} (${isAi ? "AI" : "Czlowiek"})</span>
+              </div>
+              <div class="impact-bar-bg">
+                <div class="impact-bar-fill" style="width: ${width}%; background: ${color};"></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+      document.getElementById("featuresTableBody").innerHTML = (data.features || [])
+        .map(row => {
+          const pill = row.closer_to === "AI"
+            ? `<span class="pill pill-ai">AI</span>`
+            : `<span class="pill pill-human">Czlowiek</span>`;
+          return `
+            <tr>
+              <td>${row.label}</td>
+              <td><strong>${formatValue(row.feature, row.value)}</strong></td>
+              <td>${formatValue(row.feature, row.human_mean)}</td>
+              <td>${formatValue(row.feature, row.ai_mean)}</td>
+              <td>${row.closer_to ? pill : "-"}</td>
+            </tr>
+          `;
+        }).join("");
+
+      resultsBox.style.display = "block";
+    }
+
+    async function runAnalysis() {
+      const text = textInput.value.trim();
+      errorBox.style.display = "none";
+      if (!text) {
+        errorBox.textContent = "Wklej najpierw tekst do analizy.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      analyzeBtn.disabled = true;
+      analyzeBtn.textContent = "Analizuje...";
+      try {
+        const res = await fetch(API_BASE + "/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (parseErr) {
+          throw new Error("Serwer zwrocil nieprawidlowa odpowiedz.");
+        }
+        if (!res.ok) {
+          throw new Error((data && data.error) || "Blad podczas analizy.");
+        }
+        renderResults(data);
+      } catch (err) {
+        const msg = String(err && err.message ? err.message : err);
+        if (msg === "Failed to fetch" || msg.includes("NetworkError") || msg.includes("fetch")) {
+          errorBox.textContent = "Failed to fetch: serwer nie dziala albo padl. Uruchom ponownie DetektorAI.exe i poczekaj az otworzy sie przegladarka.";
+        } else {
+          errorBox.textContent = msg;
+        }
+        errorBox.style.display = "block";
+      } finally {
+        analyzeBtn.disabled = false;
+        analyzeBtn.textContent = "Analizuj tekst";
+      }
+    }
+
+    analyzeBtn.addEventListener("click", runAnalysis);
+  </script>
+</body>
+</html>

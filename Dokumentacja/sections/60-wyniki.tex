@@ -13,17 +13,22 @@ Na obecnym etapie wykonano:
 	\item szczegółową specyfikację wejścia/wyjścia, przepływu przetwarzania i planu ewaluacji,
 	\item wstępną listę zbiorów danych (Kaggle, SpeakLeash i inne),
 	\item implementację i~ewaluację ścieżki ML (DistilBERT) oraz ścieżki statystycznej (13 cech stylometrycznych),
-	\item porównanie obu ścieżek na wspólnym podziale Kaggle i~na zbiorze spoza domeny (Ghostbuster).
+	\item porównanie obu ścieżek na wspólnym podziale Kaggle i~na zbiorze spoza domeny (Ghostbuster),
+	\item model System One (DistilBERT oceniający dwie opcje: \textit{human}/\textit{ai}) trenowany na esejach z~wielu źródeł,
+	\item lokalną aplikację detektora (przeglądarka + serwer Python) z~oceną tekstu fragment po fragmencie,
+	\item finalny test na 300 ludzkich esejach z~2021~r., które nie brały udziału ani w~treningu, ani w~strojeniu.
 \end{itemize}
 
 Zaimplementowano obie ścieżki detekcji -- uczenia maszynowego (ML) i~statystyczną -- oraz
 wykonano pomiary na teście IID i~na zewnętrznym zbiorze OOD (Ghostbuster).
+Najlepszy model ścieżki ML (System One) wbudowano w~aplikację i~sprawdzono na
+niezależnym zbiorze ludzkich esejów.
 
 \subsection{Ścieżka machine learning}
 
 Zaimplementowano fine-tuning modelu \path{distilbert-base-uncased}
 (67 mln parametrów) w~PyTorch Lightning. Klasyfikacja jest binarna:
-	exttt{human} = 0, 	exttt{ai} = 1 (seed 	exttt{42}).
+\texttt{human} = 0, \texttt{ai} = 1 (seed \texttt{42}).
 
 \paragraph{Dlaczego wynik 99\% był mylący.}
 Model wytrenowany tylko na Kaggle osiągał ok. 0,997 accuracy na teście z tego
@@ -71,6 +76,105 @@ a~test generalizacji przeniesiono na zewnętrzny zbiór Ghostbuster.
 Detekcja AI nie jest rozwiązana uniwersalnie: nowe modele LLM, parafrazy i
 zmiana domeny nadal obniżają jakość. Na OOD model ma bias w stronę AI
 (więcej fałszywych alarmów niż przeoczeń). Szczegóły: \path{train/WYNIKI.md}.
+
+\subsection{System One -- model wyboru opcji}
+
+\paragraph{Idea.}
+Zamiast klasycznej głowicy klasyfikacyjnej model dostaje esej dwukrotnie: raz
+w~parze z~opisem opcji \textit{human} (nierówny rytm, konkretne szczegóły,
+własne stanowisko, głos ucznia), raz z~opisem opcji \textit{ai} (szablonowa
+struktura, równo wygładzony styl, ogólnikowa teza, puste przejścia). Enkoder
+\path{distilbert-base-uncased} zwraca dla każdej pary jedną liczbę, a~softmax
+po dwóch wynikach daje prawdopodobieństwo \(p_{ai}\). Wynik kalibrowano
+skalowaniem temperaturą (\(T = 0{,}74\)) na zbiorze walidacyjnym.
+
+\paragraph{Dane.}
+Trening wyłącznie na esejach: Kaggle, DAIGT v3, ArguGPT, część treningowa
+Ghostbustera (ludzkie teksty powielone 10 razy jako trudne przykłady) oraz
+formalne teksty ludzkie z~AI Text Detection Pile. Po deduplikacji
+i~length-matchingu: 52\,526 tekstów treningowych i~po 6\,566 w~walidacji
+i~teście. Ghostbuster \textit{test} (598 tekstów) pozostał poza treningiem.
+Konfiguracja: lr \(1{,}5 \cdot 10^{-5}\), batch 12, max\_length 384, 4 epoki,
+wagi klas \([2{,}8;\ 1{,}0]\) na korzyść klasy ludzkiej, RTX 3070 Ti, ok.\ 37 min.
+
+\begin{center}
+\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+model & OOD acc. & TNR (ludzkie) & TPR (AI) \\
+\hline
+DistilBERT \texttt{v3} & 0,838 & 0,705 & 0,970 \\
+System One v1 (same eseje) & 0,503 & 0,007 & 0,999 \\
+System One v2 (+ Ghostbuster train) & 0,931 & 0,863 & 1,000 \\
+\textbf{System One v3 (finalny)} & \textbf{0,946} & \textbf{0,900} & 0,993 \\
+\hline
+\end{tabular}
+\end{center}
+
+Na teście IID System One v3 osiąga accuracy 0,994 i~F1 0,994. Na Ghostbusterze
+liczba fałszywych alarmów spadła z~279 (DistilBERT \texttt{v3}) do 30.
+
+\subsection{Aplikacja i~test na esejach spoza treningu}
+
+\paragraph{Problem z~długimi tekstami.}
+Modele transformerowe widzą tylko początek tekstu (256 lub 384 tokeny), a~w
+eseju jest to zwykle wstęp, czyli najbardziej szablonowa część. W~aplikacji
+tekst jest więc dzielony na fragmenty o~długości ok.\ 320 tokenów, bez cięcia
+zdań. System One ocenia każdy fragment osobno, a~werdykt wynika ze średniej
+\(p_{ai}\): AI przy \(p_{ai} \ge 0{,}5\), człowiek przy \(p_{ai} < 0{,}3\),
+pomiędzy -- wynik niepewny. Aplikacja pokazuje też ocenę każdego fragmentu.
+DistilBERT \texttt{v3} i~model statystyczny są widoczne jedynie pomocniczo.
+
+\paragraph{Rozdzielenie strojenia od testu.}
+Rozmiar fragmentów, sposób uśredniania i~progi dobrano na osobnym zbiorze
+deweloperskim: 290 ludzkich esejów z~serwisu IvyPanda oraz 282 eseje
+wygenerowane na te same tematy przez ChatGPT 4.1, DeepSeek V3.2, Llama~3
+i~Mistral 7B (skrypt \path{train/build_dev_set.py}), uzupełnione o~16 esejów
+napisanych przez model Claude, w~tym 4 w~swobodnym, ,,ludzkim'' stylu. Teksty
+pokrywające się ze zbiorem testowym usuwano automatycznie.
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+wariant (zbiór dev) & ludzkie oznaczone jako AI & AI wykryte \\
+\hline
+tylko pierwszy fragment & 10,0\% & 87,6\% \\
+\textbf{średnia z~fragmentów, próg 0,5} & \textbf{3,4\%} & 84,2\% \\
+średnia z~fragmentów, próg 0,7 & 2,4\% & 77,2\% \\
+\hline
+\end{tabular}
+\end{center}
+
+Skuteczność wykrywania zależy od generatora: ChatGPT 4.1 -- 93\%, DeepSeek --
+84\%, Llama~3 i~Mistral -- ok.\ 73\%.
+
+\paragraph{Finalny test.}
+Zbiór finalny to 300 ludzkich esejów z~serwisu StudyCorgi opublikowanych
+w~2021~r., a~więc przed upowszechnieniem ChatGPT (\path{essays_2021/}).
+Zbiór nie był używany ani do treningu, ani do strojenia i~został oceniony
+jednokrotnie, po zamrożeniu ustawień (\path{train/final_test_essays_2021.py}).
+
+\begin{center}
+\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+detektor & człowiek & niepewne & AI (fałszywy alarm) \\
+\hline
+poprzednia aplikacja (średnia 2 modeli) & -- & -- & 93,3\% \\
+DistilBERT bazowy (Kaggle) & -- & -- & 96,3\% \\
+model statystyczny & -- & -- & 18,3\% \\
+\textbf{System One, fragmenty} & \textbf{80,3\%} & 12,7\% & \textbf{7,0\%} \\
+\hline
+\end{tabular}
+\end{center}
+
+Poprzednia wersja aplikacji uznawała za tekst AI niemal każdy ludzki esej
+akademicki. Po zmianie modelu i~ocenie fragmentami fałszywe alarmy spadły do
+7\%. Odsetek ten jest wyższy niż na zbiorze dev (3,4\%), co potwierdza, że
+zmiana źródła tekstów nadal ma znaczenie. Pojedyncze fragmenty ludzkich esejów
+(najczęściej wstęp i~zakończenie) bywają oceniane jako AI, dlatego werdykt
+opiera się na średniej, a~nie na najgorszym fragmencie. Kolejnym krokiem jest
+douczenie System One na większej liczbie ludzkich esejów akademickich.
 
 \subsection{Ścieżka statystyczna}
 
@@ -220,8 +324,9 @@ Wnioski z porównania:
 	kolejnym krokiem.
 \end{itemize}
 
-W efekcie DistilBERT \texttt{v3} jest jedynym podejściem z~akceptowalnym wynikiem
-poza domeną. Ścieżka statystyczna pozostaje wartościowa jako szybki,
+W efekcie spośród modeli w~tym zestawieniu tylko DistilBERT \texttt{v3} ma
+akceptowalny wynik poza domeną; jeszcze lepszy jest System One opisany wyżej
+(0,946 accuracy na Ghostbusterze). Ścieżka statystyczna pozostaje wartościowa jako szybki,
 interpretowalny punkt odniesienia, który w~dodatku lepiej znosi zmianę domeny
 niż model ML trenowany na jednym źródle. Ewaluację OOD odtwarza skrypt
 \path{statistical/eval_ood.py} (wyniki: \path{statistical/runs/ood_results.json}).

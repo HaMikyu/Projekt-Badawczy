@@ -32,3 +32,8 @@ Zadanie 1/Dokumentacja/sections/50-specyfikacja.aux
 Zadanie 1/Dokumentacja/sections/60-wyniki.aux
 Zadanie 1/Dokumentacja/sections/70-genai.aux
 Zadanie 1/Dokumentacja/sections/99-tail.aux
+
+# Detektor: lokalne artefakty i finalny zbior testowy (cudze teksty, nie publikujemy)
+/essays_2021/
+app/server.log
+DetektorAI.exe

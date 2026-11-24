@@ -49,7 +49,7 @@ def score_texts(model, tokenizer, texts, meta, device):
     pair_a = tokenizer(
         texts,
         [options[0]] * len(texts),
-        padding=True,
+        padding="max_length",
         truncation="only_first",
         max_length=max_length,
         return_tensors="pt",
@@ -57,7 +57,7 @@ def score_texts(model, tokenizer, texts, meta, device):
     pair_b = tokenizer(
         texts,
         [options[1]] * len(texts),
-        padding=True,
+        padding="max_length",
         truncation="only_first",
         max_length=max_length,
         return_tensors="pt",

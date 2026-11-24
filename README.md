@@ -40,6 +40,31 @@ Najważniejsze liczby (accuracy):
 
 \* test IID mieszanki źródeł, nie samego Kaggle.
 
+### Finalny test na ludzkich esejach spoza treningu (`essays_2021/`)
+
+`essays_2021/` to 300 ludzkich esejów StudyCorgi z 2021 r. (sprzed ChatGPT).
+Służą **wyłącznie** jako finalny test i nie są używane do treningu ani strojenia.
+Rozmiar fragmentów i progi dobrano na osobnym zbiorze dev
+(`train/build_dev_set.py`: eseje IvyPanda ludzkie + eseje AI na te same tematy).
+
+| Detektor | Ludzki esej → CZŁOWIEK | NIEPEWNE | Ludzki esej → AI (fałszywy alarm) |
+|---|---|---|---|
+| Stara aplikacja (średnia DistilBERT-baseline + statystyczny) | — | — | 93% |
+| DistilBERT baseline sam | — | — | 96% |
+| Statystyczny sam | — | — | 18% |
+| **System One, średnia z fragmentów (aplikacja teraz)** | **80%** | 13% | **7%** |
+
+Na zbiorze dev ten sam detektor wykrywa 84% esejów AI (ChatGPT 4.1: 93%,
+DeepSeek: 84%, Llama/Mistral: ~73%) przy 3,4% fałszywych alarmów.
+
+```powershell
+python train\build_dev_set.py          # zbior dev (data/dev, gitignore)
+python train\final_test_essays_2021.py # finalny test -> train\final_test_essays_2021.json
+python train\eval_dev.py               # ocena modelu na zbiorze dev
+```
+
+Douczanie System One na GPU (instrukcja dla agenta): [`train/GPU_TRAINING.md`](train/GPU_TRAINING.md).
+
 Predykcja System One:
 
 ```powershell
