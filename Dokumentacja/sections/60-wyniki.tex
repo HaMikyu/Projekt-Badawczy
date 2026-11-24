@@ -11,10 +11,15 @@ Na obecnym etapie wykonano:
 	\item uszczegółowienie wymagań funkcjonalnych i niefunkcjonalnych,
 	\item doprecyzowanie zakresu, kamieni milowych i harmonogramu (diagram Gantta),
 	\item szczegółową specyfikację wejścia/wyjścia, przepływu przetwarzania i planu ewaluacji,
-	\item wstępną listę zbiorów danych (Kaggle, SpeakLeash i inne).
+	\item wstępną listę zbiorów danych (Kaggle, SpeakLeash i inne),
+	\item implementację i ewaluację ścieżki machine learning (fine-tuning DistilBERT),
+	\item implementację i ewaluację ścieżki statystycznej (cechy stylometryczne, regresja logistyczna),
+	\item porównanie obu ścieżek na zbiorze testowym oraz analizę wpływu długości tekstu.
 \end{itemize}
 
-Implementacja metod detekcji oraz pomiary dokładności będą przedmiotem kolejnych etapów projektu.
+Wyniki obu ścieżek opisano w kolejnych podrozdziałach. Na dalszych etapach planowana
+jest ewaluacja na danych spoza zbioru treningowego (inne źródła tekstów, inne modele LLM,
+język polski).
 
 \subsection{Ścieżka machine learning}
 
@@ -109,10 +114,13 @@ a~etykiety nie były weryfikowane ręcznie. Pełny opis znajduje się w~dokumenc
 \subsection{Ścieżka statystyczna}
 
 Zaimplementowano interpretowalny pipeline statystyczno-stylometryczny bazujący
-na wektorze 13 cech leksykalno-syntaktycznych. Ewaluację przeprowadzono na
-dokładnie tym samym oczyszczonym zbiorze (27\,280 tekstów) i identycznym
-podziale danych (\texttt{seed = 42}, 21\,824 / 2\,728 / 2\,728) co w ścieżce ML,
-co zapewnia pełną spójność metodologiczną.
+na wektorze 13 cech leksykalno-syntaktycznych. Ewaluację przeprowadzono na tym
+samym pliku źródłowym, z użyciem tej samej funkcji czyszczenia i podziału oraz
+tego samego ziarna (\texttt{seed = 42}) co w ścieżce ML. Po deduplikacji
+pozostało jednak 27\,280 tekstów (usunięto 1\,862 duplikaty), a nie 27\,296 jak
+w ścieżce ML (1\,846 duplikatów), dlatego podział wynosi
+21\,824 / 2\,728 / 2\,728. Zbiory testowe obu ścieżek są więc niemal, ale nie
+w~pełni identyczne.
 
 \paragraph{Ekstrakcja cech stylometrycznych.}
 Dla każdego tekstu obliczono 13 cech odzwierciedlających rytm i bogactwo językowe:
@@ -120,7 +128,7 @@ Dla każdego tekstu obliczono 13 cech odzwierciedlających rytm i bogactwo języ
 	\item \textbf{Długość zdań} (\path{avg_sentence_len}, \path{std_sentence_len}) --
 	średnia liczba słów w~zdaniu oraz jej odchylenie standardowe. Teksty ludzkie charakteryzują się średnio dłuższymi zdaniami (25,9 vs 23,0 słów) oraz znacznie większą zmiennością (odchylenie 13,0 vs 8,4).
 	\item \textbf{Burstiness (zmienność rytmu)} --
-	cecha mierzona współczynnikiem zmienności $CV = \sigma / \mu$ (\path{burstiness_cv}: 0,491 dla ludzi vs 0,353 dla AI) oraz średnią bezwzględną różnicą długości kolejnych zdań (\path{burstiness_diff}: 15,33 vs 9,00). Tekst ludzki cechuje wyraźna dynamikę skokowa, podczas gdy modele LLM tworzą zdania o~wygładzonym rytmie.
+	cecha mierzona współczynnikiem zmienności $CV = \sigma / \mu$ (\path{burstiness_cv}: 0,491 dla ludzi vs 0,353 dla AI) oraz średnią bezwzględną różnicą długości kolejnych zdań (\path{burstiness_diff}: 15,33 vs 9,00). Tekst ludzki cechuje wyraźna dynamika skokowa, podczas gdy modele LLM tworzą zdania o~wygładzonym rytmie.
 	\item \textbf{Bogactwo słownikowe} --
 	wskaźnik Type-Token Ratio $\text{TTR} = |V| / N$ (\path{ttr}) oraz indeks Guirauda (\path{root_ttr} = $|V| / \sqrt{N}$).
 	\item \textbf{Cechy leksykalne i interpunkcyjne} --
@@ -158,8 +166,13 @@ najsilniejszymi predyktorami tekstu ludzkiego są: średnia długość zdań (wa
 skokowość długości sąsiednich zdań \path{burstiness_diff} (waga $-2{,}56$),
 zmienność rytmu \path{burstiness_cv} (waga $-1{,}72$) oraz udział wielkich liter (waga $-1{,}45$).
 Z kolei za tekstem AI najsilniej przemawiają: średnia długość wyrazu (waga $+3{,}08$,
-sugerująca używanie bardziej wyszukanego leksykonu), odchylenie długości zdań (waga $+3{,}05$)
+sugerująca używanie bardziej wyszukanego leksykonu), \path{ttr} (waga $+1{,}47$)
 oraz zagęszczenie przecinków (waga $+0{,}94$).
+Dodatnia waga odchylenia długości zdań \path{std_sentence_len} ($+3{,}05$) nie
+oznacza, że teksty AI mają bardziej zróżnicowane zdania (średnio jest odwrotnie:
+8,4 vs 13,0). Wynika ona z silnej korelacji tej cechy ze średnią długością zdań
+i~miarami burstiness, dlatego wag cech skorelowanych nie należy interpretować
+w~oderwaniu od siebie.
 
 \paragraph{Zależność od długości tekstu.}
 Podział odłożonego zbioru testowego na kwartyle długości słownej ujawnia wyraźną
@@ -191,8 +204,11 @@ Pełną analizę zawarto w dokumencie \path{statistical/stat-ograniczenia.md}.
 
 \subsection{Porównanie ścieżki statystycznej i machine learning}
 
-Dzięki zachowaniu identycznego podziału danych (\texttt{seed = 42}) możliwe
-było bezpośrednie zestawienie obu podejść na odłożonym zbiorze testowym:
+Obie ścieżki korzystają z tego samego pliku danych, tej samej procedury podziału
+i~tego samego ziarna (\texttt{seed = 42}). Zbiory testowe różnią się jednak
+liczebnością (2\,728 w~ścieżce statystycznej, 2\,729 w~ścieżce ML) ze względu na
+różny wynik deduplikacji, więc poniższe zestawienie jest porównaniem na niemal,
+ale nie w~pełni identycznym zbiorze testowym:
 
 \begin{center}
 \begin{tabular}{|l|c|c|}
@@ -203,7 +219,7 @@ accuracy & 0,90689 & \textbf{0,99707} \\
 precision & 0,86986 & \textbf{1,00000} \\
 recall & 0,90877 & \textbf{0,99284} \\
 F1-score & 0,88889 & \textbf{0,99641} \\
-liczba błędów (na 2\,728) & 254 & \textbf{8} \\
+liczba błędów & 254 (na 2\,728) & \textbf{8} (na 2\,729) \\
 czas trenowania & \textbf{ok. 25 s (CPU)} & ok. 8,4 min (GPU) \\
 liczba parametrów & \textbf{14} & 67 mln \\
 interpretowalność & \textbf{pełna (jawne wagi)} & niska (czarna skrzynka) \\
