@@ -64,6 +64,10 @@ Folder `data/` nie jest w repo. Ścieżki, których oczekuje `train/build_data.p
 | `data/ghostbuster/data/{train,test}-00000-of-00001.parquet` | Ghostbuster (HF, układ plików parquet) |
 | `data/pile/data/train-0000{0,5}-of-00007-*.parquet` | prawdopodobnie `artem9k/ai-text-detection-pile` (HF) |
 
+`essays_2021/` też nie jest w repo (cudze teksty, repo jest publiczne). Odtwórz go
+skryptem `python scraper\download_essays.py` (potrzebne `requests` i `beautifulsoup4`)
+albo skopiuj folder od użytkownika.
+
 Jeśli czegoś brakuje, zapytaj użytkownika: oryginalne pliki ma autor treningu v3.
 Nie zgaduj innych zbiorów w zastępstwie, bo zmienisz rozkład danych.
 
