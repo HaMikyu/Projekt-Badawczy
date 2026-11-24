@@ -31,13 +31,21 @@ Projekt badawczy: detekcja tekstu generowanego przez AI
 
 Najważniejsze liczby (accuracy):
 
-| Model | Test Kaggle (IID) | Ghostbuster (OOD) |
+| Model | Test IID | Ghostbuster (OOD) |
 |---|---|---|
 | Statystyczny — regresja logistyczna, 13 cech, trening Kaggle | 0,907 | 0,659 |
 | DistilBERT — trening Kaggle (baseline) | 0,997 | 0,516 |
-| DistilBERT v3 — trening na mieszance źródeł | 0,986* | **0,838** |
+| DistilBERT v3 — mieszanka źródeł | 0,986* | 0,838 |
+| **System One v3** (lokalny Jev-style, eseje) | **0,994** | **0,946** |
 
 \* test IID mieszanki źródeł, nie samego Kaggle.
+
+Predykcja System One:
+
+```powershell
+.\.venv\Scripts\python.exe train\predict_system_one.py "tekst eseju"
+```
+
 
 Uruchomienie ścieżki statystycznej:
 

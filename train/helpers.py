@@ -93,6 +93,29 @@ def load_pile_sample(
     return out.sample(frac=1.0, random_state=seed).reset_index(drop=True)
 
 
+def load_daigt_v3(path: Path, min_words: int = 50) -> pd.DataFrame:
+    frame = pd.read_parquet(path)
+    frame = frame.dropna(subset=["text", "label"]).copy()
+    frame["text"] = frame["text"].astype(str).str.strip()
+    frame["generated"] = frame["label"].astype(int)
+    frame = frame[frame["generated"].isin([0, 1])]
+    frame = frame[frame["text"].map(word_count) >= min_words]
+    src = frame["source"].astype(str) if "source" in frame.columns else "daigt"
+    frame["source"] = "daigt_" + src
+    return frame[["text", "generated", "source"]].reset_index(drop=True)
+
+
+def load_argugpt(path: Path, min_words: int = 50) -> pd.DataFrame:
+    frame = pd.read_parquet(path)
+    frame = frame.dropna(subset=["text"]).copy()
+    frame["text"] = frame["text"].astype(str).str.strip()
+    frame = frame[frame["text"].map(word_count) >= min_words]
+    model = frame["model"].astype(str) if "model" in frame.columns else "gpt"
+    frame["generated"] = 1
+    frame["source"] = "argugpt_" + model
+    return frame[["text", "generated", "source"]].reset_index(drop=True)
+
+
 def load_hc3_jsonl(path: Path, min_words: int = 30) -> pd.DataFrame:
     rows = []
     with path.open(encoding="utf-8") as handle:

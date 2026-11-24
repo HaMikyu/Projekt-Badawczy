@@ -4,6 +4,7 @@ from typing import Any
 
 import lightning as L
 import torch
+import torch.nn.functional as F
 from transformers import AutoModelForSequenceClassification
 
 
@@ -15,6 +16,8 @@ class BertTextClassifier(L.LightningModule):
         num_labels: int = 2,
         weight_decay: float = 0.01,
         warmup_ratio: float = 0.1,
+        class_weights: list[float] | None = None,
+        label_smoothing: float = 0.0,
     ) -> None:
         super().__init__()
         self.save_hyperparameters()
@@ -22,18 +25,35 @@ class BertTextClassifier(L.LightningModule):
             model_name,
             num_labels=num_labels,
         )
+        self._class_weights = class_weights
         self._val_predictions: list[torch.Tensor] = []
         self._val_labels: list[torch.Tensor] = []
 
     def forward(self, **batch: torch.Tensor) -> Any:
         return self.model(**batch)
 
+    def _loss(self, logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
+        weight = None
+        if self._class_weights is not None:
+            weight = torch.tensor(self._class_weights, dtype=logits.dtype, device=logits.device)
+        return F.cross_entropy(
+            logits,
+            labels,
+            weight=weight,
+            label_smoothing=float(self.hparams.label_smoothing),
+        )
+
     def _shared_step(self, batch: dict[str, torch.Tensor], stage: str) -> Any:
-        output = self(**batch)
-        batch_size = int(batch["labels"].size(0))
-        self.log(f"{stage}_loss", output.loss, prog_bar=True, on_epoch=True, batch_size=batch_size)
+        labels = batch["labels"]
+        output = self.model(
+            input_ids=batch["input_ids"],
+            attention_mask=batch.get("attention_mask"),
+        )
+        loss = self._loss(output.logits, labels)
+        batch_size = int(labels.size(0))
+        self.log(f"{stage}_loss", loss, prog_bar=True, on_epoch=True, batch_size=batch_size)
         predictions = output.logits.argmax(dim=-1)
-        accuracy = (predictions == batch["labels"]).float().mean()
+        accuracy = (predictions == labels).float().mean()
         self.log(
             f"{stage}_acc",
             accuracy,
@@ -41,6 +61,7 @@ class BertTextClassifier(L.LightningModule):
             on_epoch=True,
             batch_size=batch_size,
         )
+        output.loss = loss
         return output
 
     def training_step(self, batch: dict[str, torch.Tensor], batch_idx: int) -> torch.Tensor:
