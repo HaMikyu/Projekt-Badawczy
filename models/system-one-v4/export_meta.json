@@ -1,0 +1,13 @@
+{
+  "model_name": "distilbert-base-uncased",
+  "architecture": "system_one_option_scorer",
+  "options": [
+    "label=human. Written by a person. Look for uneven rhythm, concrete details, personal stance, imperfect flow, citations or local facts, student voice.",
+    "label=ai. Written by an LLM. Look for formulaic template, evenly polished prose, generic thesis, empty transitions, little lived detail, template conclusions."
+  ],
+  "temperature": 0.7241334319114685,
+  "threshold": 0.8299999999999998,
+  "max_length": 384,
+  "checkpoint": "C:\\Users\\PC\\Desktop\\Rzeczy na studia\\Projekt Badawczy\\train\\runs\\system-one-v4b\\checkpoints\\best.ckpt",
+  "variant": "b"
+}

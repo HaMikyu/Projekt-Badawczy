@@ -106,13 +106,15 @@ model & OOD acc. & TNR (ludzkie) & TPR (AI) \\
 DistilBERT \texttt{v3} & 0,838 & 0,705 & 0,970 \\
 System One v1 (same eseje) & 0,503 & 0,007 & 0,999 \\
 System One v2 (+ Ghostbuster train) & 0,931 & 0,863 & 1,000 \\
-\textbf{System One v3 (finalny)} & \textbf{0,946} & \textbf{0,900} & 0,993 \\
+System One v3 & 0,946 & 0,900 & 0,993 \\
+\textbf{System One v4 (finalny)} & \textbf{0,985} & \textbf{0,993} & 0,977 \\
 \hline
 \end{tabular}
 \end{center}
 
 Na teście IID System One v3 osiąga accuracy 0,994 i~F1 0,994. Na Ghostbusterze
-liczba fałszywych alarmów spadła z~279 (DistilBERT \texttt{v3}) do 30.
+liczba fałszywych alarmów spadła z~279 (DistilBERT \texttt{v3}) do 30, a~po
+douczeniu do wersji v4 (opis niżej) do~2.
 
 \subsection{Aplikacja i~test na esejach spoza treningu}
 
@@ -163,7 +165,8 @@ detektor & człowiek & niepewne & AI (fałszywy alarm) \\
 poprzednia aplikacja (średnia 2 modeli) & -- & -- & 93,3\% \\
 DistilBERT bazowy (Kaggle) & -- & -- & 96,3\% \\
 model statystyczny & -- & -- & 18,3\% \\
-\textbf{System One, fragmenty} & \textbf{80,3\%} & 12,7\% & \textbf{7,0\%} \\
+System One v3, fragmenty & 80,3\% & 12,7\% & 7,0\% \\
+\textbf{System One v4, fragmenty} & \textbf{99,3\%} & 0,7\% & \textbf{0,0\%} \\
 \hline
 \end{tabular}
 \end{center}
@@ -173,8 +176,58 @@ akademicki. Po zmianie modelu i~ocenie fragmentami fałszywe alarmy spadły do
 7\%. Odsetek ten jest wyższy niż na zbiorze dev (3,4\%), co potwierdza, że
 zmiana źródła tekstów nadal ma znaczenie. Pojedyncze fragmenty ludzkich esejów
 (najczęściej wstęp i~zakończenie) bywają oceniane jako AI, dlatego werdykt
-opiera się na średniej, a~nie na najgorszym fragmencie. Kolejnym krokiem jest
+opiera się na średniej, a~nie na najgorszym fragmencie. Kolejnym krokiem było
 douczenie System One na większej liczbie ludzkich esejów akademickich.
+
+\paragraph{Douczenie do wersji v4.}
+Model v3 douczono na GPU (RTX 3070 Ti, 2 epoki, ok.\ 35 min) na dotychczasowych
+danych uzupełnionych o~11\,644 ludzkich esejów IvyPanda i~tyle samo esejów AI na
+podobne tematy (GPT, DeepSeek, Llama, Mistral). Z~danych usunięto wszystkie teksty
+pokrywające się (tytuł lub ponad 20 wspólnych 8-gramów) ze zbiorem dev, ze zbiorem
+finalnym i~z~Ghostbusterem, którego ludzkie eseje także pochodzą z~IvyPanda.
+Przy tej kontroli wykryto, że pula v3 zawierała bliskie kopie kilkunastu tekstów
+z~dev, które w~v4 usunięto. Eseje podzielono na fragmenty tym samym algorytmem co
+w~aplikacji. Spośród trzech wariantów (pełne teksty lub fragmenty, różne lr)
+wybrano wyłącznie na podstawie dev i~Ghostbustera wariant fragmentowy z~lr
+\(10^{-5}\): na dev 0\% ludzkich esejów oznaczonych jako AI i~100\% esejów AI
+wykrytych (v3: 2,7\% i~84,2\%), na Ghostbusterze accuracy 0,985.
+
+Dopiero potem zbiór finalny oceniono jednokrotnie (tabela wyżej): wszystkie 300
+ludzkich esejów z~2021~r.\ uznano za ludzkie lub niepewne, bez ani jednego
+fałszywego alarmu. Wynik trzeba czytać ostrożnie. Zbiór finalny mierzy tylko
+fałszywe alarmy. Eseje AI w~dev pochodzą od tych samych generatorów co nowe dane
+treningowe. StudyCorgi i~IvyPanda publikują podobne teksty, więc na innych
+rodzajach ludzkiego pisania wynik może być słabszy. Wykrywalność AI poza domeną
+(Ghostbuster) spadła nieznacznie, z~99,3\% do 97,7\%.
+
+\paragraph{Test zewnętrzny.}
+Na koniec oba modele oceniono jednokrotnie na dwóch publicznych benchmarkach z~2026~r.\
+(WasItAIGenerated, TextSight; skrypt \path{train/eval_external.py}). Obejmują one teksty
+około 40 najnowszych modeli językowych w~różnych gatunkach (abstrakty, wiadomości,
+recenzje, teksty encyklopedyczne), teksty przerobione przez komercyjne ,,humanizery''
+oraz teksty ludzkie spoza esejów. Usunięto teksty pokrywające się z~treningiem; zostało 2066.
+
+\begin{center}
+\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+grupa & n & v3: AI & v4: AI \\
+\hline
+teksty ludzkie (WasItAI) & 256 & 17,6\% & \textbf{1,9\%} \\
+teksty ludzkie (TextSight) & 635 & 20,5\% & \textbf{8,5\%} \\
+surowe teksty AI (WasItAI) & 671 & 44,7\% & 35,6\% \\
+AI po humanizerze (WasItAI) & 404 & 33,9\% & 8,7\% \\
+teksty AI akademickie (TextSight) & 29 & 7\% & \textbf{69\%} \\
+\hline
+\end{tabular}
+\end{center}
+
+Model v4 rzadko fałszywie oznacza ludzkie teksty, również poza esejami. Słabo jednak
+wykrywa teksty najnowszych modeli w~gatunkach innych niż esej. Na tych samych tekstach GPTZero
+wykrywa 60\% surowych tekstów AI, a~v4 36\%. Teksty po humanizerach prawie zawsze uchodzą
+detekcji. Lepsze AUC v4 (0,74 i~0,96 wobec 0,65 i~0,63 dla v3) pokazuje, że model
+porządkuje teksty lepiej niż v3, ale próg ustalony na esejach jest poza tą domeną ostrożny.
+Benchmark nie zawiera esejów AI z~najnowszych modeli, więc ten pomiar pozostaje do wykonania.
 
 \subsection{Ścieżka statystyczna}
 
