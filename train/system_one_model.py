@@ -30,11 +30,17 @@ class SystemOneOptionScorer(L.LightningModule):
         class_weights: list[float] | None = None,
         label_smoothing: float = 0.05,
         temperature: float = 1.0,
+        pretrained: bool = True,
     ) -> None:
         super().__init__()
-        self.save_hyperparameters()
+        self.save_hyperparameters(ignore=["pretrained"])
         config = AutoConfig.from_pretrained(model_name)
-        self.encoder = AutoModel.from_pretrained(model_name)
+        if pretrained:
+            # transformers 5 laduje wagi w typie checkpointu (DeBERTa-v3 = fp16 -> NaN w AdamW); trenujemy w fp32 + AMP
+            self.encoder = AutoModel.from_pretrained(model_name, dtype=torch.float32)
+        else:
+            # aplikacja: wszystkie wagi sa w system_one.pt, wiec bez pobierania wag bazowych
+            self.encoder = AutoModel.from_config(config, dtype=torch.float32)
         self.encoder.train()
         self.dropout = nn.Dropout(0.1)
         self.score_head = nn.Linear(config.hidden_size, 1)

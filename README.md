@@ -37,9 +37,10 @@ Najważniejsze liczby (accuracy):
 | DistilBERT — trening Kaggle (baseline) | 0,997 | 0,516 |
 | DistilBERT v3 — mieszanka źródeł | 0,986* | 0,838 |
 | System One v3 (lokalny Jev-style, eseje) | 0,994 | 0,946 |
-| **System One v4** (v3 + 23 tys. esejów IvyPanda, fragmenty) | **0,994** | **0,985** |
+| System One v4 (v3 + 23 tys. esejów IvyPanda, fragmenty) | 0,994 | 0,985 |
+| **System One v5** (DeBERTa-v3, + nowe generatory esejów) | **0,990**† | **0,995** |
 
-\* test IID mieszanki źródeł, nie samego Kaggle.
+\* test IID mieszanki źródeł, nie samego Kaggle. † test IID v5 jest trudniejszy (nowe zbiory esejów), więc nie porównuje się wprost z v4.
 
 ### Finalny test na ludzkich esejach spoza treningu (`essays_2021/`)
 
@@ -54,18 +55,30 @@ Rozmiar fragmentów i progi dobrano na osobnym zbiorze dev
 | DistilBERT baseline sam | — | — | 96% |
 | Statystyczny sam | — | — | 18% |
 | System One v3, średnia z fragmentów | 80% | 13% | 7% |
-| **System One v4, średnia z fragmentów (aplikacja teraz)** | **99,3%** | 0,7% | **0%** |
+| System One v4, średnia z fragmentów | 99,3% | 0,7% | 0% |
+| **System One v5, średnia z fragmentów (aplikacja teraz)** | **98,7%** | 0,7% | **0,7%** |
 
-Na zbiorze dev v4 wykrywa 100% esejów AI przy 0% fałszywych alarmów (v3: 84% / 2,7%),
-a na Ghostbuster OOD 97,7% AI przy 2 fałszywych alarmach na 299 ludzkich tekstów.
-`essays_2021` zawiera tylko ludzkie eseje, więc mierzy wyłącznie fałszywe alarmy.
-Dev AI pochodzi z tej samej rodziny generatorów co trening v4.
-Szczegóły i ograniczenia: [`train/WYNIKI.md`](train/WYNIKI.md#system-one-v4-douczenie-na-gpu-25112026).
+**v5 (od 26.11.2026)** to DeBERTa-v3-base trenowana na danych v4 i nowych esejach AI (GPT-4 Turbo, GPT-4o, Llama 3 70B,
+Command R+, LLMEssay-100K, Llamy naśladujące uczniów). Na esejach spoza treningu, w porównaniu z v4:
+
+| test esejowy (kod aplikacji) | v4 | **v5** |
+|---|---|---|
+| eseje LLMEssay-100K: AI wykryte | 40,8% | **100%** |
+| Llamy w stylu uczniów (DAIGT v4): AI wykryte | 50,9% | **94,2%** |
+| rodziny wyłączone z treningu (Claude 3 Opus, YandexGPT, GigaChat) | 99,5% | **100%** |
+| ludzkie eseje IvyPanda: fałszywy alarm | 0,27% | 0,53% |
+| dev: fałszywy alarm / AI wykryte | 0% / 100% | 0% / 100% |
+| Ghostbuster OOD: accuracy | 0,985 | **0,995** |
+
+`essays_2021` zawiera tylko ludzkie eseje, więc mierzy wyłącznie fałszywe alarmy (v5: 2 z 300).
 
 Test zewnętrzny (gotowe benchmarki WasItAIGenerated 2026-09 i TextSight 2026: ok. 40 nowych modeli i różne gatunki,
-`train/eval_external.py`) potwierdza niski odsetek fałszywych alarmów v4 (1,9–8,5% vs 17,6–20,5% dla v3).
-Pokazuje też słabość: poza esejami v4 wykrywa tylko 36% surowych tekstów nowych modeli (GPTZero: 60%)
-i 9% tekstów po humanizerach.
+`train/eval_external.py`): v5 wykrywa 61% surowych tekstów AI (v4: 36%, GPTZero na swoim podzbiorze: 60%)
+i 44% tekstów po humanizerach (v4: 9%). **Ograniczenie:** poza esejami akademickimi v5 częściej oskarża ludzi
+(Wikipedia 68%, przemówienia 26%, krótkie szablonowe listy chińskich uczniów 16 z 38). Nie należy go używać jako
+dowodu wobec krótkich tekstów osób nieanglojęzycznych.
+Szczegóły i ograniczenia: [`train/WYNIKI.md`](train/WYNIKI.md#system-one-v5-deberta-v3-i-wiecej-generatorow-26112026).
+Poprzedni model: `$env:DETEKTOR_SYSTEM_ONE_DIR="models\system-one-v4"`.
 
 ```powershell
 python train\build_dev_set.py          # zbior dev (data/dev, gitignore)
@@ -74,7 +87,8 @@ python train\eval_dev.py               # ocena modelu na zbiorze dev
 ```
 
 Douczanie System One na GPU (instrukcja dla agenta): [`train/GPU_TRAINING.md`](train/GPU_TRAINING.md),
-wykonane w v4 (`train/build_data_v4.py`, `train/train_system_one_v4.py`, `train/run_v4_variants.sh`).
+wykonane w v4 (`train/build_data_v4.py`, `train/train_system_one_v4.py`, `train/run_v4_variants.sh`)
+i v5 (`train/build_data_v5.py`, `train/train_system_one_v5.py`, `train/run_v5.sh`, `train/eval_essay_suite.py`).
 
 Predykcja System One:
 

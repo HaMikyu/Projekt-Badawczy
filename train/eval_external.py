@@ -16,7 +16,7 @@ Zaden z tych zbiorow nie byl uzywany do treningu ani strojenia. Teksty majace
 kodem co aplikacja (fragmenty, srednia p_ai, progi 0,5 / 0,3). Bez strojenia
 czegokolwiek na wynikach.
 
-    python train/eval_external.py v3=train/runs/system-one-v3/export v4=models/system-one-v4
+    python train/eval_external.py v3=train/runs/system-one-v3/export v4=models/system-one-v4 v5=models/system-one-v5
 """
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -35,7 +35,7 @@ from helpers import predict_system_one  # noqa: E402
 from train.predict_system_one import load_detector  # noqa: E402
 
 EXT = ROOT / "data" / "external"
-TRAIN_SETS = [ROOT / "data" / "prepared_v4_full" / f"{s}.csv" for s in ("train", "val")]
+TRAIN_SETS = [ROOT / "data" / d / f"{s}.csv" for d in ("prepared_v4_full", "prepared_v5_full") for s in ("train", "val")]
 OUT_DIR = ROOT / "train" / "runs" / "external"
 OUT_JSON = ROOT / "train" / "external_test_results.json"
 MIN_WORDS = 80

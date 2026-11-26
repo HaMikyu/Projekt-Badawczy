@@ -107,14 +107,15 @@ DistilBERT \texttt{v3} & 0,838 & 0,705 & 0,970 \\
 System One v1 (same eseje) & 0,503 & 0,007 & 0,999 \\
 System One v2 (+ Ghostbuster train) & 0,931 & 0,863 & 1,000 \\
 System One v3 & 0,946 & 0,900 & 0,993 \\
-\textbf{System One v4 (finalny)} & \textbf{0,985} & \textbf{0,993} & 0,977 \\
+System One v4 & 0,985 & 0,993 & 0,977 \\
+\textbf{System One v5 (finalny, DeBERTa-v3)} & \textbf{0,995} & \textbf{0,993} & \textbf{0,997} \\
 \hline
 \end{tabular}
 \end{center}
 
 Na teście IID System One v3 osiąga accuracy 0,994 i~F1 0,994. Na Ghostbusterze
 liczba fałszywych alarmów spadła z~279 (DistilBERT \texttt{v3}) do 30, a~po
-douczeniu do wersji v4 (opis niżej) do~2.
+douczeniu do wersji v4 (opis niżej) do~2. Model v5 ma również 2 fałszywe alarmy, a~nie wykrywa tylko 1 z~299 tekstów AI.
 
 \subsection{Aplikacja i~test na esejach spoza treningu}
 
@@ -166,7 +167,8 @@ poprzednia aplikacja (średnia 2 modeli) & -- & -- & 93,3\% \\
 DistilBERT bazowy (Kaggle) & -- & -- & 96,3\% \\
 model statystyczny & -- & -- & 18,3\% \\
 System One v3, fragmenty & 80,3\% & 12,7\% & 7,0\% \\
-\textbf{System One v4, fragmenty} & \textbf{99,3\%} & 0,7\% & \textbf{0,0\%} \\
+System One v4, fragmenty & 99,3\% & 0,7\% & 0,0\% \\
+\textbf{System One v5, fragmenty} & \textbf{98,7\%} & 0,7\% & \textbf{0,7\%} \\
 \hline
 \end{tabular}
 \end{center}
@@ -228,6 +230,47 @@ wykrywa 60\% surowych tekstów AI, a~v4 36\%. Teksty po humanizerach prawie zaws
 detekcji. Lepsze AUC v4 (0,74 i~0,96 wobec 0,65 i~0,63 dla v3) pokazuje, że model
 porządkuje teksty lepiej niż v3, ale próg ustalony na esejach jest poza tą domeną ostrożny.
 Benchmark nie zawiera esejów AI z~najnowszych modeli, więc ten pomiar pozostaje do wykonania.
+
+\paragraph{Wersja v5: DeBERTa-v3 i~więcej generatorów.}
+Aby lepiej wykrywać eseje z~generatorów, których v4 nie widział, zbudowano nowy zbiór
+(\path{train/build_data_v5.py}). Do danych v4 dodano eseje GPT-4 Turbo, GPT-4o, Llama~3 70B
+i~Command~R+ (kolekcja artnitolog), eseje z~LLMEssay-100K (2026), eseje modeli Llama dostrojonych
+do stylu uczniów (DAIGT v4) oraz kolejne ludzkie eseje IvyPanda. Eseje modeli Claude~3 Opus,
+YandexGPT~3 Pro i~GigaChat Pro całkowicie wyłączono z~treningu i~użyto wyłącznie w~teście.
+Kontrola przecieków była taka sama jak w~v4 i~objęła także benchmarki zewnętrzne. Zbiór treningowy
+liczy 98\,690 pełnych esejów (151\,312 fragmentów). Porównano dwa warianty: DistilBERT douczony od
+wag v4 (53 min) oraz nowy enkoder DeBERTa-v3-base (1 epoka, ok.\ 9~h na RTX 3070 Ti). Pierwsza
+próba z~DeBERTą kończyła się wartością NaN funkcji straty, ponieważ biblioteka \texttt{transformers}~5
+wczytuje jej wagi w~formacie fp16. Po wymuszeniu fp32 trening przebiegł poprawnie. Na podstawie
+walidacji, dev i~Ghostbustera wybrano DeBERTę (accuracy na Ghostbusterze 0,995 wobec 0,983 dla
+DistilBERT). Testy esejowe wykonano kodem aplikacji:
+
+\begin{center}
+\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+test esejowy & n & v4 & v5 \\
+\hline
+LLMEssay-100K: AI wykryte & 1000 & 40,8\% & \textbf{100\%} \\
+Llamy w~stylu uczniów: AI wykryte & 570 & 50,9\% & \textbf{94,2\%} \\
+rodziny wyłączone z~treningu: AI wykryte & 420 & 99,5\% & \textbf{100\%} \\
+ludzkie eseje IvyPanda: fałszywy alarm & 1497 & 0,27\% & 0,53\% \\
+dev: fałszywy alarm / AI wykryte & 295 / 279 & 0\% / 100\% & 0\% / 100\% \\
+\hline
+\end{tabular}
+\end{center}
+
+Zbiór finalny oceniono ponownie, raz, po wyborze modelu: v5 uznał za AI 2 z~300 ludzkich esejów
+(0,7\%), v4 żadnego. Jest to drugie użycie tego zbioru, więc wynik nie jest już w~pełni niezależny.
+W~teście zewnętrznym v5 wykrywa 61\% surowych tekstów AI (v4: 36\%, GPTZero na tym samym podzbiorze: 60\%)
+i~44\% tekstów po humanizerach (v4: 9\%). Ceną jest więcej fałszywych alarmów na ludzkich tekstach
+spoza esejów akademickich: 16,8\% w~WasItAI i~22,2\% w~TextSight (v4: 1,9\% i~8,5\%), głównie
+na Wikipedii i~przemówieniach. AUC na WasItAI się nie zmieniło (0,74). Model nie rozróżnia więc
+tych tekstów lepiej, a~jedynie częściej wskazuje AI. Szczególnie ważna jest stronniczość wobec
+krótkich, szablonowych tekstów osób uczących się angielskiego: v5 uznał za AI 16 z~38 listów
+egzaminacyjnych chińskich uczniów (v4: 0), przy 0\% dla dłuższych esejów ELLIPSE. Wyniku v5
+nie należy więc traktować jako dowodu wobec krótkich tekstów osób nieanglojęzycznych. Naprawa
+wymaga dodania takich ludzkich tekstów do treningu w~kolejnej wersji, a~nie zmiany progu pod ten test.
 
 \subsection{Ścieżka statystyczna}
 

@@ -10,3 +10,5 @@ safetensors
 datasets
 huggingface_hub
 pyarrow
+sentencepiece
+protobuf

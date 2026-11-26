@@ -15,7 +15,7 @@ MODEL_DIR = ROOT / "models" / "system-one-final"
 
 def load_detector(model_dir: Path = MODEL_DIR):
     bundle = torch.load(model_dir / "system_one.pt", map_location="cpu", weights_only=False)
-    model = SystemOneOptionScorer(**{
+    hp = {
         k: bundle["hparams"][k]
         for k in (
             "model_name",
@@ -27,8 +27,11 @@ def load_detector(model_dir: Path = MODEL_DIR):
             "temperature",
         )
         if k in bundle["hparams"]
-    })
-    model.load_state_dict(bundle["state_dict"])
+    }
+    if (model_dir / "config.json").exists():  # konfiguracja enkodera zapisana przy modelu -> dziala offline
+        hp["model_name"] = str(model_dir)
+    model = SystemOneOptionScorer(**hp, pretrained=False)
+    model.load_state_dict(bundle["state_dict"])  # wagi fp16 sa rzutowane do fp32 modelu
     model.temperature = float(bundle.get("temperature", 1.0))
     model.eval()
     tokenizer = AutoTokenizer.from_pretrained(model_dir)
