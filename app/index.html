@@ -40,6 +40,24 @@
 
     header {
       margin-bottom: 22px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .app-status {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .app-status.ready {
+      color: var(--accent);
+    }
+
+    #quitBtn {
+      flex-shrink: 0;
     }
 
     header h1 {
@@ -455,8 +473,12 @@
 <body>
   <div class="container">
     <header>
-      <h1>Detektor tekstu AI</h1>
-      <p>Wklej angielski tekst lub wczytaj plik .txt. Werdykt wydaje model System One (DistilBERT, ocena kazdego fragmentu tekstu osobno i srednia). Model statystyczny i bazowy DistilBERT sa pokazane pomocniczo.</p>
+      <div>
+        <h1>Detektor tekstu AI</h1>
+        <p>Wklej angielski tekst lub wczytaj plik .txt. Werdykt wydaje model System One (DeBERTa-v3, ocena kazdego fragmentu tekstu osobno). Model statystyczny i bazowy DistilBERT sa pokazane pomocniczo.</p>
+        <div class="app-status" id="appStatus">Laczenie z serwerem...</div>
+      </div>
+      <button class="btn-secondary" id="quitBtn" type="button" title="Zamyka okno i wylacza serwer detektora">Zamknij aplikacje</button>
     </header>
 
     <div class="card">
@@ -539,22 +561,60 @@
     const resultsBox = document.getElementById("results");
 
     if (location.protocol === "file:") {
-      errorBox.textContent = "Otworzyles plik HTML bezposrednio. Uruchom DetektorAI.exe albo 'Uruchom Detektor.bat'.";
+      errorBox.textContent = "Otworzyles plik HTML bezposrednio. Uruchom DetektorAI.exe.";
+      document.getElementById("appStatus").textContent = "";
       errorBox.style.display = "block";
     }
 
+    const appStatus = document.getElementById("appStatus");
+    const quitBtn = document.getElementById("quitBtn");
+
+    function setStatus(text, ready) {
+      appStatus.textContent = text;
+      appStatus.classList.toggle("ready", !!ready);
+    }
+
+    // Dopoki ta strona jest otwarta, trzyma polaczenie z serwerem.
+    // Po zamknieciu okna serwer sam sie wylacza i nie blokuje plikow.
+    if (location.protocol !== "file:") {
+      new EventSource(API_BASE + "/api/events");
+    }
+
+    let healthFails = 0;
     async function checkHealth() {
       try {
         const res = await fetch(API_BASE + "/api/health");
         if (!res.ok) throw new Error("health bad");
         const data = await res.json();
-        if (!data.ok || !data.ready) throw new Error("not ready");
+        healthFails = 0;
+        if (data.error) {
+          setStatus("Modele nie wczytaly sie: " + data.error + " (szczegoly w app/server.log)");
+          return;
+        }
+        if (data.ready) {
+          setStatus("Modele gotowe.", true);
+          return;
+        }
+        setStatus("Ladowanie modeli... (kilkanascie sekund)");
       } catch (err) {
-        errorBox.textContent = "Serwer nie odpowiada. Zamknij stare okna i uruchom ponownie DetektorAI.exe.";
-        errorBox.style.display = "block";
+        healthFails += 1;
+        if (healthFails >= 3) {
+          setStatus("Serwer nie odpowiada. Uruchom ponownie DetektorAI.exe.");
+          return;
+        }
       }
+      setTimeout(checkHealth, 1000);
     }
-    checkHealth();
+    if (location.protocol !== "file:") checkHealth();
+
+    quitBtn.addEventListener("click", async () => {
+      quitBtn.disabled = true;
+      try {
+        await fetch(API_BASE + "/api/shutdown", { method: "POST" });
+      } catch (err) {}
+      setStatus("Aplikacja wylaczona. Mozesz zamknac to okno.");
+      window.close();
+    });
 
     function updateLiveCount() {
       const val = textInput.value.trim();
