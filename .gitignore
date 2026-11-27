@@ -37,3 +37,8 @@ Zadanie 1/Dokumentacja/sections/99-tail.aux
 /essays_2021/
 app/server.log
 DetektorAI.exe
+/.venv-s1/
+/.venv-build/
+/build/
+/dist/
+/Detektor AI.lnk

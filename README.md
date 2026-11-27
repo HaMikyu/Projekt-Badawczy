@@ -106,3 +106,21 @@ Uruchomienie ścieżki statystycznej:
 ```
 
 Dokumentacja LaTeX: `Dokumentacja/` (kompilacja: `compile.sh`), rozdział 6 opisuje wyniki obu ścieżek.
+
+## Aplikacja jako EXE (`dist\DetektorAI\DetektorAI.exe`)
+
+Okno Windows (Edge WebView2) z tym samym interfejsem co `app/index.html`. Serwer działa w tym samym
+procesie na losowym wolnym porcie `127.0.0.1`, więc **zamknięcie okna kończy też serwer** (nic nie zostaje w tle).
+Modele liczą się na CPU (torch CPU), karta graficzna nie jest potrzebna. Folder `dist\DetektorAI` (ok. 1,2 GB, z modelami)
+jest przenośny: można go skopiować lub spakować. Log: `%LOCALAPPDATA%\DetektorAI\server.log`.
+
+Budowanie (jednorazowo środowisko `.venv-build`, potem sam skrypt):
+
+```powershell
+uv venv .venv-build --python 3.11
+uv pip install --python .venv-build\Scripts\python.exe torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+uv pip install --python .venv-build\Scripts\python.exe transformers==5.22.2 tokenizers==0.23.3 numpy pandas scikit-learn==1.9.1 joblib sentencepiece protobuf pywebview pyinstaller
+powershell -ExecutionPolicy Bypass -File app\build_exe.ps1
+```
+
+Bez budowania to samo okno: `.\.venv-build\Scripts\pythonw.exe app\desktop.py`.

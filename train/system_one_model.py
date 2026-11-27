@@ -2,11 +2,29 @@ from __future__ import annotations
 
 from typing import Any
 
-import lightning as L
+import inspect
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoConfig, AutoModel
+
+try:
+    import lightning as L
+    _Base = L.LightningModule
+except ImportError:  # aplikacja (EXE) robi tylko inferencje - Lightning potrzebny jest wylacznie do treningu
+    class _HParams(dict):
+        __getattr__ = dict.__getitem__
+
+    class _Base(nn.Module):
+        def save_hyperparameters(self, ignore=()):
+            frame = inspect.currentframe().f_back
+            args = {k: v for k, v in frame.f_locals.items()
+                    if k not in ("self", "__class__", *ignore) and not k.startswith("_")}
+            self.hparams = _HParams(args)
+
+        def log(self, *args, **kwargs):
+            pass
 
 
 HUMAN_OPTION = (
@@ -20,7 +38,7 @@ AI_OPTION = (
 OPTIONS = [HUMAN_OPTION, AI_OPTION]
 
 
-class SystemOneOptionScorer(L.LightningModule):
+class SystemOneOptionScorer(_Base):
     def __init__(
         self,
         model_name: str = "distilbert-base-uncased",

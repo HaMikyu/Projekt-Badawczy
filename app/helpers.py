@@ -11,7 +11,8 @@ import pandas as pd
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-ROOT = Path(__file__).resolve().parents[1]
+# DETEKTOR_ROOT: katalog z models/ i statistical/runs/ (ustawia go app/desktop.py w spakowanym EXE)
+ROOT = Path(os.environ.get("DETEKTOR_ROOT", Path(__file__).resolve().parents[1]))
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
